@@ -1,0 +1,30 @@
+{% extends "@Work/layout.html.twig" %}
+{% block header %}
+
+{% endblock %}
+{% block body %}
+
+    <div class="body">
+        <div>
+            <a href="{{ path('find_work') }}">
+                Хочеш найти роботу?
+            </a>
+            <br>
+            <a href="{{ path('post_worker') }}">
+                Хочеш залишити своє резюме?
+            </a>
+        </div>
+        <div>
+            <a href=" {{ path('find_hire') }}">
+                Хочеш найти працівника?
+            </a>
+            <br>
+            <a href=" {{ path('post_hire') }}">
+                Хочеш залишити вакансію?
+            </a>
+        </div>
+    </div>
+    <div class="footer" style="margin-top: 100%;text-align: center;">
+        All rights reserved @2015
+    </div>
+{% endblock %}

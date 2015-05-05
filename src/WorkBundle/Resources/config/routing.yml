@@ -1,0 +1,19 @@
+main:
+    path:     /
+    defaults: { _controller: WorkBundle:Default:index }
+
+find_work:
+    path: /findwork
+    defaults: { _controller: WorkBundle:Worker:findWork }
+
+post_worker:
+    path: /postwork
+    defaults: { _controller: WorkBundle:Worker:postWorker }
+
+post_hire:
+    path: /posthire
+    defaults: { _controller: WorkBundle:Hire:post }
+
+find_hire:
+    path: /findhire
+    defaults: { _controller: WorkBundle:Hire:find }

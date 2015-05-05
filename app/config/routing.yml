@@ -1,0 +1,4 @@
+work:
+    resource: "@WorkBundle/Resources/config/routing.yml"
+    prefix:   /
+
