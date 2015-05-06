@@ -1,8 +1,7 @@
 <?php
-
 namespace WorkBundle\Entity;
 
 
-class Employer {
+class Education {
 
 }
