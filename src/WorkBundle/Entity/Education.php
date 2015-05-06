@@ -30,11 +30,18 @@ class Education {
      */
     protected $workers;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->workers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -57,7 +64,7 @@ class Education {
     /**
      * Get name
      *
-     * @return string
+     * @return string 
      */
     public function getName()
     {
@@ -80,7 +87,7 @@ class Education {
     /**
      * Get level
      *
-     * @return string
+     * @return string 
      */
     public function getLevel()
     {
@@ -103,18 +110,11 @@ class Education {
     /**
      * Get city
      *
-     * @return string
+     * @return string 
      */
     public function getCity()
     {
         return $this->city;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->workers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
