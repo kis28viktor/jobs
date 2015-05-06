@@ -6,7 +6,7 @@
  * Time: 12:53
  */
 
-namespace WorkBundle\Entyty;
+namespace WorkBundle\Entity;
 
 
 class Hire {
