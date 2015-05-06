@@ -2,7 +2,252 @@
 
 namespace WorkBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 
-class Employer {
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="worker")
+ */
+class Worker {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $name;
+    /**
+     * @ORM\Column(type="string", length=50);
+     */
+    protected $phone;
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $age;
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    protected $city;
+    /**
+     * @ORM\Column(type="string", length=1000)
+     */
+    protected $aboutMe;
+    /**
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="workers")
+     * @ORM\JoinTable(name="workers_categories",
+     * joinColumns={@ORM\JoinColumn(name="worker_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")})
+     */
+    protected $categories;
+    /**
+     * @ORM\ManyToMany(targetEntity="Education", inversedBy="workers")
+     * @ORM\JoinTable(name="workers_education",
+     * joinColumns={@ORM\JoinColumn(name="worker_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="education_id", referencedColumnName="id")})
+     */
+    protected $education;
 
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->education = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return Worker
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     * @return Worker
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string 
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set age
+     *
+     * @param integer $age
+     * @return Worker
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    /**
+     * Get age
+     *
+     * @return integer 
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
+
+    /**
+     * Set city
+     *
+     * @param string $city
+     * @return Worker
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * Get city
+     *
+     * @return string 
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * Set aboutMe
+     *
+     * @param string $aboutMe
+     * @return Worker
+     */
+    public function setAboutMe($aboutMe)
+    {
+        $this->aboutMe = $aboutMe;
+
+        return $this;
+    }
+
+    /**
+     * Get aboutMe
+     *
+     * @return string 
+     */
+    public function getAboutMe()
+    {
+        return $this->aboutMe;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \WorkBundle\Entity\Category $categories
+     * @return Worker
+     */
+    public function addCategory(\WorkBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \WorkBundle\Entity\Category $categories
+     */
+    public function removeCategory(\WorkBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Add education
+     *
+     * @param \WorkBundle\Entity\Education $education
+     * @return Worker
+     */
+    public function addEducation(\WorkBundle\Entity\Education $education)
+    {
+        $this->education[] = $education;
+
+        return $this;
+    }
+
+    /**
+     * Remove education
+     *
+     * @param \WorkBundle\Entity\Education $education
+     */
+    public function removeEducation(\WorkBundle\Entity\Education $education)
+    {
+        $this->education->removeElement($education);
+    }
+
+    /**
+     * Get education
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEducation()
+    {
+        return $this->education;
+    }
 }
