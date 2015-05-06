@@ -173,52 +173,6 @@ class Employer {
     }
 
     /**
-     * Set priceFrom
-     *
-     * @param \double $priceFrom
-     * @return Employer
-     */
-    public function setPriceFrom(\double $priceFrom)
-    {
-        $this->priceFrom = $priceFrom;
-
-        return $this;
-    }
-
-    /**
-     * Get priceFrom
-     *
-     * @return \double
-     */
-    public function getPriceFrom()
-    {
-        return $this->priceFrom;
-    }
-
-    /**
-     * Set priceTo
-     *
-     * @param \double $priceTo
-     * @return Employer
-     */
-    public function setPriceTo(\double $priceTo)
-    {
-        $this->priceTo = $priceTo;
-
-        return $this;
-    }
-
-    /**
-     * Get priceTo
-     *
-     * @return \double
-     */
-    public function getPriceTo()
-    {
-        return $this->priceTo;
-    }
-
-    /**
      * Set ageFrom
      *
      * @param integer $ageFrom
@@ -341,5 +295,51 @@ class Employer {
     public function getCategories()
     {
         return $this->categories;
+    }
+
+    /**
+     * Set priceFrom
+     *
+     * @param float $priceFrom
+     * @return Employer
+     */
+    public function setPriceFrom($priceFrom)
+    {
+        $this->priceFrom = $priceFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get priceFrom
+     *
+     * @return float 
+     */
+    public function getPriceFrom()
+    {
+        return $this->priceFrom;
+    }
+
+    /**
+     * Set priceTo
+     *
+     * @param float $priceTo
+     * @return Employer
+     */
+    public function setPriceTo($priceTo)
+    {
+        $this->priceTo = $priceTo;
+
+        return $this;
+    }
+
+    /**
+     * Get priceTo
+     *
+     * @return float 
+     */
+    public function getPriceTo()
+    {
+        return $this->priceTo;
     }
 }
