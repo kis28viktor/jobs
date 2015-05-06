@@ -19,6 +19,7 @@ class WorkerController extends Controller
 
     public function addWorker()
     {
+        //test comment
         $worker = new Worker();
         $em = $this->getDoctrine()->getManager();
 
