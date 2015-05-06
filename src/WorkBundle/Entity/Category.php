@@ -18,11 +18,19 @@ class Category {
      * @ORM\Column(type="string", length=255)
      */
     protected $name;
+    /**
+     * @ORM\ManyToMany(targetEntity="Worker", mappedBy="categories")
+     */
+    protected $workers;
+    /**
+     * @ORM\ManyToMany(targetEntity="Employer", mappedBy="categories")
+     */
+    protected $employers;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -45,10 +53,84 @@ class Category {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->workers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->employers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add workers
+     *
+     * @param \WorkBundle\Entity\Worker $workers
+     * @return Category
+     */
+    public function addWorker(\WorkBundle\Entity\Worker $workers)
+    {
+        $this->workers[] = $workers;
+
+        return $this;
+    }
+
+    /**
+     * Remove workers
+     *
+     * @param \WorkBundle\Entity\Worker $workers
+     */
+    public function removeWorker(\WorkBundle\Entity\Worker $workers)
+    {
+        $this->workers->removeElement($workers);
+    }
+
+    /**
+     * Get workers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getWorkers()
+    {
+        return $this->workers;
+    }
+
+    /**
+     * Add employers
+     *
+     * @param \WorkBundle\Entity\Employer $employers
+     * @return Category
+     */
+    public function addEmployer(\WorkBundle\Entity\Employer $employers)
+    {
+        $this->employers[] = $employers;
+
+        return $this;
+    }
+
+    /**
+     * Remove employers
+     *
+     * @param \WorkBundle\Entity\Employer $employers
+     */
+    public function removeEmployer(\WorkBundle\Entity\Employer $employers)
+    {
+        $this->employers->removeElement($employers);
+    }
+
+    /**
+     * Get employers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getEmployers()
+    {
+        return $this->employers;
     }
 }
