@@ -25,12 +25,16 @@ class Education {
      * @ORM\Column(type="string", length=255)
      */
     protected $city;
+    /**
+     * @ORM\ManyToMany(targetEntity="Worker", mappedBy="education")
+     */
+    protected $workers;
 
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -53,7 +57,7 @@ class Education {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -76,7 +80,7 @@ class Education {
     /**
      * Get level
      *
-     * @return string 
+     * @return string
      */
     public function getLevel()
     {
@@ -99,10 +103,50 @@ class Education {
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
         return $this->city;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->workers = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add workers
+     *
+     * @param \WorkBundle\Entity\Worker $workers
+     * @return Education
+     */
+    public function addWorker(\WorkBundle\Entity\Worker $workers)
+    {
+        $this->workers[] = $workers;
+
+        return $this;
+    }
+
+    /**
+     * Remove workers
+     *
+     * @param \WorkBundle\Entity\Worker $workers
+     */
+    public function removeWorker(\WorkBundle\Entity\Worker $workers)
+    {
+        $this->workers->removeElement($workers);
+    }
+
+    /**
+     * Get workers
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getWorkers()
+    {
+        return $this->workers;
     }
 }
