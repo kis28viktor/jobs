@@ -10,10 +10,10 @@ post_worker:
     path: /postwork
     defaults: { _controller: WorkBundle:Worker:postWorker }
 
-post_hire:
+post_employer:
     path: /posthire
-    defaults: { _controller: WorkBundle:Hire:post }
+    defaults: { _controller: WorkBundle:Employer:postEmployer }
 
-find_hire:
+find_worker:
     path: /findhire
-    defaults: { _controller: WorkBundle:Hire:find }
+    defaults: { _controller: WorkBundle:Employer:findWorker }
