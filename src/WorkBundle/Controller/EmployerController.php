@@ -4,7 +4,7 @@ namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class HireController extends Controller
+class EmployerController extends Controller
 {
     public function findAction()
     {
