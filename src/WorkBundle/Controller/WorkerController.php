@@ -3,7 +3,7 @@
 namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use WorkBundle\Entyty\Worker;
+use WorkBundle\Entity\Worker;
 
 class WorkerController extends Controller
 {
@@ -17,11 +17,4 @@ class WorkerController extends Controller
         return $this->render('WorkBundle:Worker:find.html.twig');
     }
 
-    public function addWorker()
-    {
-        //test comment
-        $worker = new Worker();
-        $em = $this->getDoctrine()->getManager();
-
-    }
 }
