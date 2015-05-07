@@ -17,3 +17,7 @@ post_employer:
 find_worker:
     path: /findhire
     defaults: { _controller: WorkBundle:Employer:findWorker }
+
+add_worker:
+    path: /addWorker
+    defaults: { _controller: WorkBundle:Worker:addWorker }
