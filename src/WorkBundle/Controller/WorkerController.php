@@ -11,7 +11,7 @@ class WorkerController extends Controller
     public function postWorkerAction()
     {
         $newWorker = new AddWorker();
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getEntityManager();
         $repository = $em->getRepository('WorkBundle:Category');
         $categoryModels = $repository->findAll();
         $categories = array();
@@ -39,7 +39,19 @@ class WorkerController extends Controller
 
     public function findWorkAction()
     {
-        return $this->render('WorkBundle:Worker:find.html.twig');
+        $workersRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker');
+        $workerModels = $workersRepository->findAll();
+        $workers = array();
+        foreach ($workerModels as $worker) {
+            $workers[] = array('id' => $worker->getId(),
+                               'name' => $worker->getName(),
+                                'phone' => $worker->getPhone(),
+                                'age' => $worker->getAge(),
+                                'city' => $worker->getCity(),
+                                'aboutMe' => $worker->getAboutMe(),
+            );
+        }
+        return $this->render('WorkBundle:Worker:findWorker.html.twig', array('workers' => $workers));
     }
 
     public function addWorkerAction(Request $request)
@@ -48,6 +60,11 @@ class WorkerController extends Controller
         $checkBox = $formData['categories'];
         var_dump($checkBox);
         return null;
+    }
+
+    protected function getEntityManager()
+    {
+        return $this->getDoctrine()->getEntityManager();
     }
 
 }

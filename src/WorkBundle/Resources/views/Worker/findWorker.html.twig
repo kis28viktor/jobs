@@ -1,0 +1,28 @@
+<table style="border: 1px solid #000000; word-break: break-all; width: 800px">
+    <tr>
+        <td>
+            Name
+        </td>
+        <td>
+            Phone
+        </td>
+        <td>
+            Age
+        </td>
+        <td>
+            City
+        </td>
+        <td>
+            About Me
+        </td>
+    </tr>
+    {% for worker in workers %}
+        <tr>
+            <td>{{worker.name}}</td>
+            <td>{{worker.phone}}</td>
+            <td>{{worker.age}}</td>
+            <td>{{worker.city}}</td>
+            <td style="width: 300px;">{{worker.aboutMe}}</td>
+        </tr>
+    {% endfor %}
+</table>
