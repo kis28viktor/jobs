@@ -11,7 +11,15 @@ class WorkerController extends Controller
     public function postWorkerAction()
     {
         $newWorker = new AddWorker();
-        $newWorker->setName('Ibrahim');
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository('WorkBundle:Category');
+        $categoryModels = $repository->findAll();
+        $categories = array();
+        if($categoryModels){
+            foreach ($categoryModels as $category) {
+                $categories[$category->getId()] = $category->getName();
+            }
+        }
         $form = $this->createFormBuilder($newWorker)
             ->add('name', 'text')
             ->add('phone', 'text')
@@ -19,6 +27,12 @@ class WorkerController extends Controller
             ->add('city', 'text')
             ->add('aboutMe', 'text')
             ->add('addWorker', 'submit')
+            ->add('categories', 'choice', array(
+                'label' => 'Chose your categories:',
+                'choices' => $categories,
+                'multiple' => 'true',
+                'expanded' => 'true',
+            ))
             ->getForm();
         return $this->render('WorkBundle:Worker:postWorker.html.twig', array('form' => $form->createView()));
     }
@@ -28,9 +42,12 @@ class WorkerController extends Controller
         return $this->render('WorkBundle:Worker:find.html.twig');
     }
 
-    public function addWorkerAction()
+    public function addWorkerAction(Request $request)
     {
-        return $this->render('WorkBundle::layout.html.twig');
+        $formData = $request->request->get('form');
+        $checkBox = $formData['categories'];
+        var_dump($checkBox);
+        return null;
     }
 
 }

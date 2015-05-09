@@ -13,6 +13,19 @@ class AddWorker
 
     protected $aboutMe;
 
+    protected $categories;
+
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    public function setCategories($val)
+    {
+        $this->categories = $val;
+        return $this;
+    }
+
 
     public function getName()
     {
