@@ -40,7 +40,7 @@ class WorkerController extends Controller
 
     public function findWorkAction()
     {
-
+        return $this->render('WorkBundle::layout.html.twig');
     }
 
     public function addWorkerAction(Request $request)
