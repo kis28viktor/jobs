@@ -6,6 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use WorkBundle\Entity\Forms\AddWorker;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Class WorkerController
+ *
+ * @package WorkBundle\Controller
+ */
 class WorkerController extends Controller
 {
     public function postWorkerAction()
@@ -42,7 +47,6 @@ class WorkerController extends Controller
     {
         return $this->render('WorkBundle::layout.html.twig');
     }
-
     public function addWorkerAction(Request $request)
     {
         $formData = $request->request->get('form');
@@ -51,6 +55,11 @@ class WorkerController extends Controller
         return null;
     }
 
+    /**
+     * Get Entity Manager
+     *
+     * @return \Doctrine\ORM\EntityManager|object
+     */
     protected function getEntityManager()
     {
         return $this->getDoctrine()->getEntityManager();
