@@ -31,6 +31,7 @@ class EmployerController extends Controller
                                'city' => $worker->getCity(),
                                'aboutMe' => $worker->getAboutMe(),
                                 'categories' => $this->getCategoriesForWorker($worker->getId()),
+                                'educations' => $this->getEducationsForWorker($worker->getId()),
             );
         }
         return $this->render('WorkBundle:Employer:findWorker.html.twig', array('workers' => $workers));
@@ -64,8 +65,8 @@ class EmployerController extends Controller
      */
     protected function getCategoriesForWorker($workerId)
     {
-        $categoryRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(array('id' => $workerId));
-        $categoryModels = $categoryRepository->getCategories()->getValues();
+        $workerRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(array('id' => $workerId));
+        $categoryModels = $workerRepository->getCategories()->getValues();
         $categories = array();
         /** @var \WorkBundle\Entity\Category $category */
         foreach ($categoryModels as $category) {
@@ -75,5 +76,32 @@ class EmployerController extends Controller
             );
         }
         return $categories;
+    }
+
+    /**
+     * Getting all educations in array for worker (by worker id)
+     *
+     * @param int $workerId
+     * @return array
+     */
+    protected function getEducationsForWorker($workerId)
+    {
+        $workerRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(array('id' => $workerId));
+        $educationModels = $workerRepository->getEducation()->getValues();
+        if ($educationModels) {
+            $educations = array();
+            /** @var \WorkBundle\Entity\Education $education */
+            foreach ($educationModels as $education) {
+                $educations[] = array(
+                    'name' => $education->getName(),
+                    'level' => $education->getLevel(),
+                    'city' => $education->getCity(),
+                );
+            }
+            return $educations;
+        } else {
+            return array('No education');
+        }
+
     }
 }
