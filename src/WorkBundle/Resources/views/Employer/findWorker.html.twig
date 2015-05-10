@@ -21,14 +21,21 @@
             <td>{{worker.city}}</td>
             <td style="width: 30%;">{{worker.aboutMe}}</td>
             <td>{% for category in worker.categories %}
-                    {{ category.name }}
+                    {% if category is iterable %}
+                        <br>
+                        {% for categoryName in category %}
+                            {{ categoryName }}<br>
+                        {% endfor %}
+                    {% else %}
+                        {{ category }}
+                    {% endif %}
                 {% endfor %}
             </td>
             <td>{% for education in worker.educations %}
                     {% if education is iterable %}
                         <br>
-                        {% for tempEducation in education %}
-                                {{ tempEducation }}<br>
+                        {% for educationInfo in education %}
+                                {{ educationInfo }}<br>
                         {% endfor %}
                     {% else %}
                         {{ education }}

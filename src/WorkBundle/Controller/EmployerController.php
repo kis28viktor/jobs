@@ -68,14 +68,17 @@ class EmployerController extends Controller
         $workerRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(array('id' => $workerId));
         $categoryModels = $workerRepository->getCategories()->getValues();
         $categories = array();
-        /** @var \WorkBundle\Entity\Category $category */
-        foreach ($categoryModels as $category) {
-            $categories[] = array(
-                            'id' => $category->getId(),
-                            'name' => $category->getName(),
-            );
+        if ($categoryModels) {
+            /** @var \WorkBundle\Entity\Category $category */
+            foreach ($categoryModels as $category) {
+                $categories[] = array(
+                    'name' => $category->getName(),
+                );
+            }
+            return $categories;
+        } else {
+            return array('The user didn`t chose any category.');
         }
-        return $categories;
     }
 
     /**
