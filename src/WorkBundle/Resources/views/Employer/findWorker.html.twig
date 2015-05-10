@@ -3,23 +3,14 @@
 
 {% endblock %}
 {% block body %}
-<table style="border: 1px solid #000000; word-break: break-all; width: 800px">
+<table style="border: 1px solid #000000; word-break: break-all; width: 90%">
     <tr>
-        <td>
-            Name
-        </td>
-        <td>
-            Phone
-        </td>
-        <td>
-            Age
-        </td>
-        <td>
-            City
-        </td>
-        <td>
-            About Me
-        </td>
+        <td>Name</td>
+        <td>Phone</td>
+        <td>Age</td>
+        <td>City</td>
+        <td>About Me</td>
+        <td>Categories</td>
     </tr>
     {% for worker in workers %}
         <tr>
@@ -27,7 +18,11 @@
             <td>{{worker.phone}}</td>
             <td>{{worker.age}}</td>
             <td>{{worker.city}}</td>
-            <td style="width: 300px;">{{worker.aboutMe}}</td>
+            <td style="width: 30%;">{{worker.aboutMe}}</td>
+            <td>{% for category in worker.categories %}
+                    {{ category.name }}
+                {% endfor %}
+            </td>
         </tr>
     {% endfor %}
 </table>

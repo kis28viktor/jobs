@@ -16,6 +16,7 @@ class WorkerController extends Controller
         $categoryModels = $repository->findAll();
         $categories = array();
         if($categoryModels){
+            /** @var \WorkBundle\Entity\Category $category */
             foreach ($categoryModels as $category) {
                 $categories[$category->getId()] = $category->getName();
             }
