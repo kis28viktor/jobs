@@ -39,19 +39,7 @@ class WorkerController extends Controller
 
     public function findWorkAction()
     {
-        $workersRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker');
-        $workerModels = $workersRepository->findAll();
-        $workers = array();
-        foreach ($workerModels as $worker) {
-            $workers[] = array('id' => $worker->getId(),
-                               'name' => $worker->getName(),
-                                'phone' => $worker->getPhone(),
-                                'age' => $worker->getAge(),
-                                'city' => $worker->getCity(),
-                                'aboutMe' => $worker->getAboutMe(),
-            );
-        }
-        return $this->render('WorkBundle:Worker:findWorker.html.twig', array('workers' => $workers));
+
     }
 
     public function addWorkerAction(Request $request)
