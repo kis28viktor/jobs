@@ -34,14 +34,36 @@ class AddWorker
     protected $aboutMe;
 
     /**
-     * @var array|object $categories
+     * @var array $categories
      */
     protected $categories;
+    /**
+     * @var array $education
+     */
+    protected $education;
+
+    /**
+     * @return array
+     */
+    protected function getEducation()
+    {
+        return $this->education;
+    }
+
+    /**
+     * @param array $education
+     * @return $this
+     */
+    protected function setEducation($education)
+    {
+        $this->education = $education;
+        return $this;
+    }
 
     /**
      * Get categories
      *
-     * @return mixed
+     * @return array
      */
     public function getCategories()
     {
@@ -51,7 +73,7 @@ class AddWorker
     /**
      * Set categories
      *
-     * @param object|array $val
+     * @param object $val
      * @return $this
      */
     public function setCategories($val)
@@ -59,7 +81,6 @@ class AddWorker
         $this->categories = $val;
         return $this;
     }
-
 
     /**
      * Set workers name
