@@ -16,22 +16,14 @@ class WorkerController extends Controller
     public function postWorkerAction()
     {
         $newWorker = new AddWorker();
-        $em = $this->getEntityManager();
-        $repository = $em->getRepository('WorkBundle:Category');
-        $categoryModels = $repository->findAll();
-        $categories = array();
-        if($categoryModels){
-            /** @var \WorkBundle\Entity\Category $category */
-            foreach ($categoryModels as $category) {
-                $categories[$category->getId()] = $category->getName();
-            }
-        }
+        $categories = $this->getAllCategories();
+//        $educations = $this->getAllEducations();
         $form = $this->createFormBuilder($newWorker)
             ->add('name', 'text')
             ->add('phone', 'text')
-            ->add('age', 'text')
+            ->add('age', 'number')
             ->add('city', 'text')
-            ->add('aboutMe', 'text')
+            ->add('aboutMe', 'textarea', array('max_length' => 255))
             ->add('addWorker', 'submit')
             ->add('categories', 'choice', array(
                 'label' => 'Chose your categories:',
@@ -39,6 +31,9 @@ class WorkerController extends Controller
                 'multiple' => 'true',
                 'expanded' => 'true',
             ))
+            ->add('education','text')
+            ->add('educationLevel', 'text')
+            ->add('educationCity', 'text')
             ->getForm();
         return $this->render('WorkBundle:Worker:postWorker.html.twig', array('form' => $form->createView()));
     }
@@ -63,6 +58,44 @@ class WorkerController extends Controller
     protected function getEntityManager()
     {
         return $this->getDoctrine()->getEntityManager();
+    }
+
+    /**
+     * Get all choices of education
+     *
+     * @return array
+     */
+    protected function getAllEducations()
+    {
+        $educationRepository = $this->getEntityManager()->getRepository('WorkBundle:Education');
+        $educationModels = $educationRepository->findAll();
+        $educations = array();
+        if($educationRepository){
+            /** @var \WorkBundle\Entity\Education $education */
+            foreach($educationModels as $education) {
+                $educations[$education->getId()] = $education->getName();
+            }
+        }
+        return $educations;
+    }
+
+    /**
+     * Get all categories
+     *
+     * @return array
+     */
+    protected function getAllCategories()
+    {
+        $categoryRepository = $this->getEntityManager()->getRepository('WorkBundle:Category');
+        $categoryModels = $categoryRepository->findAll();
+        $categories = array();
+        if($categoryModels){
+            /** @var \WorkBundle\Entity\Category $category */
+            foreach ($categoryModels as $category) {
+                $categories[$category->getId()] = $category->getName();
+            }
+        }
+        return $categories;
     }
 
 }

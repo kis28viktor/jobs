@@ -38,23 +38,79 @@ class AddWorker
      */
     protected $categories;
     /**
-     * @var array $education
+     * @var string $education
      */
     protected $education;
+    /**
+     * @var string $educationLevel
+     */
+    protected $educationLevel;
+    /**
+     * @var string $educationCity
+     */
+    protected $educationCity;
 
     /**
+     * Get education city
+     *
+     * @return string
+     */
+    public function getEducationCity()
+    {
+        return $this->educationCity;
+    }
+
+    /**
+     * Set education city
+     *
+     * @param string $educationCity
+     * @return $this
+     */
+    public function setEducationCity($educationCity)
+    {
+        $this->educationCity = $educationCity;
+        return $this;
+    }
+
+    /**
+     * Get education level
+     *
+     * @return string
+     */
+    public function getEducationLevel()
+    {
+        return $this->educationLevel;
+    }
+
+    /**
+     * Set education level
+     *
+     * @param string $educationLevel
+     * @return $this
+     */
+    public function setEducationLevel($educationLevel)
+    {
+        $this->educationLevel = $educationLevel;
+        return $this;
+    }
+
+    /**
+     * Get education name
+     *
      * @return array
      */
-    protected function getEducation()
+    public function getEducation()
     {
         return $this->education;
     }
 
     /**
-     * @param array $education
+     * Set education name
+     *
+     * @param string $education
      * @return $this
      */
-    protected function setEducation($education)
+    public function setEducation($education)
     {
         $this->education = $education;
         return $this;
