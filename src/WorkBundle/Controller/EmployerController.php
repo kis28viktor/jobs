@@ -3,6 +3,7 @@
 namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use WorkBundle\Entity\Forms\WorkerFilter;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -17,11 +18,24 @@ class EmployerController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function findWorkerAction()
+    public function findWorkerAction(Request $request)
     {
         $workersRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker');
-        $workerModels = $workersRepository->findAll();
+        //Get workers older then 20 and from 'Some city
+        $workerModels = $workersRepository->createQueryBuilder('p')
+            ->where('p.age < :age','p.city = :city')
+            ->setParameter('age',20)
+            ->setParameter('city','Some city')
+            ->getQuery()
+            ->getResult();
         $workers = array();
+        $filter = new WorkerFilter();
+        $filterForm = $this->createFormBuilder($filter)
+                    ->add('city', 'text')
+                    ->add('ageFrom', 'number')
+                    ->add('ageTo', 'number')
+                    ->add('find', 'submit')
+                    ->getForm();
         /** @var \WorkBundle\Entity\Worker $worker */
         foreach ($workerModels as $worker) {
             $workers[] = array('id' => $worker->getId(),
@@ -34,7 +48,7 @@ class EmployerController extends Controller
                                 'educations' => $this->getEducationsForWorker($worker->getId()),
             );
         }
-        return $this->render('WorkBundle:Employer:findWorker.html.twig', array('workers' => $workers));
+        return $this->render('WorkBundle:Employer:findWorker.html.twig', array('workers' => $workers, 'filterForm' => $filterForm->createView()));
     }
 
     /**

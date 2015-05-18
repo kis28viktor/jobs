@@ -3,6 +3,11 @@
 
 {% endblock %}
 {% block body %}
+    <div style="margin: 30px;">
+        <form action="{{ path('find_worker') }}" method="post" {{ form_enctype(filterForm) }}>
+            {{ form_widget(filterForm) }}
+        </form>
+    </div>
 <table style="border: 1px solid #000000; word-break: break-all; width: 90%">
     <tr style="border: 1px solid #000000;">
         <td>Name</td>
