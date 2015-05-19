@@ -22,12 +22,13 @@ class EmployerController extends Controller
     {
         $workersRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker');
         //Get workers older then 20 and from 'Some city
-        $workerModels = $workersRepository->createQueryBuilder('p')
-            ->where('p.age < :age','p.city = :city')
-            ->setParameter('age',20)
-            ->setParameter('city','Some city')
-            ->getQuery()
-            ->getResult();
+//        $workerModels = $workersRepository->createQueryBuilder('p')
+//            ->where('p.age < :age','p.city = :city')
+//            ->setParameter('age',20)
+//            ->setParameter('city','Some city')
+//            ->getQuery()
+//            ->getResult();
+        $workerModels = $workersRepository->findAll();
         $workers = array();
         $filter = new WorkerFilter();
         $filterForm = $this->createFormBuilder($filter)
@@ -39,7 +40,7 @@ class EmployerController extends Controller
         /** @var \WorkBundle\Entity\Worker $worker */
         foreach ($workerModels as $worker) {
             $workers[] = array('id' => $worker->getId(),
-                               'name' => $worker->getName(),
+                               'name' => $worker->getFirstName() . ' ' . $worker->getLastName(),
                                'phone' => $worker->getPhone(),
                                'age' => $worker->getAge(),
                                'city' => $worker->getCity(),
@@ -109,9 +110,11 @@ class EmployerController extends Controller
             $educations = array();
             /** @var \WorkBundle\Entity\Education $education */
             foreach ($educationModels as $education) {
+                /** @var \WorkBundle\Entity\EducationLevel $educationLevel */
+                $educationLevel = $education->getLevel();
                 $educations[] = array(
                     'name' => $education->getName(),
-                    'level' => $education->getLevel(),
+                    'level' => $educationLevel->getName(),
                     'city' => $education->getCity(),
                 );
             }

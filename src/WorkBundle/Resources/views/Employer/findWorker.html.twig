@@ -39,9 +39,9 @@
             <td>{% for education in worker.educations %}
                     {% if education is iterable %}
                         <br>
-                        {% for educationInfo in education %}
-                                {{ educationInfo }}<br>
-                        {% endfor %}
+                        Level: {{education.level}}<br>
+                        Name: {{ education.name }}<br>
+                        City: {{ education.city }}
                     {% else %}
                         {{ education }}
                     {% endif %}
