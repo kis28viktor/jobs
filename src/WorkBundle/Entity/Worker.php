@@ -24,6 +24,10 @@ class Worker {
      */
     protected $lastName;
     /**
+     * @ORM\ManyToOne(targetEntity="Gender")
+     */
+    protected $gender;
+    /**
      * @ORM\Column(type="string", length=50);
      */
     protected $phone;
@@ -249,7 +253,7 @@ class Worker {
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -272,10 +276,33 @@ class Worker {
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param \WorkBundle\Entity\Gender $gender
+     * @return Worker
+     */
+    public function setGender(\WorkBundle\Entity\Gender $gender = null)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return \WorkBundle\Entity\Gender 
+     */
+    public function getGender()
+    {
+        return $this->gender;
     }
 }
