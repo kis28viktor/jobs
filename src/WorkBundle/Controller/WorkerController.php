@@ -16,8 +16,6 @@ class WorkerController extends Controller
     public function postWorkerAction()
     {
         $newWorker = new AddWorker();
-        $categories = $this->getAllCategories();
-//        $educations = $this->getAllEducations();
         $form = $this->createFormBuilder($newWorker)
             ->add('name', 'text')
             ->add('phone', 'text')
@@ -27,12 +25,15 @@ class WorkerController extends Controller
             ->add('addWorker', 'submit')
             ->add('categories', 'choice', array(
                 'label' => 'Chose your categories:',
-                'choices' => $categories,
+                'choices' => $this->getAllCategories(),
                 'multiple' => 'true',
                 'expanded' => 'true',
             ))
             ->add('education','text')
-            ->add('educationLevel', 'text')
+            ->add('educationLevel', 'choice', array(
+                'label' => 'Chose your education level:',
+                'choices' => $this->getEducationLevels(),
+            ))
             ->add('educationCity', 'text')
             ->getForm();
         return $this->render('WorkBundle:Worker:postWorker.html.twig', array('form' => $form->createView()));
@@ -96,6 +97,23 @@ class WorkerController extends Controller
             }
         }
         return $categories;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getEducationLevels()
+    {
+        $educationLevelRepository = $this->getEntityManager()->getRepository('WorkBundle:EducationLevel');
+        $levelModels = $educationLevelRepository->findAll();
+        $levels = array();
+        if($levelModels){
+            /** @var \WorkBundle\Entity\EducationLevel $level */
+            foreach ($levelModels as $level) {
+                $levels[$level->getId()] = $level->getName();
+            }
+        }
+        return $levels;
     }
 
 }
