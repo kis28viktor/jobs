@@ -21,24 +21,18 @@ class EmployerController extends Controller
      */
     public function findWorkerAction(Request $request)
     {
-        $workersRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker');
-        //Get workers older then 20 and from 'Some city
-//        $workerModels = $workersRepository->createQueryBuilder('p')
-//            ->where('p.age < :age','p.city = :city')
-//            ->setParameter('age',20)
-//            ->setParameter('city','Some city')
-//            ->getQuery()
-//            ->getResult();
-        $workerModels = $workersRepository->findAll();
+        $workerModels = $this->getWorkers($request);
         $workers = array();
         $filter = new WorkerFilter();
         $filterForm = $this->createFormBuilder($filter)
-                    ->add('city', 'text')
-                    ->add('ageFrom', 'number')
-                    ->add('ageTo', 'number')
+                    ->add('city', 'text', array('required' => false))
+                    ->add('ageFrom', 'number',array('required' => false))
+                    ->add('ageTo', 'number', array('required' => false))
                     ->add('gender', 'choice', array(
                         'label' => 'gender:',
                         'choices' => $this->getGenders(),
+                        'placeholder' => 'gender',
+                        'required' => false,
                     ))
                     ->add('find', 'submit')
                     ->getForm();
@@ -147,5 +141,38 @@ class EmployerController extends Controller
            }
         }
         return $genders;
+    }
+
+    protected function getWorkers(Request $request)
+    {
+        $workersRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker');
+        $filterData = $request->request->get('form');
+        if($filterData['city']||$filterData['ageFrom']||$filterData['ageTo']||$filterData['gender']){
+            $whereCondition = '';
+            $workerModels = $workersRepository->createQueryBuilder('p');
+            if($filterData['city']){
+                $workerModels->setParameter('city', $filterData['city']);
+                $whereCondition .= 'p.city = :city AND ';
+            }
+            if($filterData['ageFrom']){
+                $workerModels->setParameter('ageFrom', $filterData['ageFrom']);
+                $whereCondition .= 'p.age >= :ageFrom AND ';
+
+            }
+            if($filterData['ageTo']){
+                $workerModels->setParameter('ageTo', $filterData['ageTo']);
+                $whereCondition .= 'p.age <= :ageTo AND ';
+            }
+            if($filterData['gender']){
+                $workerModels->setParameter('gender', $filterData['gender']);
+                $whereCondition .= 'p.gender = :gender AND ';
+            }
+            $workerModels->where(substr($whereCondition,0,-5));
+                $workers = $workerModels->getQuery()->getResult();
+            return $workers;
+        } else {
+            $workerModels = $workersRepository->findAll();
+        }
+        return $workerModels;
     }
 }
