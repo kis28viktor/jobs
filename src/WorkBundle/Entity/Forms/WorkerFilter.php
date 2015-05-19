@@ -21,6 +21,28 @@ class WorkerFilter
     protected $ageTo;
 
     /**
+     * @var array gender
+     */
+    protected $gender;
+
+    /**
+     * @return array
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param array $gender
+     * @return $this
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+        return $this;
+    }
+    /**
      * Get city
      *
      * @return string

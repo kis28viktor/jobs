@@ -3,6 +3,7 @@
 namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use WorkBundle\Entity\EducationLevel;
 use WorkBundle\Entity\Forms\WorkerFilter;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -35,6 +36,10 @@ class EmployerController extends Controller
                     ->add('city', 'text')
                     ->add('ageFrom', 'number')
                     ->add('ageTo', 'number')
+                    ->add('gender', 'choice', array(
+                        'label' => 'gender:',
+                        'choices' => $this->getGenders(),
+                    ))
                     ->add('find', 'submit')
                     ->getForm();
         /** @var \WorkBundle\Entity\Worker $worker */
@@ -123,5 +128,24 @@ class EmployerController extends Controller
             return array('No education');
         }
 
+    }
+
+    /**
+     * Get all genders
+     *
+     * @return array
+     */
+    protected function getGenders()
+    {
+        $genderRepository = $this->getEntityManager()->getRepository('WorkBundle:Gender');
+        $genderModels = $genderRepository->findAll();
+        $genders = array();
+        if ($genderModels) {
+            /** @var \WorkBundle\Entity\Gender $gender */
+            foreach ($genderModels as $gender) {
+               $genders[$gender->getId()] = $gender->getName();
+           }
+        }
+        return $genders;
     }
 }

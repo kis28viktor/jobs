@@ -22,7 +22,6 @@ class WorkerController extends Controller
             ->add('age', 'number')
             ->add('city', 'text')
             ->add('aboutMe', 'textarea', array('max_length' => 255))
-            ->add('addWorker', 'submit')
             ->add('categories', 'choice', array(
                 'label' => 'Chose your categories:',
                 'choices' => $this->getAllCategories(),
@@ -35,6 +34,7 @@ class WorkerController extends Controller
                 'choices' => $this->getEducationLevels(),
             ))
             ->add('educationCity', 'text')
+            ->add('addWorker', 'submit')
             ->getForm();
         return $this->render('WorkBundle:Worker:postWorker.html.twig', array('form' => $form->createView()));
     }
@@ -100,6 +100,8 @@ class WorkerController extends Controller
     }
 
     /**
+     * Get all education levels that is possible to choose.
+     *
      * @return array
      */
     protected function getEducationLevels()

@@ -42,7 +42,7 @@ class AddWorker
      */
     protected $education;
     /**
-     * @var string $educationLevel
+     * @var array $educationLevel
      */
     protected $educationLevel;
     /**
@@ -75,7 +75,7 @@ class AddWorker
     /**
      * Get education level
      *
-     * @return string
+     * @return array
      */
     public function getEducationLevel()
     {
@@ -85,7 +85,7 @@ class AddWorker
     /**
      * Set education level
      *
-     * @param string $educationLevel
+     * @param array $educationLevel
      * @return $this
      */
     public function setEducationLevel($educationLevel)

@@ -1,6 +1,8 @@
 {% extends '@Work/layout.html.twig' %}
 {% block body %}
-    <form action="{{ path('add_worker') }}" method="post" {{ form_enctype(form) }}>
-        {{ form_widget(form) }}
-    </form>
+    <div>
+        <form action="{{ path('add_worker') }}" method="post" {{ form_enctype(form) }}>
+            {{ form_widget(form) }}
+        </form>
+    </div>
 {% endblock %}
