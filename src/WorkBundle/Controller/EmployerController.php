@@ -17,6 +17,7 @@ class EmployerController extends Controller
     /**
      * Action which displays a list of workers
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function findWorkerAction(Request $request)
