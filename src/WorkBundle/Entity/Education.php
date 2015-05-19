@@ -18,7 +18,7 @@ class Education {
      */
     protected $name;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="EducationLevel")
      */
     protected $level;
     /**
@@ -41,7 +41,7 @@ class Education {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -64,34 +64,11 @@ class Education {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set level
-     *
-     * @param string $level
-     * @return Education
-     */
-    public function setLevel($level)
-    {
-        $this->level = $level;
-
-        return $this;
-    }
-
-    /**
-     * Get level
-     *
-     * @return string 
-     */
-    public function getLevel()
-    {
-        return $this->level;
     }
 
     /**
@@ -110,7 +87,7 @@ class Education {
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -143,10 +120,33 @@ class Education {
     /**
      * Get workers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getWorkers()
     {
         return $this->workers;
+    }
+
+    /**
+     * Set level
+     *
+     * @param \WorkBundle\Entity\EducationLevel $level
+     * @return Education
+     */
+    public function setLevel(\WorkBundle\Entity\EducationLevel $level = null)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return \WorkBundle\Entity\EducationLevel 
+     */
+    public function getLevel()
+    {
+        return $this->level;
     }
 }
