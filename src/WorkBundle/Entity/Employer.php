@@ -18,7 +18,11 @@ class Employer {
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    protected $firstName;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $lastName;
     /**
      * @ORM\Column(type="string", length=50);
      */
@@ -78,29 +82,6 @@ class Employer {
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Employer
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -313,7 +294,7 @@ class Employer {
     /**
      * Get priceFrom
      *
-     * @return float 
+     * @return float
      */
     public function getPriceFrom()
     {
@@ -336,10 +317,56 @@ class Employer {
     /**
      * Get priceTo
      *
-     * @return float 
+     * @return float
      */
     public function getPriceTo()
     {
         return $this->priceTo;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     * @return Employer
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string 
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     * @return Employer
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string 
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
     }
 }

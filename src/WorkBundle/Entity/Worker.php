@@ -18,7 +18,11 @@ class Worker {
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    protected $firstName;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $lastName;
     /**
      * @ORM\Column(type="string", length=50);
      */
@@ -63,35 +67,13 @@ class Worker {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Worker
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 
     /**
      * Set phone
@@ -109,7 +91,7 @@ class Worker {
     /**
      * Get phone
      *
-     * @return string 
+     * @return string
      */
     public function getPhone()
     {
@@ -132,7 +114,7 @@ class Worker {
     /**
      * Get age
      *
-     * @return integer 
+     * @return integer
      */
     public function getAge()
     {
@@ -155,7 +137,7 @@ class Worker {
     /**
      * Get city
      *
-     * @return string 
+     * @return string
      */
     public function getCity()
     {
@@ -178,7 +160,7 @@ class Worker {
     /**
      * Get aboutMe
      *
-     * @return string 
+     * @return string
      */
     public function getAboutMe()
     {
@@ -211,7 +193,7 @@ class Worker {
     /**
      * Get categories
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCategories()
     {
@@ -244,10 +226,56 @@ class Worker {
     /**
      * Get education
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getEducation()
     {
         return $this->education;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     * @return Worker
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * Get firstName
+     *
+     * @return string 
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     * @return Worker
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string 
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
     }
 }
