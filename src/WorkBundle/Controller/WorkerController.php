@@ -17,7 +17,8 @@ class WorkerController extends Controller
     {
         $newWorker = new AddWorker();
         $form = $this->createFormBuilder($newWorker)
-            ->add('name', 'text')
+            ->add('firstName', 'text')
+            ->add('lastName', 'text')
             ->add('phone', 'text')
             ->add('age', 'number')
             ->add('city', 'text')

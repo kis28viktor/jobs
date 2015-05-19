@@ -11,8 +11,11 @@ class AddWorker
     /**
      * @var string $name
      */
-    protected $name;
-
+    protected $firstName;
+    /**
+     * @var string $name
+     */
+    protected $lastName;
     /**
      * @var string $phone
      */
@@ -139,24 +142,45 @@ class AddWorker
     }
 
     /**
-     * Set workers name
+     * Set workers first name
      *
      * @return string
      */
-    public function getName()
+    public function getFirstName()
     {
-        return $this->name;
+        return $this->firstName;
     }
 
     /**
-     * Set workers name
+     * Set workers first name
      *
      * @param string $name
      * @return $this
      */
-    public function setName($name)
+    public function setFirstName($name)
     {
-        $this->name = $name;
+        $this->firstName = $name;
+        return $this;
+    }
+    /**
+     * Set workers first name
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * Set workers first name
+     *
+     * @param string $name
+     * @return $this
+     */
+    public function setLastName($name)
+    {
+        $this->lastName = $name;
         return $this;
     }
 
