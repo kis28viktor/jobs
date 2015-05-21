@@ -23,33 +23,29 @@ class EmployerController extends Controller
     public function findWorkerAction(Request $request)
     {
         $workerModels = $this->getWorkers($request);
-        $workers = array();
-        $filter = new WorkerFilter();
-        $filterForm = $this->createFormBuilder($filter)
-                    ->add('city', 'text', array('required' => false))
-                    ->add('ageFrom', 'number',array('required' => false))
-                    ->add('ageTo', 'number', array('required' => false))
-                    ->add('gender', 'choice', array(
-                        'label' => 'gender:',
-                        'choices' => $this->getGenders(),
-                        'placeholder' => 'gender',
-                        'required' => false,
-                    ))
-                    ->add('find', 'submit')
-                    ->getForm();
+        $workers      = array();
         /** @var \WorkBundle\Entity\Worker $worker */
         foreach ($workerModels as $worker) {
-            $workers[] = array('id' => $worker->getId(),
-                               'name' => $worker->getFirstName() . ' ' . $worker->getLastName(),
-                               'phone' => $worker->getPhone(),
-                               'age' => $worker->getAge(),
-                               'city' => $worker->getCity(),
-                               'aboutMe' => $worker->getAboutMe(),
-                                'categories' => $this->getCategoriesForWorker($worker->getId()),
-                                'educations' => $this->getEducationsForWorker($worker->getId()),
+            $workers[] = array('id'         => $worker->getId(),
+                               'name'       => $worker->getFirstName() . ' ' . $worker->getLastName(),
+                               'phone'      => $worker->getPhone(),
+                               'age'        => $worker->getAge(),
+                               'city'       => $worker->getCity(),
+                               'aboutMe'    => $worker->getAboutMe(),
+                               'categories' => $this->getCategoriesForWorker($worker->getId()),
+                               'educations' => $this->getEducationsForWorker($worker->getId()),
             );
         }
-        return $this->render('WorkBundle:Employer:findWorker.html.twig', array('workers' => $workers, 'filterForm' => $filterForm->createView()));
+        return $this->render(
+            'WorkBundle:Employer:findWorker.html.twig',
+            array('workers' => $workers,
+                  'genders' => $this->getGenders(),
+                  'city'    => $request->request->get('city') ? $request->request->get('city') : null,
+                  'ageFrom' => $request->request->get('ageFrom') ? $request->request->get('ageFrom') : null,
+                  'ageTo' => $request->request->get('ageTo') ? $request->request->get('ageTo') : null,
+                  'gender' => $request->request->get('gender') ? $request->request->get('gender') : null,
+            )
+        );
     }
 
     /**
@@ -80,9 +76,11 @@ class EmployerController extends Controller
      */
     protected function getCategoriesForWorker($workerId)
     {
-        $workerRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(array('id' => $workerId));
-        $categoryModels = $workerRepository->getCategories()->getValues();
-        $categories = array();
+        $workerRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(
+            array('id' => $workerId)
+        );
+        $categoryModels   = $workerRepository->getCategories()->getValues();
+        $categories       = array();
         if ($categoryModels) {
             /** @var \WorkBundle\Entity\Category $category */
             foreach ($categoryModels as $category) {
@@ -104,18 +102,20 @@ class EmployerController extends Controller
      */
     protected function getEducationsForWorker($workerId)
     {
-        $workerRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(array('id' => $workerId));
-        $educationModels = $workerRepository->getEducation()->getValues();
+        $workerRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(
+            array('id' => $workerId)
+        );
+        $educationModels  = $workerRepository->getEducation()->getValues();
         if ($educationModels) {
             $educations = array();
             /** @var \WorkBundle\Entity\Education $education */
             foreach ($educationModels as $education) {
                 /** @var \WorkBundle\Entity\EducationLevel $educationLevel */
                 $educationLevel = $education->getLevel();
-                $educations[] = array(
-                    'name' => $education->getName(),
+                $educations[]   = array(
+                    'name'  => $education->getName(),
                     'level' => $educationLevel->getName(),
-                    'city' => $education->getCity(),
+                    'city'  => $education->getCity(),
                 );
             }
             return $educations;
@@ -133,13 +133,13 @@ class EmployerController extends Controller
     protected function getGenders()
     {
         $genderRepository = $this->getEntityManager()->getRepository('WorkBundle:Gender');
-        $genderModels = $genderRepository->findAll();
-        $genders = array();
+        $genderModels     = $genderRepository->findAll();
+        $genders          = array();
         if ($genderModels) {
             /** @var \WorkBundle\Entity\Gender $gender */
             foreach ($genderModels as $gender) {
-               $genders[$gender->getId()] = $gender->getName();
-           }
+                $genders[$gender->getId()] = $gender->getName();
+            }
         }
         return $genders;
     }
@@ -147,30 +147,35 @@ class EmployerController extends Controller
     protected function getWorkers(Request $request)
     {
         $workersRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker');
-        $filterData = $request->request->get('form');
-        if($filterData['city']||$filterData['ageFrom']||$filterData['ageTo']||$filterData['gender']){
-            $whereCondition = '';
-            $workerModels = $workersRepository->createQueryBuilder('p');
-            if($filterData['city']){
-                $workerModels->setParameter('city', $filterData['city']);
-                $whereCondition .= 'p.city = :city AND ';
-            }
-            if($filterData['ageFrom']){
-                $workerModels->setParameter('ageFrom', $filterData['ageFrom']);
-                $whereCondition .= 'p.age >= :ageFrom AND ';
-
-            }
-            if($filterData['ageTo']){
-                $workerModels->setParameter('ageTo', $filterData['ageTo']);
-                $whereCondition .= 'p.age <= :ageTo AND ';
-            }
-            if($filterData['gender']){
-                $workerModels->setParameter('gender', $filterData['gender']);
-                $whereCondition .= 'p.gender = :gender AND ';
-            }
-            $workerModels->where(substr($whereCondition,0,-5));
+        $filterData        = $request->request->all();
+        if ($filterData) {
+            if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
+                || !empty($filterData['gender'])
+            ) {
+                $whereCondition = '';
+                $workerModels   = $workersRepository->createQueryBuilder('p');
+                if ($filterData['city']) {
+                    $workerModels->setParameter('city', $filterData['city']);
+                    $whereCondition .= 'p.city = :city AND ';
+                }
+                if ($filterData['ageFrom']) {
+                    $workerModels->setParameter('ageFrom', $filterData['ageFrom']);
+                    $whereCondition .= 'p.age >= :ageFrom AND ';
+                }
+                if ($filterData['ageTo']) {
+                    $workerModels->setParameter('ageTo', $filterData['ageTo']);
+                    $whereCondition .= 'p.age <= :ageTo AND ';
+                }
+                if (isset($filterData['gender'])) {
+                    $workerModels->setParameter('gender', $filterData['gender'][0]);
+                    $whereCondition .= 'p.gender = :gender AND ';
+                }
+                $workerModels->where(substr($whereCondition, 0, -5));
                 $workers = $workerModels->getQuery()->getResult();
-            return $workers;
+                return $workers;
+            } else {
+                $workerModels = $workersRepository->findAll();
+            }
         } else {
             $workerModels = $workersRepository->findAll();
         }

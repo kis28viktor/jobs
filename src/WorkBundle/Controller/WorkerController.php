@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class WorkerController extends Controller
 {
-    public function postWorkerAction()
+    public function postWorkerAction(Request $request)
     {
         return $this->render('WorkBundle:Worker:postWorker.html.twig',
-            array('categories' => $this->getAllCategories(), 'educationLevels' => $this->getEducationLevels())
-        );
+            array('categories' => $this->getAllCategories(),
+                  'educationLevels' => $this->getEducationLevels(),
+                ));
     }
 
     public function findWorkAction()
@@ -25,7 +26,7 @@ class WorkerController extends Controller
     }
     public function addWorkerAction(Request $request)
     {
-        $formData = $request->request->get('categories');
+        $formData = $request->request->all();
         $checkBox = $formData;
         var_dump($checkBox);
         return null;
