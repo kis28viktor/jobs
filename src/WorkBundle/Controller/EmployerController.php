@@ -105,9 +105,8 @@ class EmployerController extends Controller
      */
     protected function getEducationsForWorker($workerId)
     {
-        $education = new Education();
-        return $education->getEducationForWorker($workerId, $this->getEntityManager());
-
+        $worker = new Worker();
+        return $worker->getEducationForWorker($workerId, $this->getEntityManager());
     }
 
     /**
