@@ -6,8 +6,8 @@
     <div style="margin: 30px;">
         <form action="{{ path('find_worker') }}" method="post">
             City: <input type="text" name="city" {% if city %}value="{{ city }}"{% endif %} >
-            Age from: <input type="text" name="ageFrom" {% if ageFrom %}value="{{ ageFrom }}"{% endif %}>
-            Age to: <input type="text" name="ageTo" {% if ageTo %}value="{{ ageTo }}"{% endif %}>
+            Age from: <input type="number" name="ageFrom" {% if ageFrom %}value="{{ ageFrom }}"{% endif %}>
+            Age to: <input type="number" name="ageTo" {% if ageTo %}value="{{ ageTo }}"{% endif %}>
             Gender: <select name="gender[]">
                 <option disabled>gender</option>
                 <option value="all">all</option>

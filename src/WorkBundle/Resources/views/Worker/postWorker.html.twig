@@ -5,10 +5,10 @@
             First name: <input type="text" name="firstName" required>
             <br> Last name: <input type="text" name="lastName" required>
             <br> Phone: <input type="text" name="phone" required>
-            <br> Age: <input type="text" name="age">
+            <br> Age: <input type="number" name="age">
             <br>City: <input type="text" name="city">
             <br>Tell about yourself: <textarea name="aboutMe"></textarea>
-            <br>Choose your categories:
+            <br><br>Choose your categories:
             {% for key,category in categories  %}
                <br><input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
             {% endfor %}
