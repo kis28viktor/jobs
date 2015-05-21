@@ -129,7 +129,7 @@ class EmployerController extends Controller
     /**
      * Get all genders
      *
-     * @return array
+     * @return \WorkBundle\Entity\Worker
      */
     protected function getGenders()
     {
