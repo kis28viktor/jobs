@@ -25,24 +25,14 @@ class EmployerController extends Controller
      */
     public function findWorkerAction(Request $request)
     {
-        $workerModels = $this->getWorkers($request);
-        $workers      = array();
-        /** @var \WorkBundle\Entity\Worker $worker */
-        foreach ($workerModels as $worker) {
-            $workers[] = array('id'         => $worker->getId(),
-                               'name'       => $worker->getFirstName() . ' ' . $worker->getLastName(),
-                               'phone'      => $worker->getPhone(),
-                               'age'        => $worker->getAge(),
-                               'city'       => $worker->getCity(),
-                               'aboutMe'    => $worker->getAboutMe(),
-                               'categories' => $this->getCategoriesForWorker($worker->getId()),
-                               'educations' => $this->getEducationsForWorker($worker->getId()),
-            );
-        }
+        $workerModel = new Worker();
+        $workersData = $workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager());
+        $workers = $this->generateWorkersArray($workersData);
+        $gender = new Gender();
         return $this->render(
             'WorkBundle:Employer:findWorker.html.twig',
             array('workers' => $workers,
-                  'genders' => $this->getGenders(),
+                  'genders' => $gender->getAllGendersArray($this->getEntityManager()),
                   'city'    => $request->request->get('city') ? $request->request->get('city') : null,
                   'ageFrom' => $request->request->get('ageFrom') ? $request->request->get('ageFrom') : null,
                   'ageTo' => $request->request->get('ageTo') ? $request->request->get('ageTo') : null,
@@ -72,61 +62,29 @@ class EmployerController extends Controller
     }
 
     /**
-     * Getting all categories in array for worker (by worker id)
+     * Generate correct array of workers, that can be sent to the layout
      *
-     * @param int $workerId
+     * $workerModelsArray should be an array of Worker entities, which we take using doctrine manager
+     *
+     * @param array $workersModelsArray
      * @return array
      */
-    protected function getCategoriesForWorker($workerId)
+    protected function generateWorkersArray($workersModelsArray)
     {
-        $workerRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(
-            array('id' => $workerId)
-        );
-        $categoryModels   = $workerRepository->getCategories()->getValues();
-        $categories       = array();
-        if ($categoryModels) {
-            /** @var \WorkBundle\Entity\Category $category */
-            foreach ($categoryModels as $category) {
-                $categories[] = array(
-                    'name' => $category->getName(),
-                );
-            }
-            return $categories;
-        } else {
-            return array('The user didn`t chose any category.');
+        $workerModel = new Worker();
+        $workers      = array();
+        /** @var \WorkBundle\Entity\Worker $worker */
+        foreach ($workersModelsArray as $worker) {
+            $workers[] = array('id'         => $worker->getId(),
+                               'name'       => $worker->getFirstName() . ' ' . $worker->getLastName(),
+                               'phone'      => $worker->getPhone(),
+                               'age'        => $worker->getAge(),
+                               'city'       => $worker->getCity(),
+                               'aboutMe'    => $worker->getAboutMe(),
+                               'categories' => $workerModel->getCategoriesForWorker($worker->getId(), $this->getEntityManager()),
+                               'educations' => $workerModel->getEducationForWorker($worker->getId(), $this->getEntityManager()),
+            );
         }
-    }
-
-    /**
-     * Getting all educations in array for worker (by worker id)
-     *
-     * @param int $workerId
-     * @return array
-     */
-    protected function getEducationsForWorker($workerId)
-    {
-        $worker = new Worker();
-        return $worker->getEducationForWorker($workerId, $this->getEntityManager());
-    }
-
-    /**
-     * Get all genders
-     *
-     * @return array
-     */
-    protected function getGenders()
-    {
-        $gender = new Gender();
-        return $gender->getAllGendersArray($this->getEntityManager());
-    }
-
-    /**
-     * @param Request $request
-     * @return array
-     */
-    protected function getWorkers(Request $request)
-    {
-        $worker = new Worker();
-        return $worker->getAllWorkersWithPostFilter($request, $this->getEntityManager());
+        return $workers;
     }
 }

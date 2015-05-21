@@ -379,4 +379,29 @@ class Worker {
             return array('No education');
         }
     }
+
+    /**
+     * @param int $workerId
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function getCategoriesForWorker($workerId, $entityManager)
+    {
+        $workerRepository = $entityManager->getRepository('WorkBundle:Worker')->findOneBy(
+            array('id' => $workerId)
+        );
+        $categoryModels   = $workerRepository->getCategories()->getValues();
+        $categories       = array();
+        if ($categoryModels) {
+            /** @var \WorkBundle\Entity\Category $category */
+            foreach ($categoryModels as $category) {
+                $categories[] = array(
+                    'name' => $category->getName(),
+                );
+            }
+            return $categories;
+        } else {
+            return array('The user didn`t chose any category.');
+        }
+    }
 }
