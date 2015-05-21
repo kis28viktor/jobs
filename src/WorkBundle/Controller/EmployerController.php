@@ -4,6 +4,7 @@ namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\DateTime;
 use WorkBundle\Entity\Gender;
 use WorkBundle\Entity\Worker;
 
@@ -72,10 +73,13 @@ class EmployerController extends Controller
         $workers      = array();
         /** @var \WorkBundle\Entity\Worker $worker */
         foreach ($workersModelsArray as $worker) {
+            $tz  = new \DateTimeZone('Europe/Kiev');
             $workers[] = array('id'         => $worker->getId(),
                                'name'       => $worker->getFirstName() . ' ' . $worker->getLastName(),
                                'phone'      => $worker->getPhone(),
-                               'age'        => $worker->getAge(),
+                               'age'        => \DateTime::createFromFormat('d/m/Y', $worker->getDate()->format('d/m/Y'), $tz)
+                                                ->diff(new \DateTime('now', $tz))
+                                                ->y,
                                'city'       => $worker->getCity(),
                                'aboutMe'    => $worker->getAboutMe(),
                                'categories' => $workerModel->getCategoriesForWorker($worker->getId(), $this->getEntityManager()),

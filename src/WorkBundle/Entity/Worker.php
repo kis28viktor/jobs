@@ -33,9 +33,9 @@ class Worker {
      */
     protected $phone;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="date")
      */
-    protected $age;
+    protected $date;
     /**
      * @ORM\Column(type="string", length=100)
      */
@@ -106,12 +106,12 @@ class Worker {
     /**
      * Set age
      *
-     * @param integer $age
+     * @param double $age
      * @return Worker
      */
-    public function setAge($age)
+    public function setDate($age)
     {
-        $this->age = $age;
+        $this->date = $age;
 
         return $this;
     }
@@ -119,11 +119,11 @@ class Worker {
     /**
      * Get age
      *
-     * @return integer
+     * @return double
      */
-    public function getAge()
+    public function getDate()
     {
-        return $this->age;
+        return $this->date;
     }
 
     /**
