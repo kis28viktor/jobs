@@ -3,9 +3,6 @@
 namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use WorkBundle\Entity\Education;
-use WorkBundle\Entity\EducationLevel;
-use WorkBundle\Entity\Forms\WorkerFilter;
 use Symfony\Component\HttpFoundation\Request;
 use WorkBundle\Entity\Gender;
 use WorkBundle\Entity\Worker;
