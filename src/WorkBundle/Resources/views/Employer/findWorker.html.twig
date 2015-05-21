@@ -9,7 +9,8 @@
             Age from: <input type="text" name="ageFrom" {% if ageFrom %}value="{{ ageFrom }}"{% endif %}>
             Age to: <input type="text" name="ageTo" {% if ageTo %}value="{{ ageTo }}"{% endif %}>
             Gender: <select name="gender[]">
-                <option disabled selected>gender</option>
+                <option disabled>gender</option>
+                <option value="all">all</option>
                 {% for key,currentGender in genders %}
                     <option value="{{ key }}" {% if (gender) and (gender[0] == key) %}selected {% endif %}>{{ currentGender }}</option>
                 {% endfor %}

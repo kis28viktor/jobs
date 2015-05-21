@@ -150,7 +150,7 @@ class EmployerController extends Controller
         $filterData        = $request->request->all();
         if ($filterData) {
             if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
-                || !empty($filterData['gender'])
+                || (!empty($filterData['gender'])&& $filterData['gender'][0] != 'all')
             ) {
                 $whereCondition = '';
                 $workerModels   = $workersRepository->createQueryBuilder('p');
@@ -166,7 +166,7 @@ class EmployerController extends Controller
                     $workerModels->setParameter('ageTo', $filterData['ageTo']);
                     $whereCondition .= 'p.age <= :ageTo AND ';
                 }
-                if (isset($filterData['gender'])) {
+                if (isset($filterData['gender']) && $filterData['gender'][0] != 'all') {
                     $workerModels->setParameter('gender', $filterData['gender'][0]);
                     $whereCondition .= 'p.gender = :gender AND ';
                 }
