@@ -3,7 +3,6 @@
 namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use WorkBundle\Entity\Forms\AddWorker;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -15,29 +14,9 @@ class WorkerController extends Controller
 {
     public function postWorkerAction()
     {
-        $newWorker = new AddWorker();
-        $form = $this->createFormBuilder($newWorker)
-            ->add('firstName', 'text')
-            ->add('lastName', 'text')
-            ->add('phone', 'text')
-            ->add('age', 'number')
-            ->add('city', 'text')
-            ->add('aboutMe', 'textarea', array('max_length' => 255))
-            ->add('categories', 'choice', array(
-                'label' => 'Chose your categories:',
-                'choices' => $this->getAllCategories(),
-                'multiple' => 'true',
-                'expanded' => 'true',
-            ))
-            ->add('education','text')
-            ->add('educationLevel', 'choice', array(
-                'label' => 'Chose your education level:',
-                'choices' => $this->getEducationLevels(),
-            ))
-            ->add('educationCity', 'text')
-            ->add('addWorker', 'submit')
-            ->getForm();
-        return $this->render('WorkBundle:Worker:postWorker.html.twig', array('form' => $form->createView()));
+        return $this->render('WorkBundle:Worker:postWorker.html.twig',
+            array('categories' => $this->getAllCategories(), 'educationLevels' => $this->getEducationLevels())
+        );
     }
 
     public function findWorkAction()
@@ -46,8 +25,8 @@ class WorkerController extends Controller
     }
     public function addWorkerAction(Request $request)
     {
-        $formData = $request->request->get('form');
-        $checkBox = $formData['categories'];
+        $formData = $request->request->get('categories');
+        $checkBox = $formData;
         var_dump($checkBox);
         return null;
     }
