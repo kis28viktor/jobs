@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use WorkBundle\Entity\EducationLevel;
 use WorkBundle\Entity\Forms\WorkerFilter;
 use Symfony\Component\HttpFoundation\Request;
+use WorkBundle\Entity\Gender;
 use WorkBundle\Entity\Worker;
 
 /**
@@ -133,16 +134,8 @@ class EmployerController extends Controller
      */
     protected function getGenders()
     {
-        $genderRepository = $this->getEntityManager()->getRepository('WorkBundle:Gender');
-        $genderModels     = $genderRepository->findAll();
-        $genders          = array();
-        if ($genderModels) {
-            /** @var \WorkBundle\Entity\Gender $gender */
-            foreach ($genderModels as $gender) {
-                $genders[$gender->getId()] = $gender->getName();
-            }
-        }
-        return $genders;
+        $gender = new Gender();
+        return $gender->getAllGendersArray($this->getEntityManager());
     }
 
     /**

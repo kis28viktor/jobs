@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="gender")
  */
-class Gender {
+class Gender
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -23,7 +24,7 @@ class Gender {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -46,10 +47,30 @@ class Gender {
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get all possible genders from database in array
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function getAllGendersArray($entityManager)
+    {
+        $gendersRepository = $entityManager->getRepository('WorkBundle:Gender');
+        $genderModels     = $gendersRepository->findAll();
+        $genders          = array();
+        if ($genderModels) {
+            /** @var \WorkBundle\Entity\Gender $gender */
+            foreach ($genderModels as $gender) {
+                $genders[$gender->getId()] = $gender->getName();
+            }
+        }
+        return $genders;
     }
 }
