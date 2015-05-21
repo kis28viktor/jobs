@@ -2,6 +2,7 @@
 
 namespace WorkBundle\Entity;
 
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -299,10 +300,55 @@ class Worker {
     /**
      * Get gender
      *
-     * @return \WorkBundle\Entity\Gender 
+     * @return \WorkBundle\Entity\Gender
      */
     public function getGender()
     {
         return $this->gender;
+    }
+
+    /**
+     * Get workers with checking post params
+     *
+     * @param Request $request
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function getAllWorkersWithPostFilter(Request $request, $entityManager)
+    {
+        $workersRepository = $entityManager->getRepository('WorkBundle:Worker');
+        $filterData        = $request->request->all();
+        if ($filterData) {
+            if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
+                || (!empty($filterData['gender'])&& $filterData['gender'][0] != 'all')
+            ) {
+                $whereCondition = '';
+                $workerModels   = $workersRepository->createQueryBuilder('p');
+                if ($filterData['city']) {
+                    $workerModels->setParameter('city', $filterData['city']);
+                    $whereCondition .= 'p.city = :city AND ';
+                }
+                if ($filterData['ageFrom']) {
+                    $workerModels->setParameter('ageFrom', $filterData['ageFrom']);
+                    $whereCondition .= 'p.age >= :ageFrom AND ';
+                }
+                if ($filterData['ageTo']) {
+                    $workerModels->setParameter('ageTo', $filterData['ageTo']);
+                    $whereCondition .= 'p.age <= :ageTo AND ';
+                }
+                if (isset($filterData['gender']) && $filterData['gender'][0] != 'all') {
+                    $workerModels->setParameter('gender', $filterData['gender'][0]);
+                    $whereCondition .= 'p.gender = :gender AND ';
+                }
+                $workerModels->where(substr($whereCondition, 0, -5));
+                $workers = $workerModels->getQuery()->getResult();
+                return $workers;
+            } else {
+                $workerModels = $workersRepository->findAll();
+            }
+        } else {
+            $workerModels = $workersRepository->findAll();
+        }
+        return $workerModels;
     }
 }

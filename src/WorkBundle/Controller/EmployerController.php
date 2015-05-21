@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use WorkBundle\Entity\EducationLevel;
 use WorkBundle\Entity\Forms\WorkerFilter;
 use Symfony\Component\HttpFoundation\Request;
+use WorkBundle\Entity\Worker;
 
 /**
  * Class EmployerController
@@ -146,39 +147,7 @@ class EmployerController extends Controller
 
     protected function getWorkers(Request $request)
     {
-        $workersRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker');
-        $filterData        = $request->request->all();
-        if ($filterData) {
-            if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
-                || (!empty($filterData['gender'])&& $filterData['gender'][0] != 'all')
-            ) {
-                $whereCondition = '';
-                $workerModels   = $workersRepository->createQueryBuilder('p');
-                if ($filterData['city']) {
-                    $workerModels->setParameter('city', $filterData['city']);
-                    $whereCondition .= 'p.city = :city AND ';
-                }
-                if ($filterData['ageFrom']) {
-                    $workerModels->setParameter('ageFrom', $filterData['ageFrom']);
-                    $whereCondition .= 'p.age >= :ageFrom AND ';
-                }
-                if ($filterData['ageTo']) {
-                    $workerModels->setParameter('ageTo', $filterData['ageTo']);
-                    $whereCondition .= 'p.age <= :ageTo AND ';
-                }
-                if (isset($filterData['gender']) && $filterData['gender'][0] != 'all') {
-                    $workerModels->setParameter('gender', $filterData['gender'][0]);
-                    $whereCondition .= 'p.gender = :gender AND ';
-                }
-                $workerModels->where(substr($whereCondition, 0, -5));
-                $workers = $workerModels->getQuery()->getResult();
-                return $workers;
-            } else {
-                $workerModels = $workersRepository->findAll();
-            }
-        } else {
-            $workerModels = $workersRepository->findAll();
-        }
-        return $workerModels;
+        $worker = new Worker();
+        return $worker->getAllWorkersWithPostFilter($request, $this->getEntityManager());
     }
 }
