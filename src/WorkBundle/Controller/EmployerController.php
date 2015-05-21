@@ -3,6 +3,7 @@
 namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use WorkBundle\Entity\Education;
 use WorkBundle\Entity\EducationLevel;
 use WorkBundle\Entity\Forms\WorkerFilter;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,26 +105,8 @@ class EmployerController extends Controller
      */
     protected function getEducationsForWorker($workerId)
     {
-        $workerRepository = $this->getEntityManager()->getRepository('WorkBundle:Worker')->findOneBy(
-            array('id' => $workerId)
-        );
-        $educationModels  = $workerRepository->getEducation()->getValues();
-        if ($educationModels) {
-            $educations = array();
-            /** @var \WorkBundle\Entity\Education $education */
-            foreach ($educationModels as $education) {
-                /** @var \WorkBundle\Entity\EducationLevel $educationLevel */
-                $educationLevel = $education->getLevel();
-                $educations[]   = array(
-                    'name'  => $education->getName(),
-                    'level' => $educationLevel->getName(),
-                    'city'  => $education->getCity(),
-                );
-            }
-            return $educations;
-        } else {
-            return array('No education');
-        }
+        $education = new Education();
+        return $education->getEducationForWorker($workerId, $this->getEntityManager());
 
     }
 

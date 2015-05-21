@@ -143,10 +143,39 @@ class Education {
     /**
      * Get level
      *
-     * @return \WorkBundle\Entity\EducationLevel 
+     * @return \WorkBundle\Entity\EducationLevel
      */
     public function getLevel()
     {
         return $this->level;
+    }
+
+    /**
+     * @param int $workerId
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function getEducationForWorker($workerId, $entityManager)
+    {
+        $workerRepository = $entityManager->getRepository('WorkBundle:Worker')->findOneBy(
+            array('id' => $workerId)
+        );
+        $educationModels  = $workerRepository->getEducation()->getValues();
+        if ($educationModels) {
+            $educations = array();
+            /** @var \WorkBundle\Entity\Education $education */
+            foreach ($educationModels as $education) {
+                /** @var \WorkBundle\Entity\EducationLevel $educationLevel */
+                $educationLevel = $education->getLevel();
+                $educations[]   = array(
+                    'name'  => $education->getName(),
+                    'level' => $educationLevel->getName(),
+                    'city'  => $education->getCity(),
+                );
+            }
+            return $educations;
+        } else {
+            return array('No education');
+        }
     }
 }
