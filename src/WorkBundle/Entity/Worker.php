@@ -329,12 +329,18 @@ class Worker {
                     $whereCondition .= 'p.city = :city AND ';
                 }
                 if ($filterData['ageFrom']) {
-                    $workerModels->setParameter('ageFrom', $filterData['ageFrom']);
-                    $whereCondition .= 'p.age >= :ageFrom AND ';
+                    $date = $this->getDateForAge($filterData['ageFrom']);
+                    $workerModels->setParameter('ageFrom', $date);
+                    $whereCondition .= 'p.date <= :ageFrom AND ';
                 }
                 if ($filterData['ageTo']) {
-                    $workerModels->setParameter('ageTo', $filterData['ageTo']);
-                    $whereCondition .= 'p.age <= :ageTo AND ';
+                    if ($filterData['ageFrom']&&$filterData['ageFrom']==$filterData['ageTo']) {
+
+                    } else {
+                        $date = $this->getDateForAge($filterData['ageTo'], true);
+                        $workerModels->setParameter('ageTo', $date);
+                        $whereCondition .= 'p.date >= :ageTo AND ';
+                    }
                 }
                 if (isset($filterData['gender']) && $filterData['gender'][0] != 'all') {
                     $workerModels->setParameter('gender', $filterData['gender'][0]);
@@ -403,5 +409,22 @@ class Worker {
         } else {
             return array('The user didn`t chose any category.');
         }
+    }
+
+    /**
+     * @param bool $ageTo
+     * @param int $age
+     * @return string
+     */
+    protected function getDateForAge($age, $ageTo = false)
+    {
+        $dateModel = new \DateTime();
+        if($ageTo){
+            $age+=1;
+            $date = new \DateInterval('P'. $age .'Y');
+        } else {
+            $date = new \DateInterval('P'.$age.'Y');
+        }
+        return $dateModel->sub($date)->format('Y-m-d');
     }
 }
