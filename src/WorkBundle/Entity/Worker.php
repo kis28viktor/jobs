@@ -331,7 +331,7 @@ class Worker {
                 if ($filterData['ageFrom']) {
                     $date = $this->getDateForAge($filterData['ageFrom']);
                     $workerModels->setParameter('ageFrom', $date);
-                    $whereCondition .= 'p.date <= :ageFrom AND ';
+                    $whereCondition .= 'p.date < :ageFrom AND ';
                 }
                 if ($filterData['ageTo']) {
                     if ($filterData['ageFrom']&&$filterData['ageFrom']==$filterData['ageTo']) {
@@ -339,7 +339,7 @@ class Worker {
                     } else {
                         $date = $this->getDateForAge($filterData['ageTo'], true);
                         $workerModels->setParameter('ageTo', $date);
-                        $whereCondition .= 'p.date >= :ageTo AND ';
+                        $whereCondition .= 'p.date > :ageTo AND ';
                     }
                 }
                 if (isset($filterData['gender']) && $filterData['gender'][0] != 'all') {
