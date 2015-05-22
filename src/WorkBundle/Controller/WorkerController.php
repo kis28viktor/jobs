@@ -5,6 +5,7 @@ namespace WorkBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use WorkBundle\Entity\Category;
+use WorkBundle\Entity\Education;
 use WorkBundle\Entity\EducationLevel;
 use WorkBundle\Entity\Gender;
 use WorkBundle\Entity\Worker;
@@ -40,49 +41,14 @@ class WorkerController extends Controller
         $formData = $request->request->all();
         if ($formData) {
             if ($this->checkFormData($formData)) {
-                $em = $this->getEntityManager();
-                /** @var \WorkBundle\Entity\Gender $gender */
-                $gender = $this->getEntityManager()->getRepository('WorkBundle:Gender')->find($formData['gender']);
-                $worker = new Worker();
-                $worker->setFirstName($formData['firstName'])
-                    ->setLastName($formData['lastName'])
-                    ->setPhone($formData['phone'])
-                    ->setGender($gender);
-                if($formData['date']){
-                    $date = new \DateTime($formData['date']);
-                    $worker->setDate($date);
-                }
-                if($formData['city']){
-                    $worker->setCity($formData['city']);
-                }
-                if($formData['aboutMe']){
-                    $worker->setAboutMe($formData['aboutMe']);
-                }
-                if($formData['categories']){
-                    foreach ($formData['categories'] as $category){
-                        /** @var \WorkBundle\Entity\Category $categoryEntity */
-                        $categoryEntity = $this->getEntityManager()->getRepository('WorkBundle:Category')->find($category);
-                        $worker->addCategory($categoryEntity);
-                    }
-                }
-//                echo '<pre>';
-//                var_dump($formData);die;
-                $em->persist($worker);
-                $em->flush();
-                echo 'Yes';
-
-
-
-
-
+                $this->saveWorker($formData);
+                return $this->redirectToRoute('find_worker');
             } else {
-                //todo: redirect back to addWorker page
+                return $this->redirectToRoute('post_worker');
             }
         } else {
-            //todo: redirect back to addWorker page
+            return $this->redirectToRoute('post_worker');
         }
-
-        return null;
     }
 
     /**
@@ -104,5 +70,68 @@ class WorkerController extends Controller
     protected function checkFormData($formData)
     {
         return $formData['firstName'] && $formData['lastName'] && $formData['phone'] && $formData['gender'];
+    }
+
+    /**
+     * Check if at least on of the education forms is filled in
+     *
+     * @param array $formData
+     * @return bool
+     */
+    protected function checkEducationFilling($formData)
+    {
+        return isset($formData['educationLevel']) || isset($formData['educationCity']) || isset($formData['education']);
+    }
+
+    /**
+     * Worker saving by array parameters from POST
+     *
+     * @param array $formData
+     */
+    protected function saveWorker($formData)
+    {
+        $em = $this->getEntityManager();
+        /** @var \WorkBundle\Entity\Gender $gender */
+        $gender = $this->getEntityManager()->getRepository('WorkBundle:Gender')->find($formData['gender']);
+        $worker = new Worker();
+        $worker->setFirstName($formData['firstName'])
+            ->setLastName($formData['lastName'])
+            ->setPhone($formData['phone'])
+            ->setGender($gender);
+        if($formData['date']){
+            $date = new \DateTime($formData['date']);
+            $worker->setDate($date);
+        }
+        if($formData['city']){
+            $worker->setCity($formData['city']);
+        }
+        if($formData['aboutMe']){
+            $worker->setAboutMe($formData['aboutMe']);
+        }
+        if(isset($formData['categories'])){
+            foreach ($formData['categories'] as $category){
+                /** @var \WorkBundle\Entity\Category $categoryEntity */
+                $categoryEntity = $this->getEntityManager()->getRepository('WorkBundle:Category')->find($category);
+                $worker->addCategory($categoryEntity);
+            }
+        }
+        if($this->checkEducationFilling($formData)){
+            $education = new Education();
+            if($formData['education']){
+                $education->setName($formData['education']);
+            }
+            if($formData['educationCity']){
+                $education->setName($formData['educationCity']);
+            }
+            if(isset($formData['educationLevel'])){
+                /** @var \WorkBundle\Entity\EducationLevel $educationLevel */
+                $educationLevel = $this->getEntityManager()->getRepository('WorkBundle:EducationLevel')->find($formData['educationLevel']);
+                $education->setLevel($educationLevel);
+            }
+            $em->persist($education);
+            $worker->addEducation($education);
+        }
+        $em->persist($worker);
+        $em->flush();
     }
 }

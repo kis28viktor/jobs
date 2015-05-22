@@ -14,15 +14,16 @@ class Education {
      */
     protected $id;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $name;
     /**
-     * @ORM\ManyToOne(targetEntity="EducationLevel")
+     * @ORM\ManyToOne(targetEntity="EducationLevel", inversedBy="education")
+     * @ORM\JoinColumn(name="education_id", referencedColumnName="id")
      */
     protected $level;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $city;
     /**

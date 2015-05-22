@@ -29,19 +29,19 @@ class Worker {
      */
     protected $gender;
     /**
-     * @ORM\Column(type="string", length=50);
+     * @ORM\Column(type="string", length=50, nullable=true);
      */
     protected $phone;
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $date;
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $city;
     /**
-     * @ORM\Column(type="string", length=1000)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $aboutMe;
     /**
@@ -375,9 +375,9 @@ class Worker {
                 /** @var \WorkBundle\Entity\EducationLevel $educationLevel */
                 $educationLevel = $education->getLevel();
                 $educations[]   = array(
-                    'name'  => $education->getName(),
-                    'level' => $educationLevel->getName(),
-                    'city'  => $education->getCity(),
+                    'name'  => $education->getName() ? $education->getName() : 'user didn`t specified his education',
+                    'level' => $educationLevel ? $educationLevel->getName() :  'user didn`t chose the level',
+                    'city'  => $education->getCity() ? $education->getCity() : 'user didn`t specified graduation city',
                 );
             }
             return $educations;

@@ -77,11 +77,11 @@ class EmployerController extends Controller
             $workers[] = array('id'         => $worker->getId(),
                                'name'       => $worker->getFirstName() . ' ' . $worker->getLastName(),
                                'phone'      => $worker->getPhone(),
-                               'age'        => \DateTime::createFromFormat('d/m/Y', $worker->getDate()->format('d/m/Y'), $tz)
+                               'age'        => $worker->getDate()?\DateTime::createFromFormat('d/m/Y', $worker->getDate()->format('d/m/Y'), $tz)
                                                 ->diff(new \DateTime('now', $tz))
-                                                ->y,
-                               'city'       => $worker->getCity(),
-                               'aboutMe'    => $worker->getAboutMe(),
+                                                ->y:'user didn`t specified his age.',
+                               'city'       => $worker->getCity() ? $worker->getCity(): 'User didn`t specified the city.',
+                               'aboutMe'    => $worker->getAboutMe() ? $worker->getAboutMe() : 'User didn`t filled any bio.',
                                'categories' => $workerModel->getCategoriesForWorker($worker->getId(), $this->getEntityManager()),
                                'educations' => $workerModel->getEducationForWorker($worker->getId(), $this->getEntityManager()),
             );
