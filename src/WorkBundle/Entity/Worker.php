@@ -106,20 +106,20 @@ class Worker {
     /**
      * Set age
      *
-     * @param double $age
+     * @param \DateTime $date
      * @return Worker
      */
-    public function setDate($age)
+    public function setDate($date)
     {
-        $this->date = $age;
+        $this->date = $date;
 
         return $this;
     }
 
     /**
-     * Get age
+     * Get date
      *
-     * @return double
+     * @return \DateTime
      */
     public function getDate()
     {

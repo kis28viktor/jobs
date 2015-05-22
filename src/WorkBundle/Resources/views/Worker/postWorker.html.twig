@@ -5,8 +5,8 @@
             First name: <input type="text" name="firstName" required>
             <br> Last name: <input type="text" name="lastName" required>
             <br> Phone: <input type="text" name="phone" required>
-            <br> Date of birth: <input type="date" name="age">
-            <br>Gender:<select>
+            <br> Date of birth: <input type="date" name="date">
+            <br>Gender:<select name="gender" required>
                 {% for key,gender in genders %}
                 <option value="{{ key }}">{{ gender }}</option>
                 {% endfor %}
@@ -18,7 +18,7 @@
                <br><input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
             {% endfor %}
             <br>Education: <input type="text" name="education">
-            Level: <select>
+            Level: <select name="educationLevel">
                 {% for key, education in educationLevels %}
                     <option value="{{ key }}">{{ education }}</option>
                 {% endfor %}
