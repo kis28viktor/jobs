@@ -94,7 +94,7 @@ class Category {
     /**
      * Get workers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getWorkers()
     {
@@ -127,10 +127,30 @@ class Category {
     /**
      * Get employers
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getEmployers()
     {
         return $this->employers;
+    }
+
+    /**
+     * Get all possible categories
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function getAllCategories($entityManager)
+    {
+        $categoryRepository = $entityManager->getRepository('WorkBundle:Category');
+        $categoryModels = $categoryRepository->findAll();
+        $categories = array();
+        if($categoryModels){
+            /** @var \WorkBundle\Entity\Category $category */
+            foreach ($categoryModels as $category) {
+                $categories[$category->getId()] = $category->getName();
+            }
+        }
+        return $categories;
     }
 }

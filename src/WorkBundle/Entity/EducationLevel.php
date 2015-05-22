@@ -53,4 +53,25 @@ class EducationLevel
     {
         return $this->name;
     }
+
+
+    /**
+     * Get all possible education levels
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function getAllEducationLevels($entityManager)
+    {
+        $educationLevelRepository = $entityManager->getRepository('WorkBundle:EducationLevel');
+        $levelModels = $educationLevelRepository->findAll();
+        $levels = array();
+        if($levelModels){
+            /** @var \WorkBundle\Entity\EducationLevel $level */
+            foreach ($levelModels as $level) {
+                $levels[$level->getId()] = $level->getName();
+            }
+        }
+        return $levels;
+    }
 }
