@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use WorkBundle\Entity\Category;
 use WorkBundle\Entity\EducationLevel;
+use WorkBundle\Entity\Gender;
 
 /**
  * Class WorkerController
@@ -18,9 +19,11 @@ class WorkerController extends Controller
     {
         $educationLevel = new EducationLevel();
         $category = new Category();
+        $gender = new Gender();
         return $this->render('WorkBundle:Worker:postWorker.html.twig',
             array('categories' => $category->getAllCategories($this->getEntityManager()),
                   'educationLevels' => $educationLevel->getAllEducationLevels($this->getEntityManager()),
+                  'genders' => $gender->getAllGendersArray($this->getEntityManager()),
                 ));
     }
 

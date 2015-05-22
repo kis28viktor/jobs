@@ -5,7 +5,12 @@
             First name: <input type="text" name="firstName" required>
             <br> Last name: <input type="text" name="lastName" required>
             <br> Phone: <input type="text" name="phone" required>
-            <br> Age: <input type="date" name="age">
+            <br> Date of birth: <input type="date" name="age">
+            <br>Gender:<select>
+                {% for key,gender in genders %}
+                <option value="{{ key }}">{{ gender }}</option>
+                {% endfor %}
+            </select>
             <br>City: <input type="text" name="city">
             <br>Tell about yourself: <textarea name="aboutMe"></textarea>
             <br><br>Choose your categories:
@@ -13,7 +18,7 @@
                <br><input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
             {% endfor %}
             <br>Education: <input type="text" name="education">
-            <select>
+            Level: <select>
                 {% for key, education in educationLevels %}
                     <option value="{{ key }}">{{ education }}</option>
                 {% endfor %}
