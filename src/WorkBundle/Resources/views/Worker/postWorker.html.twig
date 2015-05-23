@@ -19,6 +19,7 @@
             {% endfor %}
             <br>Education: <input type="text" name="education">
             Level: <select name="educationLevel">
+                <option disabled selected>education level</option>
                 {% for key, education in educationLevels %}
                     <option value="{{ key }}">{{ education }}</option>
                 {% endfor %}

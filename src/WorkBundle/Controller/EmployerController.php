@@ -5,6 +5,7 @@ namespace WorkBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use WorkBundle\Entity\Gender;
 use WorkBundle\Entity\Worker;
 
@@ -26,6 +27,7 @@ class EmployerController extends Controller
         $workerModel = new Worker();
         $workersData = $workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager());
         $workers = $this->generateWorkersArray($workersData);
+
         $gender = new Gender();
         return $this->render(
             'WorkBundle:Employer:findWorker.html.twig',
