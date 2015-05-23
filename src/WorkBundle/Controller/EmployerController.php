@@ -4,8 +4,6 @@ namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\DateTime;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use WorkBundle\Entity\Gender;
 use WorkBundle\Entity\Worker;
 
@@ -27,11 +25,12 @@ class EmployerController extends Controller
         $workerModel = new Worker();
         $workersData = $workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager());
         $workers = $this->generateWorkersArray($workersData);
-
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($workers,$request->query->getInt('page', 1),5);
         $gender = new Gender();
         return $this->render(
             'WorkBundle:Employer:findWorker.html.twig',
-            array('workers' => $workers,
+            array('pagination' => $pagination,
                   'genders' => $gender->getAllGendersArray($this->getEntityManager()),
                   'city'    => $request->request->get('city') ? $request->request->get('city') : null,
                   'ageFrom' => $request->request->get('ageFrom') ? $request->request->get('ageFrom') : null,
