@@ -334,20 +334,20 @@ class Worker {
                     $whereCondition .= 'p.date < :ageFrom AND ';
                 }
                 if ($filterData['ageTo']) {
-                    if ($filterData['ageFrom']&&$filterData['ageFrom']==$filterData['ageTo']) {
-
-                    } else {
                         $date = $this->getDateForAge($filterData['ageTo'], true);
                         $workerModels->setParameter('ageTo', $date);
                         $whereCondition .= 'p.date > :ageTo AND ';
-                    }
                 }
                 if (isset($filterData['gender']) && $filterData['gender'][0] != 'all') {
                     $workerModels->setParameter('gender', $filterData['gender'][0]);
                     $whereCondition .= 'p.gender = :gender AND ';
                 }
-                $workerModels->where(substr($whereCondition, 0, -5));
-                $workers = $workerModels->getQuery()->getResult();
+                if ($whereCondition=='') {
+                    $workers = $workersRepository->findAll();
+                } else {
+                    $workerModels->where(substr($whereCondition, 0, -5));
+                    $workers = $workerModels->getQuery()->getResult();
+                }
                 return $workers;
             } else {
                 $workerModels = $workersRepository->findAll();
@@ -426,5 +426,68 @@ class Worker {
             $date = new \DateInterval('P'.$age.'Y');
         }
         return $dateModel->sub($date)->format('Y-m-d');
+    }
+
+    /**
+     * Worker saving by data filled in the form
+     *
+     * @param array $formData
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
+     */
+    public function saveWorker($formData, $em)
+    {
+        /** @var \WorkBundle\Entity\Gender $gender */
+        $gender = $em->getRepository('WorkBundle:Gender')->find($formData['gender']);
+        $worker = new Worker();
+        $worker->setFirstName($formData['firstName'])
+            ->setLastName($formData['lastName'])
+            ->setPhone($formData['phone'])
+            ->setGender($gender);
+        if($formData['date']){
+            $date = new \DateTime($formData['date']);
+            $worker->setDate($date);
+        }
+        if($formData['city']){
+            $worker->setCity($formData['city']);
+        }
+        if($formData['aboutMe']){
+            $worker->setAboutMe($formData['aboutMe']);
+        }
+        if(isset($formData['categories'])){
+            foreach ($formData['categories'] as $category){
+                /** @var \WorkBundle\Entity\Category $categoryEntity */
+                $categoryEntity = $em->getRepository('WorkBundle:Category')->find($category);
+                $worker->addCategory($categoryEntity);
+            }
+        }
+        if($this->checkEducationFilling($formData)){
+            $education = new Education();
+            if($formData['education']){
+                $education->setName($formData['education']);
+            }
+            if($formData['educationCity']){
+                $education->setName($formData['educationCity']);
+            }
+            if(isset($formData['educationLevel'])){
+                /** @var \WorkBundle\Entity\EducationLevel $educationLevel */
+                $educationLevel = $em->getRepository('WorkBundle:EducationLevel')->find($formData['educationLevel']);
+                $education->setLevel($educationLevel);
+            }
+            $em->persist($education);
+            $worker->addEducation($education);
+        }
+        $em->persist($worker);
+        $em->flush();
+    }
+
+    /**
+     * Check if at least on of the education forms is filled in
+     *
+     * @param array $formData
+     * @return bool
+     */
+    protected function checkEducationFilling($formData)
+    {
+        return isset($formData['educationLevel']) || isset($formData['educationCity']) || isset($formData['education']);
     }
 }

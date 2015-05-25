@@ -3,12 +3,14 @@
 namespace WorkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="employer")
  */
-class Employer {
+class Employer
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -70,6 +72,7 @@ class Employer {
      * inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")})
      */
     protected $categories;
+
     /**
      * Constructor
      */
@@ -390,10 +393,102 @@ class Employer {
     /**
      * Get gender
      *
-     * @return \WorkBundle\Entity\Gender 
+     * @return \WorkBundle\Entity\Gender
      */
     public function getGender()
     {
         return $this->gender;
+    }
+
+    /**
+     * Get all employers by filter post params
+     *
+     * @param Request                                                                       $request
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function getAllEmployers(Request $request, $entityManager)
+    {
+        $employersRepository = $entityManager->getRepository('WorkBundle:Employer');
+        $filterData          = $request->request->all();
+        if ($filterData) {
+            if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
+                || !empty($filterData['priceFrom']) || !empty($filterData['priceTo'])
+                || !empty($filterData['termFrom']) || !empty($filterData['termTo'])
+                || (!empty($filterData['gender']) && $filterData['gender'][0] != 'all')
+            ) {
+                $whereCondition = '';
+                $employerModels = $employersRepository->createQueryBuilder('p');
+                if ($filterData['city']) {
+                    $employerModels->setParameter('city', $filterData['city']);
+                    $whereCondition .= 'p.city = :city AND ';
+                }
+                if ($filterData['ageFrom']) {
+                    $employerModels->setParameter('ageFrom', $filterData['ageFrom']);
+                    $whereCondition .= 'p.ageFrom >= :ageFrom AND ';
+                }
+                if ($filterData['ageTo']) {
+                    $employerModels->setParameter('ageTo', $filterData['ageTo']);
+                    $whereCondition .= 'p.ageTo <= :ageTo AND ';
+                }
+                if ($filterData['priceFrom']) {
+                    $employerModels->setParameter('priceFrom', $filterData['priceFrom']);
+                    $whereCondition .= 'p.priceFrom >= :priceFrom AND ';
+                }
+                if ($filterData['priceTo']) {
+                    $employerModels->setParameter('priceTo', $filterData['priceTo']);
+                    $whereCondition .= 'p.priceTo <= :priceTo AND ';
+                }
+                if (isset($filterData['gender']) && $filterData['gender'][0] != 'all') {
+                    $employerModels->setParameter('gender', $filterData['gender'][0]);
+                    $whereCondition .= 'p.gender = :gender AND ';
+                }
+                if (isset($filterData['termFrom'])&&$filterData['termFrom'] != '') {
+                    $employerModels->setParameter('termFrom', $filterData['termFrom']);
+                    $whereCondition .= 'p.termFrom > :termFrom AND ';
+                }
+                if (isset($filterData['termFrom'])&&$filterData['termTo'] != '') {
+                    $employerModels->setParameter('termTo', $filterData['termFrom']);
+                    $whereCondition .= 'p.termTo < :termTo AND ';
+                }
+                if ($whereCondition == '') {
+                    $employers = $employersRepository->findAll();
+                } else {
+                    $employerModels->where(substr($whereCondition, 0, -5));
+                    $employers = $employerModels->getQuery()->getResult();
+                }
+                return $employers;
+            } else {
+                $employerModels = $employersRepository->findAll();
+            }
+        } else {
+            $employerModels = $employersRepository->findAll();
+        }
+        return $employerModels;
+    }
+
+    /**
+     * @param int $employerId
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function getCategoriesForEmployer($employerId, $entityManager)
+    {
+        $employerRepository = $entityManager->getRepository('WorkBundle:Employer')->findOneBy(
+            array('id' => $employerId)
+        );
+        $categoryModels   = $employerRepository->getCategories()->getValues();
+        $categories       = array();
+        if ($categoryModels) {
+            /** @var \WorkBundle\Entity\Category $category */
+            foreach ($categoryModels as $category) {
+                $categories[] = array(
+                    'name' => $category->getName(),
+                );
+            }
+            return $categories;
+        } else {
+            return array('The user didn`t chose any category.');
+        }
     }
 }
