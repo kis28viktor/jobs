@@ -20,10 +20,9 @@ class WorkerController extends Controller
     /**
      * Post worker action
      *
-     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function postWorkerAction(Request $request)
+    public function postWorkerAction()
     {
         $educationLevel = new EducationLevel();
         $category       = new Category();
