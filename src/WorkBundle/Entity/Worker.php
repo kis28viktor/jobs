@@ -486,7 +486,7 @@ class Worker {
                 $worker->addCategory($categoryEntity);
             }
         }
-        $worker->setDate(date('Y-m-d'));
+        $worker->setPostDate(new \DateTime());
         if($this->checkEducationFilling($formData)){
             $education = new Education();
             if($formData['education']){

@@ -59,10 +59,26 @@ class EmployerController extends Controller
         ));
     }
 
+    /**
+     * Add work action
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function addWorkAction(Request $request)
     {
-        echo '<pre>';
-        print_r($request->request->all());die;
+        $formData = $request->request->all();
+        if($formData){
+            if($this->checkFormData($formData)) {
+                $employer = new Employer();
+                $employer->saveEmployer($formData, $this->getEntityManager());
+                return $this->redirectToRoute('find_work');
+            } else {
+                return $this->redirectToRoute('post_work');
+            }
+        } else {
+            return $this->redirectToRoute('post_work');
+        }
     }
 
     /**
@@ -104,5 +120,16 @@ class EmployerController extends Controller
             );
         }
         return $workers;
+    }
+
+    /**
+     * Check if user filled in his first name, last name and phone
+     *
+     * @param array $formData
+     * @return bool
+     */
+    protected function checkFormData($formData)
+    {
+        return $formData['firstName'] && $formData['lastName'] && $formData['phone'] && $formData['gender'];
     }
 }

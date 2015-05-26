@@ -4,6 +4,7 @@ namespace WorkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ORM\Entity
@@ -34,35 +35,35 @@ class Employer
      */
     protected $phone;
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $termFrom;
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $termTo;
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     protected $priceFrom;
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     protected $priceTo;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $ageFrom;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $ageTo;
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $city;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $aboutMe;
     /**
@@ -472,11 +473,11 @@ class Employer
                 }
                 if (isset($filterData['termFrom'])&&$filterData['termFrom'] != '') {
                     $employerModels->setParameter('termFrom', $filterData['termFrom']);
-                    $whereCondition .= 'p.termFrom > :termFrom AND ';
+                    $whereCondition .= 'p.termFrom <= :termFrom AND ';
                 }
                 if (isset($filterData['termFrom'])&&$filterData['termTo'] != '') {
                     $employerModels->setParameter('termTo', $filterData['termFrom']);
-                    $whereCondition .= 'p.termTo < :termTo AND ';
+                    $whereCondition .= 'p.termTo >= :termTo AND ';
                 }
                 if ($whereCondition == '') {
                     $employers = $employersRepository->findAll();
@@ -517,5 +518,58 @@ class Employer
         } else {
             return array('The user didn`t chose any category.');
         }
+    }
+
+    /**
+     * Employer saving by data filled in the form
+     *
+     * @param array $formData
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
+     */
+    public function saveEmployer($formData, $em)
+    {
+        /** @var \WorkBundle\Entity\Gender $gender */
+        $gender = $em->getRepository('WorkBundle:Gender')->find($formData['gender']);
+        $employer = new Employer();
+        $employer->setFirstName($formData['firstName'])
+            ->setLastName($formData['lastName'])
+            ->setPhone($formData['phone'])
+            ->setGender($gender);
+        if($formData['city']){
+            $employer->setCity($formData['city']);
+        }
+        if($formData['termFrom']){
+            $date = new \DateTime($formData['termFrom']);
+            $employer->setTermFrom($date);
+        }
+        if($formData['termTo']){
+            $date = new \DateTime($formData['termTo']);
+            $employer->setTermTo($date);
+        }
+        if ($formData['ageFrom']) {
+           $employer->setAgeFrom($formData['ageFrom']);
+        }
+        if ($formData['ageTo']) {
+            $employer->setAgeTo($formData['ageTo']);
+        }
+        if ($formData['priceFrom']) {
+            $employer->setPriceFrom($formData['priceFrom']);
+        }
+        if ($formData['priceTo']) {
+            $employer->setPriceTo($formData['priceTo']);
+        }
+        if($formData['aboutMe']){
+            $employer->setAboutMe($formData['aboutMe']);
+        }
+        if(isset($formData['categories'])){
+            foreach ($formData['categories'] as $category){
+                /** @var \WorkBundle\Entity\Category $categoryEntity */
+                $categoryEntity = $em->getRepository('WorkBundle:Category')->find($category);
+                $employer->addCategory($categoryEntity);
+            }
+        }
+        $employer->setPostDate(new \DateTime());
+        $em->persist($employer);
+        $em->flush();
     }
 }

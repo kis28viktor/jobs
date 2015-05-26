@@ -5,7 +5,6 @@ namespace WorkBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use WorkBundle\Entity\Category;
-use WorkBundle\Entity\Education;
 use WorkBundle\Entity\EducationLevel;
 use WorkBundle\Entity\Employer;
 use WorkBundle\Entity\Gender;
@@ -18,6 +17,12 @@ use WorkBundle\Entity\Worker;
  */
 class WorkerController extends Controller
 {
+    /**
+     * Post worker action
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function postWorkerAction(Request $request)
     {
         $educationLevel = new EducationLevel();
@@ -32,6 +37,12 @@ class WorkerController extends Controller
         );
     }
 
+    /**
+     * Find work action
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function findWorkAction(Request $request)
     {
         $employer = new Employer();
@@ -63,10 +74,10 @@ class WorkerController extends Controller
      */
     public function addWorkerAction(Request $request)
     {
-        $worker = new Worker();
         $formData = $request->request->all();
         if ($formData) {
             if ($this->checkFormData($formData)) {
+                $worker = new Worker();
                 $worker->saveWorker($formData, $this->getEntityManager());
                 return $this->redirectToRoute('find_worker');
             } else {
@@ -98,6 +109,12 @@ class WorkerController extends Controller
         return $formData['firstName'] && $formData['lastName'] && $formData['phone'] && $formData['gender'];
     }
 
+    /**
+     * Generate array of employers for view
+     *
+     * @param $employersModels
+     * @return array
+     */
     protected function generateEmployersArray($employersModels)
     {
         $employers = array();
@@ -114,8 +131,8 @@ class WorkerController extends Controller
                 'ageTo' => $employer->getAgeTo(),
                 'priceFrom' => $employer->getPriceFrom(),
                 'priceTo' => $employer->getPriceTo(),
-                'termFrom' => $employer->getTermFrom()->format('Y-m-d'),
-                'termTo' => $employer->getTermTo()->format('Y-m-d'),
+                'termFrom' => $employer->getTermFrom()?$employer->getTermFrom()->format('Y-m-d'): 'Employer didn`t specified term from.',
+                'termTo' => $employer->getTermTo()?$employer->getTermTo()->format('Y-m-d'): 'Employer didn`t specified term to.',
                 'categories' => $employerModel->getCategoriesForEmployer($employer->getId(), $this->getEntityManager()),
                 'postDate' => $employer->getPostDate()->format('Y-m-d'),
                 );
