@@ -12,7 +12,7 @@ post_worker:
 
 post_employer:
     path: /posthire
-    defaults: { _controller: WorkBundle:Employer:postEmployer }
+    defaults: { _controller: WorkBundle:Employer:postWork }
 
 find_worker:
     path: /findhire
@@ -21,3 +21,7 @@ find_worker:
 add_worker:
     path: /addWorker
     defaults: { _controller: WorkBundle:Worker:addWorker }
+
+add_work:
+    path: /addWork
+    defaults: { _controller: WorkBundle:Employer:addWork }

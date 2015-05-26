@@ -4,6 +4,8 @@ namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use WorkBundle\Entity\Category;
+use WorkBundle\Entity\Employer;
 use WorkBundle\Entity\Gender;
 use WorkBundle\Entity\Worker;
 
@@ -45,9 +47,21 @@ class EmployerController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function postEmployerAction()
+    public function postWorkAction()
     {
-        return $this->render('WorkBundle::layout.html.twig');
+        $category = new Category();
+        $gender = new Gender();
+        return $this->render('WorkBundle:Employer:postWork.html.twig',
+            array(
+                'categories' => $category->getAllCategories($this->getEntityManager()),
+                'genders' => $gender->getAllGendersArray($this->getEntityManager()),
+
+        ));
+    }
+
+    public function addWork(Request $request)
+    {
+
     }
 
     /**
