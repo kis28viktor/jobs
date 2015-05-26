@@ -59,9 +59,10 @@ class EmployerController extends Controller
         ));
     }
 
-    public function addWork(Request $request)
+    public function addWorkAction(Request $request)
     {
-
+        echo '<pre>';
+        print_r($request->request->all());die;
     }
 
     /**
