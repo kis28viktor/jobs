@@ -100,6 +100,7 @@ class EmployerController extends Controller
                                'aboutMe'    => $worker->getAboutMe() ? $worker->getAboutMe() : 'User didn`t filled any bio.',
                                'categories' => $workerModel->getCategoriesForWorker($worker->getId(), $this->getEntityManager()),
                                'educations' => $workerModel->getEducationForWorker($worker->getId(), $this->getEntityManager()),
+                                'postDate' => $worker->getPostDate()->format('Y-m-d'),
             );
         }
         return $workers;

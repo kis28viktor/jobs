@@ -58,7 +58,10 @@ class Worker {
      * inverseJoinColumns={@ORM\JoinColumn(name="education_id", referencedColumnName="id")})
      */
     protected $education;
-
+    /**
+     * @ORM\Column(type="date")
+     */
+    protected $postDate;
 
     /**
      * Constructor
@@ -308,6 +311,29 @@ class Worker {
     }
 
     /**
+     * Set postDate
+     *
+     * @param \DateTime $postDate
+     * @return Worker
+     */
+    public function setPostDate($postDate)
+    {
+        $this->postDate = $postDate;
+
+        return $this;
+    }
+
+    /**
+     * Get postDate
+     *
+     * @return \DateTime
+     */
+    public function getPostDate()
+    {
+        return $this->postDate;
+    }
+
+    /**
      * Get workers with checking post params
      *
      * @param Request $request
@@ -460,6 +486,7 @@ class Worker {
                 $worker->addCategory($categoryEntity);
             }
         }
+        $worker->setDate(date('Y-m-d'));
         if($this->checkEducationFilling($formData)){
             $education = new Education();
             if($formData['education']){

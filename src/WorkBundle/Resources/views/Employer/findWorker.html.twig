@@ -30,6 +30,7 @@
             <td>About Me</td>
             <td>Categories</td>
             <td>Education</td>
+            <td>Post date</td>
         </tr>
         {% for worker in pagination %}
                 <tr {% if loop.index is odd %}class="color"{% endif %} style="border: 1px solid #000000;">
@@ -60,6 +61,7 @@
                             {% endif %}
                         {% endfor %}
                     </td>
+                    <td>{{ worker.postDate }}</td>
                 </tr>
             {% endfor %}
     </table>

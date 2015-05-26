@@ -117,6 +117,7 @@ class WorkerController extends Controller
                 'termFrom' => $employer->getTermFrom()->format('Y-m-d'),
                 'termTo' => $employer->getTermTo()->format('Y-m-d'),
                 'categories' => $employerModel->getCategoriesForEmployer($employer->getId(), $this->getEntityManager()),
+                'postDate' => $employer->getPostDate()->format('Y-m-d'),
                 );
         }
         return $employers;

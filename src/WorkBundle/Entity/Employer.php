@@ -62,7 +62,7 @@ class Employer
      */
     protected $city;
     /**
-     * @ORM\Column(type="string", length=1000)
+     * @ORM\Column(type="string", length=255)
      */
     protected $aboutMe;
     /**
@@ -72,6 +72,10 @@ class Employer
      * inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")})
      */
     protected $categories;
+    /**
+     * @ORM\Column(type="date")
+     */
+    protected $postDate;
 
     /**
      * Constructor
@@ -398,6 +402,29 @@ class Employer
     public function getGender()
     {
         return $this->gender;
+    }
+
+    /**
+     * Set postDate
+     *
+     * @param \DateTime $postDate
+     * @return Employer
+     */
+    public function setPostDate($postDate)
+    {
+        $this->postDate = $postDate;
+
+        return $this;
+    }
+
+    /**
+     * Get postDate
+     *
+     * @return \DateTime
+     */
+    public function getPostDate()
+    {
+        return $this->postDate;
     }
 
     /**
