@@ -17,7 +17,7 @@
             </select>
             <br>Choose your categories:
             {% for key,category in categories  %}
-                <br><input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
+                <br><input type="checkbox" {% if key in curCategories %} checked {% endif %} value="{{ key }}" name="categories[]">{{ category }}
             {% endfor %}
             <br><input type="submit" value="find">
         </form>

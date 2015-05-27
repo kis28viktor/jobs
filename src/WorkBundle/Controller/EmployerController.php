@@ -40,6 +40,7 @@ class EmployerController extends Controller
                   'ageTo' => $request->request->get('ageTo') ? $request->request->get('ageTo') : null,
                   'gender' => $request->request->get('gender') ? $request->request->get('gender') : null,
                   'categories' => $category->getAllCategories($this->getEntityManager()),
+                  'curCategories' => $request->request->get('categories'),
             )
         );
     }
