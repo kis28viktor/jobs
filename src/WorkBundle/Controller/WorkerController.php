@@ -46,7 +46,8 @@ class WorkerController extends Controller
     {
         $employer = new Employer();
         $gender = new Gender();
-        $employers = $this->generateEmployersArray($employer->getAllEmployers($request, $this->getEntityManager()));
+        $category = new Category();
+        $employers = $this->generateEmployersArray($employer->getAllEmployersByFilter($request, $this->getEntityManager()));
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($employers,$request->query->getInt('page', 1),5);
         return $this->render('WorkBundle:Worker:findWork.html.twig',
@@ -61,6 +62,8 @@ class WorkerController extends Controller
                 'priceFrom' => $request->request->get('priceFrom') ? $request->request->get('priceFrom') : null,
                 'priceTo' => $request->request->get('priceTo') ? $request->request->get('priceTo') : null,
                 'gender' => $request->request->get('gender') ? $request->request->get('gender') : null,
+                'categories' => $category->getAllCategories($this->getEntityManager()),
+                'curCategories' => $request->request->get('categories'),
             )
         );
     }

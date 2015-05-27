@@ -435,14 +435,14 @@ class Employer
      * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
      * @return array
      */
-    public function getAllEmployers(Request $request, $entityManager)
+    public function getAllEmployersByFilter(Request $request, $entityManager)
     {
         $employersRepository = $entityManager->getRepository('WorkBundle:Employer');
         $filterData          = $request->request->all();
         if ($filterData) {
             if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
                 || !empty($filterData['priceFrom']) || !empty($filterData['priceTo'])
-                || !empty($filterData['termFrom']) || !empty($filterData['termTo'])
+                || !empty($filterData['termFrom']) || !empty($filterData['termTo']) || !empty($filterData['categories'])
                 || (!empty($filterData['gender']) && $filterData['gender'][0] != 'all')
             ) {
                 $whereCondition = '';
@@ -484,6 +484,18 @@ class Employer
                 } else {
                     $employerModels->where(substr($whereCondition, 0, -5));
                     $employers = $employerModels->getQuery()->getResult();
+                }
+                if (isset($filterData['categories'])) {
+                    $categoryModel = new Category();
+                    /** @var \WorkBundle\Entity\Employer $employer */
+                    foreach ($employers as $key => $employer) {
+                        foreach($filterData['categories'] as $category) {
+                            $curCategories = $employer->getCategories()->getValues();
+                            if(!in_array($categoryModel->find($category, $entityManager), $curCategories)){
+                                unset($employers[$key]);
+                            }
+                        }
+                    }
                 }
                 return $employers;
             } else {
