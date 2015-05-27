@@ -1,6 +1,7 @@
 <?php
 namespace WorkBundle\Entity;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -152,5 +153,16 @@ class Category {
             }
         }
         return $categories;
+    }
+
+    /**
+     * @param int $categoryId
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return \WorkBundle\Entity\Category
+     */
+    public function find($categoryId, $entityManager)
+    {
+        $categoryRepo = $entityManager->getRepository('WorkBundle:Category');
+        return $categoryRepo->find($categoryId);
     }
 }

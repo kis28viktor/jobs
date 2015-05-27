@@ -30,6 +30,7 @@ class EmployerController extends Controller
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($workers,$request->query->getInt('page', 1),5);
         $gender = new Gender();
+        $category = new Category();
         return $this->render(
             'WorkBundle:Employer:findWorker.html.twig',
             array('pagination' => $pagination,
@@ -38,6 +39,7 @@ class EmployerController extends Controller
                   'ageFrom' => $request->request->get('ageFrom') ? $request->request->get('ageFrom') : null,
                   'ageTo' => $request->request->get('ageTo') ? $request->request->get('ageTo') : null,
                   'gender' => $request->request->get('gender') ? $request->request->get('gender') : null,
+                  'categories' => $category->getAllCategories($this->getEntityManager()),
             )
         );
     }

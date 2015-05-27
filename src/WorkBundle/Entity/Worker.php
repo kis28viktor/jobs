@@ -345,7 +345,8 @@ class Worker {
         $workersRepository = $entityManager->getRepository('WorkBundle:Worker');
         $filterData        = $request->request->all();
         if ($filterData) {
-            if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
+            if (!empty($filterData['city']) || !empty($filterData['ageFrom'])
+                || !empty($filterData['ageTo']) || !empty($filterData['categories'])
                 || (!empty($filterData['gender'])&& $filterData['gender'][0] != 'all')
             ) {
                 $whereCondition = '';
@@ -373,6 +374,18 @@ class Worker {
                 } else {
                     $workerModels->where(substr($whereCondition, 0, -5));
                     $workers = $workerModels->getQuery()->getResult();
+                }
+                if (isset($filterData['categories'])) {
+                    $categoryModel = new Category();
+                    /** @var \WorkBundle\Entity\Worker $worker */
+                    foreach ($workers as $key => $worker) {
+                        foreach($filterData['categories'] as $category) {
+                            $curCategories = $worker->getCategories()->getValues();
+                            if(!in_array($categoryModel->find($category, $entityManager), $curCategories)){
+                                unset($workers[$key]);
+                            }
+                        }
+                    }
                 }
                 return $workers;
             } else {
