@@ -2,74 +2,72 @@
 {% block header %}
 
 {% endblock %}
-{% block body %}
-    <div style="margin: 30px;">
-        <form action="{{ path('find_worker') }}" method="post">
-            City: <input type="text" name="city" {% if city %}value="{{ city }}"{% endif %} >
-            Age from: <input type="number" name="ageFrom" {% if ageFrom %}value="{{ ageFrom }}"{% endif %}>
-            Age to: <input type="number" name="ageTo" {% if ageTo %}value="{{ ageTo }}"{% endif %}>
-            Gender: <select name="gender[]">
-                <option disabled>gender</option>
-                <option value="all">all</option>
-                {% for key,currentGender in genders %}
-                    <option value="{{ key }}" {% if (gender) and (gender[0] == key) %}selected {% endif %}>{{ currentGender }}</option>
+{% block content %}
+    <div class="span11">
+        <div style="margin: 30px;">
+            <form action="{{ path('find_worker') }}" method="post">
+                City: <input type="text" name="city" {% if city %}value="{{ city }}"{% endif %} >
+                Age from: <input type="number" name="ageFrom" {% if ageFrom %}value="{{ ageFrom }}"{% endif %}>
+                Age to: <input type="number" name="ageTo" {% if ageTo %}value="{{ ageTo }}"{% endif %}>
+                Gender: <select name="gender[]">
+                    <option disabled>gender</option>
+                    <option value="all">all</option>
+                    {% for key,currentGender in genders %}
+                        <option value="{{ key }}" {% if (gender) and (gender[0] == key) %}selected {% endif %}>{{ currentGender }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="find">
+            </form>
+        </div>
+        <div class="count">
+            Total <b>{{ pagination.getTotalItemCount }}</b> items found:
+        </div>
+        <table class="table table-condensed" style="word-break: break-all; width: 100%">
+            <thead>
+                <th style="white-space: nowrap">ПІБ</th>
+                <th style="white-space: nowrap">Телефон</th>
+                <th style="white-space: nowrap">Вік</th>
+                <th style="white-space: nowrap">Місто</th>
+                <th style="white-space: nowrap">Про мене</th>
+                <th style="white-space: nowrap">Сфера</th>
+                <th style="white-space: nowrap">Освіта</th>
+            </thead>
+            <tbody>
+                {% for worker in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}">
+                        <td>{{worker.name}}</td>
+                        <td style="white-space: nowrap">{{worker.phone}}</td>
+                        <td>{{worker.age}}</td>
+                        <td>{{worker.city}}</td>
+                        <td style="width: 30%;">{{worker.aboutMe}}</td>
+                        <td>{% for category in worker.categories %}
+                    {% if category is iterable %}
+                        <br>
+                        {% for categoryName in category %}
+                            {{ categoryName }}<br>
+                        {% endfor %}
+                    {% else %}
+                        {{ category }}
+                    {% endif %}
                 {% endfor %}
-            </select>
-            <br>Choose your categories:
-            {% for key,category in categories  %}
-                <br><input type="checkbox" {% if key in curCategories %} checked {% endif %} value="{{ key }}" name="categories[]">{{ category }}
-            {% endfor %}
-            <br><input type="submit" value="find">
-        </form>
-    </div>
-    <div class="count">
-        Total <b>{{ pagination.getTotalItemCount }}</b> items found:
-    </div>
-    <table style="border: 1px solid #000000; word-break: break-all; width: 100%">
-        <tr style="border: 1px solid #000000;">
-            <td>Name</td>
-            <td>Phone</td>
-            <td>Age</td>
-            <td>City</td>
-            <td>About Me</td>
-            <td>Categories</td>
-            <td>Education</td>
-            <td>Post date</td>
-        </tr>
-        {% for worker in pagination %}
-                <tr {% if loop.index is odd %}class="color"{% endif %} style="border: 1px solid #000000;">
-                    <td>{{worker.name}}</td>
-                    <td>{{worker.phone}}</td>
-                    <td>{{worker.age}}</td>
-                    <td>{{worker.city}}</td>
-                    <td style="width: 30%;">{{worker.aboutMe}}</td>
-                    <td>{% for category in worker.categories %}
-                            {% if category is iterable %}
-                                <br>
-                                {% for categoryName in category %}
-                                    {{ categoryName }}<br>
-                                {% endfor %}
-                            {% else %}
-                                {{ category }}
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>{% for education in worker.educations %}
-                            {% if education is iterable %}
-                                <br>
-                                Level: {{education.level}}<br>
-                                Name: {{ education.name }}<br>
-                                City: {{ education.city }}
-                            {% else %}
-                                {{ education }}
-                            {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>{{ worker.postDate }}</td>
-                </tr>
-            {% endfor %}
-    </table>
-    <div class="navigation">
-        {{ knp_pagination_render(pagination) }}
+                        </td>
+                        <td>{% for education in worker.educations %}
+                    {% if education is iterable %}
+                        <br>
+                        Level: {{education.level}}<br>
+                        Name: {{ education.name }}<br>
+                        City: {{ education.city }}
+                    {% else %}
+                        {{ education }}
+                    {% endif %}
+                {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
     </div>
 {% endblock %}

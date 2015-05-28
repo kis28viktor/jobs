@@ -1,0 +1,7 @@
+/app/parameters.yml
+/app/cache/
+/app/logs/
+/app/Resources/
+/bin/
+/vendor/
+

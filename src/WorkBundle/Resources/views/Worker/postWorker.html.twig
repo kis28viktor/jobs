@@ -1,31 +1,64 @@
 {% extends '@Work/layout.html.twig' %}
-{% block body %}
-    <div>
+{% block content %}
+    <div class="span10 well">
         <form action="{{ path('add_worker') }}" method="post">
-            First name: <input type="text" name="firstName" required>
-            <br> Last name: <input type="text" name="lastName" required>
-            <br> Phone: <input type="text" name="phone" required>
-            <br> Date of birth: <input type="date" name="date">
-            <br>Gender:<select name="gender" required>
-                {% for key,gender in genders %}
-                <option value="{{ key }}">{{ gender }}</option>
-                {% endfor %}
-            </select>
-            <br>City: <input type="text" name="city">
-            <br>Tell about yourself: <textarea name="aboutMe"></textarea>
-            <br><br>Choose your categories:
-            {% for key,category in categories  %}
-               <br><input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
-            {% endfor %}
-            <br>Education: <input type="text" name="education">
-            Level: <select name="educationLevel">
-                <option disabled selected>education level</option>
-                {% for key, education in educationLevels %}
-                    <option value="{{ key }}">{{ education }}</option>
-                {% endfor %}
-            </select>
-            City: <input type="text" name="educationCity">
-            <br><input type="submit">
+            <div class="row">
+                <div class=" span5">
+                    <label>Ім’я: </label>
+                    <input type="text" name="firstName" required>
+                    <label>Прізвище: </label>
+                    <input type="text" name="lastName" required>
+                    <label>Телефон: </label>
+                    <input type="tel" name="phone" required>
+                </div>
+                <div class="span5">
+                    <label>Дата народження: </label>
+                    <input type="date" name="date">
+                    <label>Стать:</label>
+                    <select name="gender" required>
+                        {% for key,gender in genders %}
+                            <option value="{{ key }}">{{ gender }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Місто: </label>
+                    <input type="text" name="city">
+                </div>
+                </div>
+                <label>Про мене: </label>
+                <textarea name="aboutMe" style="width: 765px"></textarea>
+                <div class="well well-small">
+                    <h6><label>Оберіть категорії:</label></h6>
+                    <div class="row">
+                        {% for key,category in categories  %}
+                            <div class="span3">
+                                <input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="well well-small">
+                    <div class="header">Освіта</div>
+                    <div class="row">
+                        <div class="span3">
+                            <label>Назва закладу: </label>
+                            <input type="text" name="education">
+                        </div>
+                        <div class="span3">
+                            <label>Рівень: </label>
+                            <select name="educationLevel">
+                                <option disabled selected>Рівень освіти</option>
+                                {% for key, education in educationLevels %}
+                                    <option value="{{ key }}">{{ education }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="span3">
+                            <label>Місто: </label>
+                            <input type="text" name="educationCity">
+                        </div>
+                    </div>
+                </div>
+            <input class="btn-bg success" type="submit">
         </form>
     </div>
 {% endblock %}
