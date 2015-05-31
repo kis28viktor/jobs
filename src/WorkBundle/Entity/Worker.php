@@ -346,8 +346,9 @@ class Worker {
         $filterData        = $request->request->all();
         if ($filterData) {
             if (!empty($filterData['city']) || !empty($filterData['ageFrom'])
-                || !empty($filterData['ageTo']) || !empty($filterData['categories'])
+                || !empty($filterData['ageTo'])
                 || (!empty($filterData['gender'])&& $filterData['gender'][0] != 'all')
+                || (!empty($filterData['categories']) && $filterData['categories'][0] != 'all')
             ) {
                 $whereCondition = '';
                 $workerModels   = $workersRepository->createQueryBuilder('p');
@@ -375,7 +376,7 @@ class Worker {
                     $workerModels->where(substr($whereCondition, 0, -5));
                     $workers = $workerModels->getQuery()->getResult();
                 }
-                if (isset($filterData['categories'])) {
+                if (isset($filterData['categories']) && $filterData['categories'][0] != 'all') {
                     $categoryModel = new Category();
                     /** @var \WorkBundle\Entity\Worker $worker */
                     foreach ($workers as $key => $worker) {

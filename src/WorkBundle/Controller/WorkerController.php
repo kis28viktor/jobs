@@ -63,7 +63,7 @@ class WorkerController extends Controller
                 'priceTo' => $request->request->get('priceTo') ? $request->request->get('priceTo') : null,
                 'gender' => $request->request->get('gender') ? $request->request->get('gender') : null,
                 'categories' => $category->getAllCategories($this->getEntityManager()),
-                'curCategories' => $request->request->get('categories'),
+                'curCategory' => $request->request->get('categories')? $this->getFirst($request->request->get('categories')) : null,
             )
         );
     }
@@ -140,5 +140,16 @@ class WorkerController extends Controller
                 );
         }
         return $employers;
+    }
+
+    /**
+     * Get first element from an array
+     *
+     * @param $array
+     * @return mixed
+     */
+    protected function getFirst($array)
+    {
+        return array_shift($array);
     }
 }

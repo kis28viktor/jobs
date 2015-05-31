@@ -25,8 +25,7 @@ class EmployerController extends Controller
     public function findWorkerAction(Request $request)
     {
         $workerModel = new Worker();
-        $workersData = $workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager());
-        $workers = $this->generateWorkersArray($workersData);
+        $workers = $this->generateWorkersArray($workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager()));
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($workers,$request->query->getInt('page', 1),5);
         $gender = new Gender();
@@ -40,7 +39,7 @@ class EmployerController extends Controller
                   'ageTo' => $request->request->get('ageTo') ? $request->request->get('ageTo') : null,
                   'gender' => $request->request->get('gender') ? $request->request->get('gender') : null,
                   'categories' => $category->getAllCategories($this->getEntityManager()),
-                  'curCategories' => $request->request->get('categories'),
+                  'curCategory' => $request->request->get('categories')? $this->getFirst($request->request->get('categories')) : null,
             )
         );
     }
@@ -134,5 +133,16 @@ class EmployerController extends Controller
     protected function checkFormData($formData)
     {
         return $formData['firstName'] && $formData['lastName'] && $formData['phone'] && $formData['gender'];
+    }
+
+    /**
+     * Get first element from an array
+     *
+     * @param $array
+     * @return mixed
+     */
+    protected function getFirst($array)
+    {
+        return array_shift($array);
     }
 }

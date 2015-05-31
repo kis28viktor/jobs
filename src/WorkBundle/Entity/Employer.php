@@ -442,8 +442,9 @@ class Employer
         if ($filterData) {
             if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
                 || !empty($filterData['priceFrom']) || !empty($filterData['priceTo'])
-                || !empty($filterData['termFrom']) || !empty($filterData['termTo']) || !empty($filterData['categories'])
+                || !empty($filterData['termFrom']) || !empty($filterData['termTo'])
                 || (!empty($filterData['gender']) && $filterData['gender'][0] != 'all')
+                || (!empty($filterData['categories']) && $filterData['categories'][0] != 'all')
             ) {
                 $whereCondition = '';
                 $employerModels = $employersRepository->createQueryBuilder('p');
@@ -485,7 +486,7 @@ class Employer
                     $employerModels->where(substr($whereCondition, 0, -5));
                     $employers = $employerModels->getQuery()->getResult();
                 }
-                if (isset($filterData['categories'])) {
+                if (isset($filterData['categories']) && $filterData['categories'][0] != 'all') {
                     $categoryModel = new Category();
                     /** @var \WorkBundle\Entity\Employer $employer */
                     foreach ($employers as $key => $employer) {

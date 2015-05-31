@@ -16,10 +16,13 @@
                     <option value="{{ key }}" {% if (gender) and (gender[0] == key) %}selected {% endif %}>{{ currentGender }}</option>
                 {% endfor %}
             </select>
-            <br>Choose your categories:
-            {% for key,category in categories  %}
-                <br><input type="checkbox" {% if key in curCategories %} checked {% endif %} value="{{ key }}" name="categories[]">{{ category }}
-            {% endfor %}
+           <br> <select name="categories[]">
+                <option selected disabled>Choose the category</option>
+                <option value="all">all</option>
+                {% for key,category in categories  %}
+                    <option value="{{ key }}"{% if (curCategory) and (curCategory == key) %} selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
             <br><input type="submit" value="find">
         </form>
     </div>
