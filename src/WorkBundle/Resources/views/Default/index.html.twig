@@ -1,21 +1,32 @@
 {% extends "@Work/layout.html.twig" %}
 {% block content %}
-    <div class="span8">
-        <div>
-            <a href="{{ path('find_work') }}">
-                Хочеш найти роботу?
-            </a>
-            <a href=" {{ path('post_work') }}">
-                Хочеш залишити вакансію?
-            </a>
+    <div class="large-8 columns">
+        <div class="show-for-large-up" style="height: 100px"></div>
+        <div class="row">
+            <div class="large-6 columns" style="text-align: center;">
+                <a href="{{ path('find_work') }} " class="button btn">
+                    Хочеш найти роботу?
+                </a>
+            </div>
+            <div class="large-6 columns" style="text-align: center;">
+                <a href=" {{ path('post_work') }}"  class="button btn">
+                    Хочеш залишити вакансію?
+                </a>
+            </div>
         </div>
-        <div>
-            <a href=" {{ path('find_worker') }}">
-                Хочеш найти працівника?
-            </a>
-            <a href="{{ path('post_worker') }}">
-                Хочеш залишити своє резюме?
-            </a>
+        <br>
+        <div class="row">
+            <div class="large-6 columns" style="text-align: center;">
+                <a href=" {{ path('find_worker') }}"  class="button btn">
+                    Хочеш найти працівника?
+                </a>
+            </div>
+            <div class="large-6 columns" style="text-align: center;">
+                <a href="{{ path('post_worker') }}"  class="button btn">
+                    Хочеш залишити своє резюме?
+                </a>
+            </div>
         </div>
+        <div class="show-for-large-up" style="height: 100px"></div>
     </div>
 {% endblock %}

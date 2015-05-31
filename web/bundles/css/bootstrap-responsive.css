@@ -110,7 +110,6 @@
 
 @media (min-width: 1200px) {
   .row {
-    margin-left: -30px;
     *zoom: 1;
   }
   .row:before,
@@ -125,7 +124,7 @@
   [class*="span"] {
     float: left;
     min-height: 1px;
-    margin-left: 30px;
+
   }
   .container,
   .navbar-static-top .container,
@@ -146,7 +145,7 @@
     width: 870px;
   }
   .span8 {
-    width: 770px;
+    width: 75%;
   }
   .span7 {
     width: 670px;
@@ -164,7 +163,7 @@
     width: 270px;
   }
   .span2 {
-    width: 170px;
+    width: 12%;
   }
   .span1 {
     width: 70px;

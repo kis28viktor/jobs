@@ -1,4 +1,26 @@
-.sidebar
-{
+.sidebar {
     background-color: #184E86;
+    height: 100%;
+}
+.header {
+    background-color: #002a80;
+    height: 100px;
+    width: 100%;
+    top: 0;
+    position: relative;
+}
+.footer {
+    background-color: #002a80;
+    height: 300px;
+    width: 100%;
+    bottom: 0;
+    position: relative;
+}
+.center {
+    padding: 20px;
+    text-align: center;
+}
+.btn {
+    width: 297px;
+    height: 100px;
 }

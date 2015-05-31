@@ -264,7 +264,6 @@ a:focus {
 }
 
 .row {
-  margin-left: -20px;
   *zoom: 1;
 }
 
@@ -282,7 +281,6 @@ a:focus {
 [class*="span"] {
   float: left;
   min-height: 1px;
-  margin-left: 20px;
 }
 
 .container,
@@ -309,7 +307,7 @@ a:focus {
 }
 
 .span8 {
-  width: 620px;
+  width: 75%;
 }
 
 .span7 {
@@ -333,7 +331,7 @@ a:focus {
 }
 
 .span2 {
-  width: 140px;
+  width: 12%;
 }
 
 .span1 {
@@ -3110,7 +3108,6 @@ table th[class*="span"],
 
 .well {
   min-height: 20px;
-  padding: 19px;
   margin-bottom: 20px;
   background-color: #1682BB;
   border: 1px solid #e3e3e3;
