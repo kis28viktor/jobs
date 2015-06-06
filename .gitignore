@@ -1,4 +1,4 @@
-/app/parameters.yml
+/app/config/parameters.yml
 /app/cache/
 /app/logs/
 /app/Resources/

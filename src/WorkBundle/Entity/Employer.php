@@ -442,8 +442,9 @@ class Employer
         if ($filterData) {
             if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
                 || !empty($filterData['priceFrom']) || !empty($filterData['priceTo'])
-                || !empty($filterData['termFrom']) || !empty($filterData['termTo']) || !empty($filterData['categories'])
+                || !empty($filterData['termFrom']) || !empty($filterData['termTo'])
                 || (!empty($filterData['gender']) && $filterData['gender'][0] != 'all')
+                || (!empty($filterData['categories']) && $filterData['categories'][0] != 'all')
             ) {
                 $whereCondition = '';
                 $employerModels = $employersRepository->createQueryBuilder('p');
@@ -485,7 +486,7 @@ class Employer
                     $employerModels->where(substr($whereCondition, 0, -5));
                     $employers = $employerModels->getQuery()->getResult();
                 }
-                if (isset($filterData['categories'])) {
+                if (isset($filterData['categories']) && $filterData['categories'][0] != 'all') {
                     $categoryModel = new Category();
                     /** @var \WorkBundle\Entity\Employer $employer */
                     foreach ($employers as $key => $employer) {
@@ -583,5 +584,37 @@ class Employer
         $employer->setPostDate(new \DateTime());
         $em->persist($employer);
         $em->flush();
+    }
+
+    /**
+     * Generate array of employers for view
+     *
+     * @param $employersModels
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function generateEmployersArray($employersModels, $entityManager)
+    {
+        $employers = array();
+        $employerModel = new Employer();
+        /** @var \WorkBundle\Entity\Employer $employer */
+        foreach ($employersModels as $employer) {
+            $employers[] = array(
+                'id' => $employer->getId(),
+                'name' => $employer->getFirstName() . ' ' . $employer->getLastName(),
+                'phone' => $employer->getPhone(),
+                'city' => $employer->getCity(),
+                'aboutMe' => $employer->getAboutMe(),
+                'ageFrom' => $employer->getAgeFrom(),
+                'ageTo' => $employer->getAgeTo(),
+                'priceFrom' => $employer->getPriceFrom(),
+                'priceTo' => $employer->getPriceTo(),
+                'termFrom' => $employer->getTermFrom()?$employer->getTermFrom()->format('Y-m-d'): 'Employer didn`t specified term from.',
+                'termTo' => $employer->getTermTo()?$employer->getTermTo()->format('Y-m-d'): 'Employer didn`t specified term to.',
+                'categories' => $employerModel->getCategoriesForEmployer($employer->getId(), $entityManager),
+                'postDate' => $employer->getPostDate()->format('Y-m-d'),
+            );
+        }
+        return $employers;
     }
 }

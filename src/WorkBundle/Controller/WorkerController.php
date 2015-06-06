@@ -47,7 +47,7 @@ class WorkerController extends Controller
         $employer = new Employer();
         $gender = new Gender();
         $category = new Category();
-        $employers = $this->generateEmployersArray($employer->getAllEmployersByFilter($request, $this->getEntityManager()));
+        $employers = $employer->generateEmployersArray($employer->getAllEmployersByFilter($request, $this->getEntityManager()), $this->getEntityManager());
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($employers,$request->query->getInt('page', 1),5);
         return $this->render('WorkBundle:Worker:findWork.html.twig',
@@ -63,7 +63,7 @@ class WorkerController extends Controller
                 'priceTo' => $request->request->get('priceTo') ? $request->request->get('priceTo') : null,
                 'gender' => $request->request->get('gender') ? $request->request->get('gender') : null,
                 'categories' => $category->getAllCategories($this->getEntityManager()),
-                'curCategories' => $request->request->get('categories'),
+                'curCategory' => $request->request->get('categories')? $this->getFirst($request->request->get('categories')) : null,
             )
         );
     }
@@ -112,33 +112,13 @@ class WorkerController extends Controller
     }
 
     /**
-     * Generate array of employers for view
+     * Get first element from an array
      *
-     * @param $employersModels
-     * @return array
+     * @param $array
+     * @return mixed
      */
-    protected function generateEmployersArray($employersModels)
+    protected function getFirst($array)
     {
-        $employers = array();
-        $employerModel = new Employer();
-        /** @var \WorkBundle\Entity\Employer $employer */
-        foreach ($employersModels as $employer) {
-            $employers[] = array(
-                'id' => $employer->getId(),
-                'name' => $employer->getFirstName() . ' ' . $employer->getLastName(),
-                'phone' => $employer->getPhone(),
-                'city' => $employer->getCity(),
-                'aboutMe' => $employer->getAboutMe(),
-                'ageFrom' => $employer->getAgeFrom(),
-                'ageTo' => $employer->getAgeTo(),
-                'priceFrom' => $employer->getPriceFrom(),
-                'priceTo' => $employer->getPriceTo(),
-                'termFrom' => $employer->getTermFrom()?$employer->getTermFrom()->format('Y-m-d'): 'Employer didn`t specified term from.',
-                'termTo' => $employer->getTermTo()?$employer->getTermTo()->format('Y-m-d'): 'Employer didn`t specified term to.',
-                'categories' => $employerModel->getCategoriesForEmployer($employer->getId(), $this->getEntityManager()),
-                'postDate' => $employer->getPostDate()->format('Y-m-d'),
-                );
-        }
-        return $employers;
+        return array_shift($array);
     }
 }

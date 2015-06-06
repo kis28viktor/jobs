@@ -346,8 +346,9 @@ class Worker {
         $filterData        = $request->request->all();
         if ($filterData) {
             if (!empty($filterData['city']) || !empty($filterData['ageFrom'])
-                || !empty($filterData['ageTo']) || !empty($filterData['categories'])
+                || !empty($filterData['ageTo'])
                 || (!empty($filterData['gender'])&& $filterData['gender'][0] != 'all')
+                || (!empty($filterData['categories']) && $filterData['categories'][0] != 'all')
             ) {
                 $whereCondition = '';
                 $workerModels   = $workersRepository->createQueryBuilder('p');
@@ -375,7 +376,7 @@ class Worker {
                     $workerModels->where(substr($whereCondition, 0, -5));
                     $workers = $workerModels->getQuery()->getResult();
                 }
-                if (isset($filterData['categories'])) {
+                if (isset($filterData['categories']) && $filterData['categories'][0] != 'all') {
                     $categoryModel = new Category();
                     /** @var \WorkBundle\Entity\Worker $worker */
                     foreach ($workers as $key => $worker) {
@@ -529,5 +530,37 @@ class Worker {
     protected function checkEducationFilling($formData)
     {
         return isset($formData['educationLevel']) || isset($formData['educationCity']) || isset($formData['education']);
+    }
+
+    /**
+     * Generate correct array of workers, that can be sent to the layout
+     *
+     * $workerModelsArray should be an array of Worker entities, which we take using doctrine manager
+     *
+     * @param array $workersModelsArray
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function generateWorkersArray($workersModelsArray, $entityManager)
+    {
+        $workerModel = new Worker();
+        $workers      = array();
+        /** @var \WorkBundle\Entity\Worker $worker */
+        foreach ($workersModelsArray as $worker) {
+            $tz  = new \DateTimeZone('Europe/Kiev');
+            $workers[] = array('id'         => $worker->getId(),
+                               'name'       => $worker->getFirstName() . ' ' . $worker->getLastName(),
+                               'phone'      => $worker->getPhone(),
+                               'age'        => $worker->getDate()?\DateTime::createFromFormat('d/m/Y', $worker->getDate()->format('d/m/Y'), $tz)
+                                   ->diff(new \DateTime('now', $tz))
+                                   ->y:'user didn`t specified his age.',
+                               'city'       => $worker->getCity() ? $worker->getCity(): 'User didn`t specified the city.',
+                               'aboutMe'    => $worker->getAboutMe() ? $worker->getAboutMe() : 'User didn`t filled any bio.',
+                               'categories' => $workerModel->getCategoriesForWorker($worker->getId(), $entityManager),
+                               'educations' => $workerModel->getEducationForWorker($worker->getId(), $entityManager),
+                               'postDate' => $worker->getPostDate()->format('Y-m-d'),
+            );
+        }
+        return $workers;
     }
 }

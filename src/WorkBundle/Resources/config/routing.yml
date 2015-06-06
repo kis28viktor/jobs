@@ -7,7 +7,7 @@ find_work:
     defaults: { _controller: WorkBundle:Worker:findWork }
 
 post_worker:
-    path: /postwork
+    path: /postworker
     defaults: { _controller: WorkBundle:Worker:postWorker }
 
 post_work:
@@ -25,3 +25,10 @@ add_worker:
 add_work:
     path: /addWork
     defaults: { _controller: WorkBundle:Employer:addWork }
+
+admin_issues:
+    path: /admin/issues
+    defaults: { _controller: WorkBundle:Admin:index }
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

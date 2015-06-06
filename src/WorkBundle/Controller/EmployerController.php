@@ -25,8 +25,7 @@ class EmployerController extends Controller
     public function findWorkerAction(Request $request)
     {
         $workerModel = new Worker();
-        $workersData = $workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager());
-        $workers = $this->generateWorkersArray($workersData);
+        $workers = $workerModel->generateWorkersArray($workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager()), $this->getEntityManager());
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($workers,$request->query->getInt('page', 1),5);
         $gender = new Gender();
@@ -40,7 +39,7 @@ class EmployerController extends Controller
                   'ageTo' => $request->request->get('ageTo') ? $request->request->get('ageTo') : null,
                   'gender' => $request->request->get('gender') ? $request->request->get('gender') : null,
                   'categories' => $category->getAllCategories($this->getEntityManager()),
-                  'curCategories' => $request->request->get('categories'),
+                  'curCategory' => $request->request->get('categories')? $this->getFirst($request->request->get('categories')) : null,
             )
         );
     }
@@ -95,37 +94,6 @@ class EmployerController extends Controller
     }
 
     /**
-     * Generate correct array of workers, that can be sent to the layout
-     *
-     * $workerModelsArray should be an array of Worker entities, which we take using doctrine manager
-     *
-     * @param array $workersModelsArray
-     * @return array
-     */
-    protected function generateWorkersArray($workersModelsArray)
-    {
-        $workerModel = new Worker();
-        $workers      = array();
-        /** @var \WorkBundle\Entity\Worker $worker */
-        foreach ($workersModelsArray as $worker) {
-            $tz  = new \DateTimeZone('Europe/Kiev');
-            $workers[] = array('id'         => $worker->getId(),
-                               'name'       => $worker->getFirstName() . ' ' . $worker->getLastName(),
-                               'phone'      => $worker->getPhone(),
-                               'age'        => $worker->getDate()?\DateTime::createFromFormat('d/m/Y', $worker->getDate()->format('d/m/Y'), $tz)
-                                                ->diff(new \DateTime('now', $tz))
-                                                ->y:'user didn`t specified his age.',
-                               'city'       => $worker->getCity() ? $worker->getCity(): 'User didn`t specified the city.',
-                               'aboutMe'    => $worker->getAboutMe() ? $worker->getAboutMe() : 'User didn`t filled any bio.',
-                               'categories' => $workerModel->getCategoriesForWorker($worker->getId(), $this->getEntityManager()),
-                               'educations' => $workerModel->getEducationForWorker($worker->getId(), $this->getEntityManager()),
-                                'postDate' => $worker->getPostDate()->format('Y-m-d'),
-            );
-        }
-        return $workers;
-    }
-
-    /**
      * Check if user filled in his first name, last name and phone
      *
      * @param array $formData
@@ -134,5 +102,16 @@ class EmployerController extends Controller
     protected function checkFormData($formData)
     {
         return $formData['firstName'] && $formData['lastName'] && $formData['phone'] && $formData['gender'];
+    }
+
+    /**
+     * Get first element from an array
+     *
+     * @param $array
+     * @return mixed
+     */
+    protected function getFirst($array)
+    {
+        return array_shift($array);
     }
 }
