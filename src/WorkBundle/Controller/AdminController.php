@@ -14,11 +14,15 @@ class AdminController extends Controller
     public function indexAction(Request $request)
     {
         $issuesType = $request->request->get('issuesType');
-//        if ($issuesType && $issuesType=='workers') {
+        if ($issuesType && $issuesType=='workers') {
            $worker = new Worker();
-            $data = $worker->getAllWorkersWithPostFilter($request, $this->getEntityManager());
-            var_dump($data);die;
-//        }
+            $workersData = $worker->generateWorkersArray($worker->getAllWorkersWithPostFilter($request, $this->getEntityManager()), $this->getEntityManager());
+            var_dump($workersData);die;
+        } elseif($issuesType && $issuesType=='employers') {
+            $employer = new Employer();
+            $employersData = $employer->generateEmployersArray($employer->getAllEmployersByFilter($request,$this->getEntityManager()),$this->getEntityManager());
+            var_dump($employersData);die;
+        }
         return $this->render('WorkBundle:Admin:issues.html.twig');
     }
 
