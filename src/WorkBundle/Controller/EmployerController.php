@@ -25,7 +25,7 @@ class EmployerController extends Controller
     public function findWorkerAction(Request $request)
     {
         $workerModel = new Worker();
-        $workers = $this->generateWorkersArray($workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager()));
+        $workers = $workerModel->generateWorkersArray($workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager()), $this->getEntityManager());
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($workers,$request->query->getInt('page', 1),5);
         $gender = new Gender();
@@ -91,37 +91,6 @@ class EmployerController extends Controller
     protected function getEntityManager()
     {
         return $this->getDoctrine()->getEntityManager();
-    }
-
-    /**
-     * Generate correct array of workers, that can be sent to the layout
-     *
-     * $workerModelsArray should be an array of Worker entities, which we take using doctrine manager
-     *
-     * @param array $workersModelsArray
-     * @return array
-     */
-    protected function generateWorkersArray($workersModelsArray)
-    {
-        $workerModel = new Worker();
-        $workers      = array();
-        /** @var \WorkBundle\Entity\Worker $worker */
-        foreach ($workersModelsArray as $worker) {
-            $tz  = new \DateTimeZone('Europe/Kiev');
-            $workers[] = array('id'         => $worker->getId(),
-                               'name'       => $worker->getFirstName() . ' ' . $worker->getLastName(),
-                               'phone'      => $worker->getPhone(),
-                               'age'        => $worker->getDate()?\DateTime::createFromFormat('d/m/Y', $worker->getDate()->format('d/m/Y'), $tz)
-                                                ->diff(new \DateTime('now', $tz))
-                                                ->y:'user didn`t specified his age.',
-                               'city'       => $worker->getCity() ? $worker->getCity(): 'User didn`t specified the city.',
-                               'aboutMe'    => $worker->getAboutMe() ? $worker->getAboutMe() : 'User didn`t filled any bio.',
-                               'categories' => $workerModel->getCategoriesForWorker($worker->getId(), $this->getEntityManager()),
-                               'educations' => $workerModel->getEducationForWorker($worker->getId(), $this->getEntityManager()),
-                                'postDate' => $worker->getPostDate()->format('Y-m-d'),
-            );
-        }
-        return $workers;
     }
 
     /**

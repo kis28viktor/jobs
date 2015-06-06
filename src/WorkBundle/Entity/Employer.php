@@ -585,4 +585,36 @@ class Employer
         $em->persist($employer);
         $em->flush();
     }
+
+    /**
+     * Generate array of employers for view
+     *
+     * @param $employersModels
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @return array
+     */
+    public function generateEmployersArray($employersModels, $entityManager)
+    {
+        $employers = array();
+        $employerModel = new Employer();
+        /** @var \WorkBundle\Entity\Employer $employer */
+        foreach ($employersModels as $employer) {
+            $employers[] = array(
+                'id' => $employer->getId(),
+                'name' => $employer->getFirstName() . ' ' . $employer->getLastName(),
+                'phone' => $employer->getPhone(),
+                'city' => $employer->getCity(),
+                'aboutMe' => $employer->getAboutMe(),
+                'ageFrom' => $employer->getAgeFrom(),
+                'ageTo' => $employer->getAgeTo(),
+                'priceFrom' => $employer->getPriceFrom(),
+                'priceTo' => $employer->getPriceTo(),
+                'termFrom' => $employer->getTermFrom()?$employer->getTermFrom()->format('Y-m-d'): 'Employer didn`t specified term from.',
+                'termTo' => $employer->getTermTo()?$employer->getTermTo()->format('Y-m-d'): 'Employer didn`t specified term to.',
+                'categories' => $employerModel->getCategoriesForEmployer($employer->getId(), $entityManager),
+                'postDate' => $employer->getPostDate()->format('Y-m-d'),
+            );
+        }
+        return $employers;
+    }
 }
