@@ -32,3 +32,7 @@ admin_issues:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+all_issues:
+    path: /allissues
+    defaults: { _controller: WorkBundle:Default:allIssues }
