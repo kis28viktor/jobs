@@ -1,28 +1,56 @@
 {% extends '@Work/layout.html.twig' %}
-{% block body %}
-    <div>
+{% block content %}
+    <div class="large-8 columns">
         <form action="{{ path('add_work') }}" method="post">
-            First name: <input type="text" name="firstName" required>
-            <br> Last name: <input type="text" name="lastName" required>
-            <br> Phone: <input type="text" name="phone" required>
-            <br>Gender:<select name="gender" required>
-                {% for key,gender in genders %}
-                    <option value="{{ key }}">{{ gender }}</option>
-                {% endfor %}
-            </select>
-            <br>City: <input type="text" name="city">
-            <br>Term from: <input type="date" name="termFrom">
-            <br>Term to: <input type="date" name="termTo">
-            <br>Age from: <input type="number" name="ageFrom">
-            <br>Age to: <input type="number" name="ageTo">
-            <br>Price from: <input type="number" name="priceFrom">
-            <br>Price to: <input type="number" name="priceTo">
-            <br>Tell about yourself: <textarea name="aboutMe"></textarea>
-            <br><br>Choose your categories:
-            {% for key,category in categories  %}
-                <br><input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
-            {% endfor %}
-            <br><input type="submit">
+            <div class="row">
+                <div class="large-4 columns">
+                    First name: <input type="text" name="firstName" required>
+                </div>
+                <div class="large-4 columns">
+                    Last name: <input type="text" name="lastName" required>
+                </div>
+                <div class="large-4 columns">
+                    Phone: <input type="text" name="phone" required>
+                </div>
+            </div>
+            Tell about yourself: <textarea name="aboutMe"></textarea>
+            <div class="row">
+                <div class="large-4 columns">
+                    City: <input type="text" name="city">
+                </div>
+                <div class="large-4 columns">
+                    Age from: <input type="number" name="ageFrom">
+                </div>
+                <div class="large-4 columns">
+                    Age to: <input type="number" name="ageTo">
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-4 columns">
+                    Gender:<select name="gender" required>
+                        {% for key,gender in genders %}
+                            <option value="{{ key }}">{{ gender }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="large-4 columns">
+                    Price from: <input type="number" name="priceFrom">
+                </div>
+                <div class="large-4 columns">
+                    Price to: <input type="number" name="priceTo">
+                </div>
+            </div>
+            <div class="well well-small">
+                <h6><label>Оберіть категорії:</label></h6>
+                <div class="row" style="text-align: left">
+                    {% for key,category in categories  %}
+                        <div class="large-6 columns">
+                            <input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <input type="submit">
         </form>
     </div>
 {% endblock %}

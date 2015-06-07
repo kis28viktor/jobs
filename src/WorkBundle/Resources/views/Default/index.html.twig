@@ -1,32 +1,88 @@
 {% extends "@Work/layout.html.twig" %}
 {% block content %}
-    <div class="large-8 columns">
-        <div class="show-for-large-up" style="height: 100px"></div>
+    <div class="large-8 columns main">
+        <div class="show-for-medium-up">
+            <div class="row" style="color: #c3daf9">
+                <div class="large-3 columns">
+                    <p>
+                        Вінниця <br>
+                        Дніпродзержинськ <br>
+                        Дніпропетровськ <br>
+                        Донецьк <br>
+                        Житомир <br>
+                        Запоріжжя <br>
+                        Івано-Франківськ <br>
+                    </p>
+                </div>
+                <div class="large-3 columns">
+                    <p>
+                        Кіровоград <br>
+                        Кривий Ріг <br>
+                        Луцьк <br>
+                        Львів <br>
+                        Маріуполь <br>
+                        Миколаїв <br>
+                        Мукачеве <br>
+                    </p>
+                </div>
+                <div class="large-3 columns">
+                    <p>
+                        Одеса <br>
+                        Миколаїв <br>
+                        Полтава <br>
+                        Рівне <br>
+                        Севастополь <br>
+                        Суми <br>
+                        Тернопіль <br>
+                    </p>
+                </div>
+                <div class="large-3 columns">
+                    <p>
+                        Ужгород <br>
+                        Харків <br>
+                        Хмельницький <br>
+                        Черкаси <br>
+                        Чернівці <br>
+                        Чернігів <br>
+                    </p>
+                </div>
+            </div>
+            <div class="row collapse" style="margin: 0 -0.9375em!important;">
+                <div class="small-4 columns large-offset-3">
+                    <input type="text" placeholder="Введіть місто">
+                </div>
+                <div class="small-2 columns end">
+                    <a href="#" class="button postfix">Пошук</a>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="large-6 columns" style="text-align: center;">
-                <a href="{{ path('find_work') }} " class="button btn">
-                    Хочеш найти роботу?
+                <a href="{{ path('post_worker') }}"  class="button btn">
+                    Шукаєш роботу?
                 </a>
             </div>
             <div class="large-6 columns" style="text-align: center;">
                 <a href=" {{ path('post_work') }}"  class="button btn">
-                    Хочеш залишити вакансію?
+                    Шукаєш працівника?
                 </a>
             </div>
         </div>
-        <br>
+
         <div class="row">
             <div class="large-6 columns" style="text-align: center;">
-                <a href=" {{ path('find_worker') }}"  class="button btn">
-                    Хочеш найти працівника?
+                <a href="{{ path('find_work') }} " class="button btn">
+                    Список вакансій
                 </a>
             </div>
             <div class="large-6 columns" style="text-align: center;">
-                <a href="{{ path('post_worker') }}"  class="button btn">
-                    Хочеш залишити своє резюме?
+                <a href=" {{ path('find_worker') }}"  class="button btn">
+                    Список анкет
                 </a>
             </div>
         </div>
-        <div class="show-for-large-up" style="height: 100px"></div>
+
+        <div class="show-for-medium-up" style="height: 100px"></div>
     </div>
 {% endblock %}

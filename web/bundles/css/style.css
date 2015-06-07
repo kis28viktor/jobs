@@ -1,16 +1,16 @@
 .sidebar {
-    background-color: #184E86;
     height: 100%;
 }
 .header {
-    background-color: #002a80;
-    height: 100px;
+    /*background: #c3daf9;*/
+    background: transparent;
     width: 100%;
     top: 0;
     position: relative;
 }
 .footer {
-    background-color: #002a80;
+    /*background: #c3daf9;*/
+    background: transparent;
     height: 300px;
     width: 100%;
     bottom: 0;
@@ -23,4 +23,16 @@
 .btn {
     width: 297px;
     height: 100px;
+    opacity: 0.7;
+    filter: alpha(Opacity=70);
+    background-color: #414146!important;
+}
+.btn :hover .btn:focus {
+    background-color: #ff6c5d!important;
+}
+.main {
+    /*background: #c3daf9;*/
+    background: transparent;
+    border: 2px solid #b2c2db;
+    border-radius: 4px;
 }

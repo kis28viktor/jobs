@@ -54,67 +54,63 @@
                         </select>
                     </div>
                 </div>
-
-
-
-
-                Term from: <input type="date" name="termFrom" {% if termFrom %}value="{{ termFrom }}"{% endif %}>
-                Term to: <input type="date" name="termTo" {% if termTo %}value="{{ termTo }}"{% endif %}>
-
-                <br>
-                <br><input type="submit" value="find">
+                <input type="submit" value="find">
             </div>
 
         </form>
     </div>
 {% endblock %}
 {% block table %}
-    <div class="count">
-        Total <b>{{ pagination.getTotalItemCount }}</b> items found:
-    </div>
-    <table style="border: 1px solid #000000; word-break: break-all; width: 100%">
-        <tr style="border: 1px solid #000000;">
-            <td>Name</td>
-            <td>Phone</td>
-            <td>City</td>
-            <td>Age from</td>
-            <td>Age to</td>
-            <td>Price from</td>
-            <td>Price to</td>
-            <td>Term from</td>
-            <td>Term to</td>
-            <td>Categories</td>
-            <td>About Me</td>
-            <td>Post date</td>
-        </tr>
-        {% for employer in pagination %}
-            <tr >
-                <td>{{employer.name}}</td>
-                <td>{{employer.phone}}</td>
-                <td>{{employer.city}}</td>
-                <td>{{employer.ageFrom}}</td>
-                <td>{{employer.ageTo}}</td>
-                <td>{{employer.priceFrom}}</td>
-                <td>{{employer.priceTo}}</td>
-                <td>{{employer.termFrom}}</td>
-                <td>{{employer.termTo}}</td>
-                <td>{% for category in employer.categories %}
-                        {% if category is iterable %}
-                            <br>
-                            {% for categoryName in category %}
-                                {{ categoryName }}<br>
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="count">
+                Total <b>{{ pagination.getTotalItemCount }}</b> items found:
+            </div>
+            <table class="table table-condensed">
+                <thead>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>City</th>
+                <th>Age from</th>
+                <th>Age to</th>
+                <th class="show-for-large-up">Price from</th>
+                <th>Price to</th>
+                <th>Categories</th>
+                <th class="show-for-large-up">About Me</th>
+                <th class="show-for-large-up">Post date</th>
+                </thead>
+                {% for employer in pagination %}
+                    <tbody>
+                    <tr >
+                        <td>{{employer.name}}</td>
+                        <td>{{employer.phone}}</td>
+                        <td>{{employer.city}}</td>
+                        <td>{{employer.ageFrom}}</td>
+                        <td>{{employer.ageTo}}</td>
+                        <td class="show-for-large-up">{{employer.priceFrom}}</td>
+                        <td>{{employer.priceTo}}</td>
+                        <td>{% for category in employer.categories %}
+                                {% if category is iterable %}
+                                    <br>
+                                    {% for categoryName in category %}
+                                        {{ categoryName }}<br>
+                                    {% endfor %}
+                                {% else %}
+                                    {{ category }}
+                                {% endif %}
                             {% endfor %}
-                        {% else %}
-                            {{ category }}
-                        {% endif %}
-                    {% endfor %}
-                </td>
-                <td style="width: 30%;">{{employer.aboutMe}}</td>
-                <td>{{ employer.postDate }}</td>
-            </tr>
-        {% endfor %}
-    </table>
-    <div class="navigation">
-        {{ knp_pagination_render(pagination) }}
+                        </td>
+                        <td style="width: 30%;" class="show-for-large-up">{{employer.aboutMe}}</td>
+                        <td class="show-for-large-up">{{ employer.postDate }}</td>
+                    </tr>
+                    </tbody>
+
+                {% endfor %}
+            </table>
+            <div class="navigation">
+                {{ knp_pagination_render(pagination) }}
+            </div>
+        </div>
     </div>
+
 {% endblock %}
