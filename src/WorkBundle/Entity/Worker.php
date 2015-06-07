@@ -376,9 +376,9 @@ class Worker {
                     $whereCondition .= 'p.gender = :gender AND ';
                 }
                 if ($whereCondition=='') {
-                    $workers = $workersRepository->findAll();
+                    $workers = $workersRepository->findBy(array(), array('postDate' => 'DESC'));
                 } else {
-                    $workerModels->where(substr($whereCondition, 0, -5));
+                    $workerModels->where(substr($whereCondition, 0, -5))->orderBy('p.postDate', 'DESC');
                     $workers = $workerModels->getQuery()->getResult();
                 }
                 if (isset($filterData['categories']) && $filterData['categories'][0] != 'all') {
@@ -395,10 +395,10 @@ class Worker {
                 }
                 return $workers;
             } else {
-                $workerModels = $workersRepository->findAll();
+                $workerModels = $workersRepository->findBy(array(), array('postDate' => 'DESC'));
             }
         } else {
-            $workerModels = $workersRepository->findAll();
+            $workerModels = $workersRepository->findBy(array(), array('postDate' => 'DESC'));
         }
         return $workerModels;
     }

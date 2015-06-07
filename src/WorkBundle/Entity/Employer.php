@@ -486,9 +486,9 @@ class Employer
                     $whereCondition .= 'p.termTo >= :termTo AND ';
                 }
                 if ($whereCondition == '') {
-                    $employers = $employersRepository->findAll();
+                    $employers = $employersRepository->findBy(array(), array('postDate' => 'DESC'));
                 } else {
-                    $employerModels->where(substr($whereCondition, 0, -5));
+                    $employerModels->where(substr($whereCondition, 0, -5))->orderBy('p.postDate', 'DESC');
                     $employers = $employerModels->getQuery()->getResult();
                 }
                 if (isset($filterData['categories']) && $filterData['categories'][0] != 'all') {
@@ -505,10 +505,10 @@ class Employer
                 }
                 return $employers;
             } else {
-                $employerModels = $employersRepository->findAll();
+                $employerModels = $employersRepository->findBy(array(), array('postDate' => 'DESC'));
             }
         } else {
-            $employerModels = $employersRepository->findAll();
+            $employerModels = $employersRepository->findBy(array(), array('postDate' => 'DESC'));
         }
         return $employerModels;
     }
@@ -556,27 +556,27 @@ class Employer
         if($formData['city']){
             $employer->setCity($formData['city']);
         }
-        if($formData['termFrom']){
+        if(!empty($formData['termFrom'])){
             $date = new \DateTime($formData['termFrom']);
             $employer->setTermFrom($date);
         }
-        if($formData['termTo']){
+        if(!empty($formData['termTo'])){
             $date = new \DateTime($formData['termTo']);
             $employer->setTermTo($date);
         }
-        if ($formData['ageFrom']) {
+        if (!empty($formData['ageFrom'])) {
            $employer->setAgeFrom($formData['ageFrom']);
         }
-        if ($formData['ageTo']) {
+        if (!empty($formData['ageTo'])) {
             $employer->setAgeTo($formData['ageTo']);
         }
-        if ($formData['priceFrom']) {
+        if (!empty($formData['priceFrom'])) {
             $employer->setPriceFrom($formData['priceFrom']);
         }
-        if ($formData['priceTo']) {
+        if (!empty($formData['priceTo'])) {
             $employer->setPriceTo($formData['priceTo']);
         }
-        if($formData['aboutMe']){
+        if(!empty($formData['aboutMe'])){
             $employer->setAboutMe($formData['aboutMe']);
         }
         if(isset($formData['categories'])){

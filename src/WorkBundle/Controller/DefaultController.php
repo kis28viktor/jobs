@@ -20,9 +20,9 @@ class DefaultController extends Controller
     {
         $category = new Category();
         $gender = new Gender();
-        if ($request->query->get('issueType')=='workers') {
+        if ($this->getFirst($request->query->get('issueType'))=='workers') {
             $issuesData = $this->generateWorkers($request);
-        } elseif ($request->query->get('issueType') == 'employers') {
+        } elseif ($this->getFirst($request->query->get('issueType')) == 'employers') {
             $issuesData = $this->generateEmployers($request);
         } else {
             $issuesData = array_merge($this->generateEmployers($request), $this->generateWorkers($request));
@@ -36,6 +36,7 @@ class DefaultController extends Controller
             'gender' => $request->query->get('gender') ? $request->query->get('gender') : null,
             'categories' => $category->getAllCategories($this->getEntityManager()),
             'curCategory' => $request->query->get('categories')? $this->getFirst($request->query->get('categories')) : null,
+            'curIssueType' => $request->query->get('issueType')? $this->getFirst($request->query->get('issueType')) : null,
         ));
     }
     /**
