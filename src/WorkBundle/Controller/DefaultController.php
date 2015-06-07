@@ -2,6 +2,8 @@
 
 namespace WorkBundle\Controller;
 
+use Proxies\__CG__\WorkBundle\Entity\Category;
+use Proxies\__CG__\WorkBundle\Entity\Gender;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use WorkBundle\Entity\Employer;
@@ -16,12 +18,8 @@ class DefaultController extends Controller
 
     public function allIssuesAction(Request $request)
     {
-        $selectedCity = $request->query->get('city');
-        var_dump($selectedCity);die;
-        echo '<pre>';
-
-        $employers = new Employer();
-        $issuesData = array();
+        $category = new Category();
+        $gender = new Gender();
         if ($request->query->get('issueType')=='workers') {
             $issuesData = $this->generateWorkers($request);
         } elseif ($request->query->get('issueType') == 'employers') {
@@ -29,7 +27,16 @@ class DefaultController extends Controller
         } else {
             $issuesData = array_merge($this->generateEmployers($request), $this->generateWorkers($request));
         }
-        var_dump($issuesData);die;
+        $paginator = $this->get('knp_paginator');
+        $viewData = $paginator->paginate($issuesData,$request->query->getInt('page', 1),5);
+        return $this->render('WorkBundle:Default:allIssues.html.twig',array(
+            'issuesData' => $viewData,
+            'genders' => $gender->getAllGendersArray($this->getEntityManager()),
+            'city'    => $request->query->get('city') ? $request->query->get('city') : null,
+            'gender' => $request->query->get('gender') ? $request->query->get('gender') : null,
+            'categories' => $category->getAllCategories($this->getEntityManager()),
+            'curCategory' => $request->query->get('categories')? $this->getFirst($request->query->get('categories')) : null,
+        ));
     }
     /**
      * Get Entity Manager
@@ -77,5 +84,16 @@ class DefaultController extends Controller
             unset($employersArray[$key]['termTo']);
         }
         return $employersArray;
+    }
+
+    /**
+     * Get first element from an array
+     *
+     * @param $array
+     * @return mixed
+     */
+    protected function getFirst($array)
+    {
+        return array_shift($array);
     }
 }

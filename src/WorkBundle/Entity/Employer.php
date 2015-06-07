@@ -457,31 +457,31 @@ class Employer
                     $employerModels->setParameter('city', $filterData['city']);
                     $whereCondition .= 'p.city = :city AND ';
                 }
-                if (isset($filterData['ageFrom'])) {
+                if (!empty($filterData['ageFrom'])) {
                     $employerModels->setParameter('ageFrom', $filterData['ageFrom']);
                     $whereCondition .= 'p.ageFrom >= :ageFrom AND ';
                 }
-                if (isset($filterData['ageTo'])) {
+                if (!empty($filterData['ageTo'])) {
                     $employerModels->setParameter('ageTo', $filterData['ageTo']);
                     $whereCondition .= 'p.ageTo <= :ageTo AND ';
                 }
-                if (isset($filterData['priceFrom'])) {
+                if (!empty($filterData['priceFrom'])) {
                     $employerModels->setParameter('priceFrom', $filterData['priceFrom']);
                     $whereCondition .= 'p.priceFrom >= :priceFrom AND ';
                 }
-                if (isset($filterData['priceTo'])) {
+                if (!empty($filterData['priceTo'])) {
                     $employerModels->setParameter('priceTo', $filterData['priceTo']);
                     $whereCondition .= 'p.priceTo <= :priceTo AND ';
                 }
-                if (isset($filterData['gender']) && $filterData['gender'][0] != 'all') {
+                if (!empty($filterData['gender']) && $filterData['gender'][0] != 'all') {
                     $employerModels->setParameter('gender', $filterData['gender'][0]);
                     $whereCondition .= 'p.gender = :gender AND ';
                 }
-                if (isset($filterData['termFrom'])&&$filterData['termFrom'] != '') {
+                if (!empty($filterData['termFrom'])&&$filterData['termFrom'] != '') {
                     $employerModels->setParameter('termFrom', $filterData['termFrom']);
                     $whereCondition .= 'p.termFrom <= :termFrom AND ';
                 }
-                if (isset($filterData['termFrom'])&&$filterData['termTo'] != '') {
+                if (!empty($filterData['termFrom'])&&$filterData['termTo'] != '') {
                     $employerModels->setParameter('termTo', $filterData['termFrom']);
                     $whereCondition .= 'p.termTo >= :termTo AND ';
                 }
