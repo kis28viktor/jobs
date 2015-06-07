@@ -361,12 +361,12 @@ class Worker {
                     $workerModels->setParameter('city', $filterData['city']);
                     $whereCondition .= 'p.city = :city AND ';
                 }
-                if (isset($filterData['ageFrom'])) {
+                if ($filterData['ageFrom']) {
                     $date = $this->getDateForAge($filterData['ageFrom']);
                     $workerModels->setParameter('ageFrom', $date);
                     $whereCondition .= 'p.date < :ageFrom AND ';
                 }
-                if (isset($filterData['ageTo'])) {
+                if ($filterData['ageTo']) {
                         $date = $this->getDateForAge($filterData['ageTo'], true);
                         $workerModels->setParameter('ageTo', $date);
                         $whereCondition .= 'p.date > :ageTo AND ';
