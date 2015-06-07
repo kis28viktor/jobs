@@ -433,12 +433,17 @@ class Employer
      *
      * @param Request                                                                       $request
      * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @param bool $post
      * @return array
      */
-    public function getAllEmployersByFilter(Request $request, $entityManager)
+    public function getAllEmployersByFilter(Request $request, $entityManager, $post = true)
     {
         $employersRepository = $entityManager->getRepository('WorkBundle:Employer');
-        $filterData          = $request->request->all();
+        if($post == true) {
+            $filterData          = $request->request->all();
+        } else {
+            $filterData          = $request->query->all();
+        }
         if ($filterData) {
             if (!empty($filterData['city']) || !empty($filterData['ageFrom']) || !empty($filterData['ageTo'])
                 || !empty($filterData['priceFrom']) || !empty($filterData['priceTo'])
@@ -452,19 +457,19 @@ class Employer
                     $employerModels->setParameter('city', $filterData['city']);
                     $whereCondition .= 'p.city = :city AND ';
                 }
-                if ($filterData['ageFrom']) {
+                if (isset($filterData['ageFrom'])) {
                     $employerModels->setParameter('ageFrom', $filterData['ageFrom']);
                     $whereCondition .= 'p.ageFrom >= :ageFrom AND ';
                 }
-                if ($filterData['ageTo']) {
+                if (isset($filterData['ageTo'])) {
                     $employerModels->setParameter('ageTo', $filterData['ageTo']);
                     $whereCondition .= 'p.ageTo <= :ageTo AND ';
                 }
-                if ($filterData['priceFrom']) {
+                if (isset($filterData['priceFrom'])) {
                     $employerModels->setParameter('priceFrom', $filterData['priceFrom']);
                     $whereCondition .= 'p.priceFrom >= :priceFrom AND ';
                 }
-                if ($filterData['priceTo']) {
+                if (isset($filterData['priceTo'])) {
                     $employerModels->setParameter('priceTo', $filterData['priceTo']);
                     $whereCondition .= 'p.priceTo <= :priceTo AND ';
                 }

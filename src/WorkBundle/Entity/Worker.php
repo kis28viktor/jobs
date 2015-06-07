@@ -338,12 +338,17 @@ class Worker {
      *
      * @param Request $request
      * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $entityManager
+     * @param bool $post
      * @return array
      */
-    public function getAllWorkersWithPostFilter(Request $request, $entityManager)
+    public function getAllWorkersWithPostFilter(Request $request, $entityManager, $post = true)
     {
         $workersRepository = $entityManager->getRepository('WorkBundle:Worker');
-        $filterData        = $request->request->all();
+        if($post == true) {
+            $filterData        = $request->request->all();
+        } else {
+            $filterData        = $request->query->all();
+        }
         if ($filterData) {
             if (!empty($filterData['city']) || !empty($filterData['ageFrom'])
                 || !empty($filterData['ageTo'])
@@ -356,12 +361,12 @@ class Worker {
                     $workerModels->setParameter('city', $filterData['city']);
                     $whereCondition .= 'p.city = :city AND ';
                 }
-                if ($filterData['ageFrom']) {
+                if (isset($filterData['ageFrom'])) {
                     $date = $this->getDateForAge($filterData['ageFrom']);
                     $workerModels->setParameter('ageFrom', $date);
                     $whereCondition .= 'p.date < :ageFrom AND ';
                 }
-                if ($filterData['ageTo']) {
+                if (isset($filterData['ageTo'])) {
                         $date = $this->getDateForAge($filterData['ageTo'], true);
                         $workerModels->setParameter('ageTo', $date);
                         $whereCondition .= 'p.date > :ageTo AND ';
