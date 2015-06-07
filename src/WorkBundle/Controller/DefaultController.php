@@ -17,6 +17,7 @@ class DefaultController extends Controller
     public function allIssuesAction(Request $request)
     {
         $selectedCity = $request->query->get('city');
+        var_dump($selectedCity);die;
         echo '<pre>';
 
         $employers = new Employer();

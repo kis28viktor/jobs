@@ -1,60 +1,67 @@
 {% extends "@Work/layout.html.twig" %}
 {% block content %}
+    <script>
+        function setValue(){
+            return document.getElementById('city').toString();
+        }
+    </script>
     <div class="large-8 columns main">
         <div class="show-for-medium-up">
             <div class="row" style="color: #c3daf9">
                 <div class="large-3 columns">
                     <p>
-                        Вінниця <br>
-                        Дніпродзержинськ <br>
-                        Дніпропетровськ <br>
-                        Донецьк <br>
-                        Житомир <br>
-                        Запоріжжя <br>
-                        Івано-Франківськ <br>
+                        <a href="{{ path('all_issues',{'city': 'Вінниця'}) }}">Вінниця</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Дніпродзержинськ'}) }}">Дніпродзержинськ</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Дніпропетровськ'}) }}">Дніпропетровськ</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Донецьк'}) }}">Донецьк</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Житомир'}) }}">Житомир</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Запоріжжя'}) }}">Запоріжжя</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Івано-Франківськ'}) }}">Івано-Франківськ</a> <br>
                     </p>
                 </div>
                 <div class="large-3 columns">
                     <p>
-                        Кіровоград <br>
-                        Кривий Ріг <br>
-                        Луцьк <br>
-                        Львів <br>
-                        Маріуполь <br>
-                        Миколаїв <br>
-                        Мукачеве <br>
+                        <a href="{{ path('all_issues',{'city': 'Кіровоград'}) }}">Кіровоград</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Кривий Ріг'}) }}">Кривий Ріг</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Луцьк'}) }}">Луцьк</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Львів'}) }}">Львів</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Маріуполь'}) }}">Маріуполь</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Миколаїв'}) }}">Миколаїв</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Мукачеве'}) }}">Мукачеве</a> <br>
                     </p>
                 </div>
                 <div class="large-3 columns">
                     <p>
-                        Одеса <br>
-                        Миколаїв <br>
-                        Полтава <br>
-                        Рівне <br>
-                        Севастополь <br>
-                        Суми <br>
-                        Тернопіль <br>
+                        <a href="{{ path('all_issues',{'city': 'Одеса'}) }}">Одеса</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Миколаїв'}) }}">Миколаїв</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Полтава'}) }}">Полтава</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Рівне'}) }}">Рівне</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Севастополь'}) }}">Севастополь</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Суми'}) }}">Суми</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Тернопіль'}) }}">Тернопіль</a> <br>
                     </p>
                 </div>
                 <div class="large-3 columns">
                     <p>
-                        Ужгород <br>
-                        Харків <br>
-                        Хмельницький <br>
-                        Черкаси <br>
-                        Чернівці <br>
-                        Чернігів <br>
+                        <a href="{{ path('all_issues',{'city': 'Ужгород'}) }}">Ужгород</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Харків'}) }}">Харків</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Хмельницький'}) }}">Хмельницький</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Черкаси'}) }}">Черкаси</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Чернівці'}) }}">Чернівці</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Чернігів'}) }}">Чернігів</a> <br>
                     </p>
                 </div>
             </div>
+            <form action="{{ path('all_issues') }}" method="get">
             <div class="row collapse" style="margin: 0 -0.9375em!important;">
                 <div class="small-4 columns large-offset-3">
-                    <input type="text" placeholder="Введіть місто">
+                    <input type="text" placeholder="Введіть місто" id="city" name="city">
                 </div>
                 <div class="small-2 columns end">
-                    <a href="#" class="button postfix">Пошук</a>
+                    <input type="submit" value="Пошук" class="button postfix">
                 </div>
             </div>
+            </form>
         </div>
 
         <div class="row">
