@@ -31,7 +31,7 @@
                         <li data-orbit-slide="headline-1">
                             <div style="margin-left: 30px">
                                 <h2>Хочеш знайти роботу?</h2>
-                                <h3>Залиш свою анкету у нас на сайті і роботодавець позвонить тобі</h3>
+                                <h3>Залиш свою анкету у нас на сайті і роботодавець подзвонить тобі</h3>
                                 <h5>На нашому сайті знаходиться 20569 вакансій</h5>
                             </div>
                         </li>
@@ -88,15 +88,20 @@
     {% endblock %}
     <div class="footer">
         <div class="row">
-            <div class="large-6 columns show-for-large-up">span5</div>
-            <div class="large-6 columns">span5</div>
+            <div class="large-6 columns show-for-large-up">
+
+            </div>
+            <div class="large-6 columns">
+
+            </div>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('bundles/js/vendor/jquery.js') }}"></script>
-    <script src="{{ asset('bundles/js/foundation/foundation.js') }}"></script>
-    <script src="{{ asset('bundles/js/foundation/foundation.orbit.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/js/vendor/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/js/foundation/foundation.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/js/foundation/foundation.orbit.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/js/bootstrap.js') }}"></script>
     <script>
         $(document).foundation();
         $(document).foundation('orbit', 'reflow');

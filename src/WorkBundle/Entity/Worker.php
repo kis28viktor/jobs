@@ -568,4 +568,9 @@ class Worker {
         }
         return $workers;
     }
+
+    public function getGenderName()
+    {
+        return $this->gender->getName();
+    }
 }

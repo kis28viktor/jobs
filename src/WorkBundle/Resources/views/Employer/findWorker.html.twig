@@ -20,27 +20,29 @@
                 <div class="center">
                     <div class="row">
                         <div class="large-4 columns">
-                            <label>City: </label>
-                            <input type="text" name="city"
-                                   {% if city %}value="{{ city }}"{% endif %}>
+                            <label>Місто: </label>
+                            <div>
+                                <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false"
+                                       name="city"{% if city %}value="{{ city }}"{% endif %}>
+                            </div>
                         </div>
                         <div class="large-4 columns">
-                            <label>Age from: </label>
+                            <label>Вік від: </label>
                             <input type="number" name="ageFrom"
                                    {% if ageFrom %}value="{{ ageFrom }}"{% endif %}>
                         </div>
                         <div class="large-4 columns">
-                            <label>Age to: </label>
+                            <label>Вік до: </label>
                             <input type="number" name="ageTo"
                                    {% if ageTo %}value="{{ ageTo }}"{% endif %}>
                         </div>
                     </div>
                     <div class="row">
                         <div class="large-6 columns">
-                            <label>Gender: </label>
+                            <label>Стать: </label>
                             <select name="gender[]">
                                 <option disabled>gender</option>
-                                <option value="all">all</option>
+                                <option value="all">Не важливо</option>
                                 {% for key,currentGender in genders %}
                                     <option value="{{ key }}"
                                             {% if (gender) and (gender[0] == key) %}selected {% endif %}>
@@ -49,10 +51,10 @@
                             </select>
                         </div>
                         <div class="large-6 columns">
-                            <label>Choose your categories </label>
+                            <label>Виберіть категорію</label>
                             <select name="categories[]">
-                                <option selected disabled>Choose the category</option>
-                                <option value="all">all</option>
+                                <option selected disabled>Виберіть категорію</option>
+                                <option value="all">Всі категорії</option>
                                 {% for key,category in categories  %}
                                     <option value="{{ key }}"{% if (curCategory) and (curCategory == key) %} selected{% endif %}>{{ category }}</option>
                                 {% endfor %}
@@ -69,52 +71,51 @@
     <div class="row">
         <div class="large-12 columns">
             <div class="count">
-                Total <b>{{ pagination.getTotalItemCount }}</b> items found:
+                Всього <b>{{ pagination.getTotalItemCount }}</b> знайдено:
             </div>
-            <table class="table table-condensed" style="word-break: break-all; width: 100%">
-                <thead>
-                <th style="white-space: nowrap">ПІБ</th>
-                <th style="white-space: nowrap">Телефон</th>
-                <th style="white-space: nowrap">Вік</th>
-                <th style="white-space: nowrap">Місто</th>
-                <th style="white-space: nowrap" class="show-for-large-up">Про мене</th>
-                <th style="white-space: nowrap">Сфера</th>
-                <th style="white-space: nowrap" class="show-for-large-up">Освіта</th>
-                </thead>
-                <tbody>
-                {% for worker in pagination %}
-                    <tr {% if loop.index is odd %}class="color"{% endif %}">
-                        <td>{{worker.name}}</td>
-                        <td style="white-space: nowrap">{{worker.phone}}</td>
-                        <td>{{worker.age}}</td>
-                        <td>{{worker.city}}</td>
-                        <td style="width: 30%;" class="show-for-large-up">{{worker.aboutMe}}</td>
-                        <td>{% for category in worker.categories %}
-                    {% if category is iterable %}
-                        <br>
-                        {% for categoryName in category %}
-                            {{ categoryName }}<br>
-                        {% endfor %}
-                    {% else %}
-                        {{ category }}
-                    {% endif %}
-                {% endfor %}
-                        </td>
-                        <td class="show-for-large-up">{% for education in worker.educations %}
-                    {% if education is iterable %}
-                        <br>
-                        Level: {{education.level}}<br>
-                        Name: {{ education.name }}<br>
-                        City: {{ education.city }}
-                    {% else %}
-                        {{ education }}
-                    {% endif %}
-                {% endfor %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+
+            {% for worker in pagination %}
+                <div class="panel">
+                    <h3>{{worker.name}}, вік {{worker.age}}, місто {{worker.city}}.</h3>
+                    <div class="row">
+                        <div class="large-6 columns">
+                            <p>
+                                Шукаю роботу у сферах діяльності:
+                                {% for category in worker.categories %}
+                                    {% if category is iterable %}
+                                        <br>
+                                        {% for categoryName in category %}
+                                            {{ categoryName }}
+                                        {% endfor %}
+                                    {% else %}
+                                        {{ category }}
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                        <div class="large-6 columns">
+                            <p>
+                                Освіта:
+                                {% for education in worker.educations %}
+                                    {% if education is iterable %}
+                                        <br>
+                                        Рівень: {{education.level}}<br>
+                                        Назва закладу: {{ education.name }}<br>
+                                        Місто: {{ education.city }}
+                                    {% else %}
+                                        {{ education }}
+                                    {% endif %}
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+                    <p style="word-wrap: break-word;">Про мене:<br>
+                        {{worker.aboutMe}}
+                    </p>
+                    <h4>Номер телефону: {{worker.phone}}</h4>
+                </div>
+            {% endfor %}
+
             <div class="navigation">
                 {{ knp_pagination_render(pagination) }}
             </div>
@@ -126,5 +127,28 @@
     <script src="{{ asset('bundles/js/bootstrap.js') }}"></script>
     <script>
         $('.carousel').carousel();
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/js/typeahead.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('input.typeahead').typeahead({
+                name: 'accounts',
+                local: [
+                    'Алушта','Алчевськ','Бердичів','Бердянськ','Біла Церква','Білгород-Дністровський',
+                    'Бориспіль','Бровари','Вишневе','Вінниця','Вознесенськ','Володимир-Волинський',
+                    'Горлівка','Дніпродзержинськ','Дніпропетровськ','Донецьк','Дрогобич','Дунаївці',
+                    'Євпаторія','Житомир','Жовті Води','Запоріжжя','Івано-Франківськ','Ізмаїл',
+                    'Іллічівськ','Кам"янець-Подільський','Керч','Кіровоград','Ковель','Коломия',
+                    'Комсомольськ','Коростень','Котовськ','Краматорськ','Кременчук','Кривий Ріг',
+                    'Лубни','Луганськ','Луцьк','Львів','Макіївка','Маріуполь','Мелітополь','Миколаїв',
+                    'Миргород','Мукачеве','Ніжин','Нікополь','Нова Каховка','Новоград-Волинський',
+                    'Обухів','Одеса','Олександрія','Павлоград','Первомайськ(Миколаїв)','Полтава',
+                    'Рівне','Севастополь','Сєверодонецьк','Сімферополь','Славута','Сміла','Сторожинець',
+                    'Стрий','Суми','Тернопіль','Ужгород','Умань','Феодосія','Харків','Херсон','Хмельницький',
+                    'Черкаси','Чернівці','Чернігів','Шостка','Южноукраїнськ','Ялта']
+            });
+            $( 'span.twitter-typeahead' )
+                    .css( 'width', '100%' );
+        });
     </script>
 {% endblock %}

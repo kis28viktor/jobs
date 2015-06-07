@@ -2,9 +2,9 @@
 {% block content %}
     <div class="large-8 columns main">
         <div class="show-for-medium-up">
-            <div class="row" style="color: #c3daf9">
+            <div class="row" style="color: #c3daf9; margin-top: 5px">
                 <div class="large-3 columns">
-                    <p>
+                    <p style="line-height: 1;">
                         <a href="{{ path('all_issues',{'city': 'Вінниця'}) }}">Вінниця</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Дніпродзержинськ'}) }}">Дніпродзержинськ</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Дніпропетровськ'}) }}">Дніпропетровськ</a> <br>
@@ -15,20 +15,19 @@
                     </p>
                 </div>
                 <div class="large-3 columns">
-                    <p>
+                    <p style="line-height: 1;">
                         <a href="{{ path('all_issues',{'city': 'Кіровоград'}) }}">Кіровоград</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Кривий Ріг'}) }}">Кривий Ріг</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Луцьк'}) }}">Луцьк</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Львів'}) }}">Львів</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Маріуполь'}) }}">Маріуполь</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Миколаїв'}) }}">Миколаїв</a> <br>
-                        <a href="{{ path('all_issues',{'city': 'Мукачеве'}) }}">Мукачеве</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Мукачево'}) }}">Мукачево</a> <br>
                     </p>
                 </div>
                 <div class="large-3 columns">
-                    <p>
+                    <p style="line-height: 1;">
                         <a href="{{ path('all_issues',{'city': 'Одеса'}) }}">Одеса</a> <br>
-                        <a href="{{ path('all_issues',{'city': 'Миколаїв'}) }}">Миколаїв</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Полтава'}) }}">Полтава</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Рівне'}) }}">Рівне</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Севастополь'}) }}">Севастополь</a> <br>
@@ -37,10 +36,10 @@
                     </p>
                 </div>
                 <div class="large-3 columns">
-                    <p>
+                    <p style="line-height: 1;">
                         <a href="{{ path('all_issues',{'city': 'Ужгород'}) }}">Ужгород</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Харків'}) }}">Харків</a> <br>
-                        <a href="{{ path('all_issues',{'city': 'Хмельницький'}) }}">Хмельницький</a> <br>
+                        <a href="{{ path('all_issues',{'city': 'Хмельницьк'}) }}">Хмельницьк</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Черкаси'}) }}">Черкаси</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Чернівці'}) }}">Чернівці</a> <br>
                         <a href="{{ path('all_issues',{'city': 'Чернігів'}) }}">Чернігів</a> <br>
@@ -61,30 +60,35 @@
 
         <div class="row">
             <div class="large-6 columns" style="text-align: center;">
-                <a href="{{ path('post_worker') }}"  class="button btn">
-                    Шукаєш роботу?
+                <a href="{{ path('post_worker') }}"  class="button postfix btn radius">
+                    <span >Шукаєш роботу?</span>
+                    <h6>Натисни сюди</h6>
                 </a>
             </div>
             <div class="large-6 columns" style="text-align: center;">
-                <a href=" {{ path('post_work') }}"  class="button btn">
-                    Шукаєш працівника?
+                <a href=" {{ path('post_work') }}"  class="button postfix btn radius">
+                    <span >Шукаєш робітника?</span>
+                    <h6>Натисни сюди</h6>
                 </a>
             </div>
         </div>
 
         <div class="row">
-            <div class="large-6 columns" style="text-align: center;">
-                <a href="{{ path('find_work') }} " class="button btn">
-                    Список вакансій
-                </a>
-            </div>
-            <div class="large-6 columns" style="text-align: center;">
-                <a href=" {{ path('find_worker') }}"  class="button btn">
-                    Список анкет
-                </a>
-            </div>
+            <ul class="button-group radius" style="text-align: center;margin-top: 100px;">
+                <li style="width: 49%;">
+                    <a href="{{ path('find_work') }}" class="button postfix btn"
+                       style="height: 50px!important;font-size: large!important;">
+                        <span >Список вакансій</span>
+                    </a>
+                </li>
+                <li style="width: 49%;">
+                    <a href="{{ path('find_worker') }}" class="button postfix btn"
+                       style="height: 50px!important;font-size: large!important;">
+                        <span >Список анкет</span>
+                    </a>
+                </li>
+            </ul>
         </div>
 
-        <div class="show-for-medium-up" style="height: 100px"></div>
     </div>
 {% endblock %}

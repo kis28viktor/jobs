@@ -21,18 +21,68 @@
     text-align: center;
 }
 .btn {
-    width: 297px;
-    height: 100px;
+    height: 100px!important;
     opacity: 0.7;
     filter: alpha(Opacity=70);
-    background-color: #414146!important;
+    /*background-color: #414146!important;*/
+    border: 1px solid #2285a2;
+    font-size: 2.5rem!important;
 }
-.btn :hover .btn:focus {
-    background-color: #ff6c5d!important;
+.btn-std {
+    opacity: 0.7;
+    filter: alpha(Opacity=70);
 }
 .main {
     /*background: #c3daf9;*/
     background: transparent;
-    border: 2px solid #b2c2db;
+    border: 2px solid #2285a2;
     border-radius: 4px;
+}
+
+.bs-example{
+    font-family: sans-serif;
+    position: relative;
+    margin: 100px;
+}
+.typeahead, .tt-query, .tt-hint {
+    border: 2px solid #CCCCCC;
+    border-radius: 8px;
+    font-size: 24px;
+    height: 30px;
+    line-height: 30px;
+    outline: medium none;
+    padding: 8px 12px;
+    width: 396px;
+}
+.typeahead {
+    background-color: #FFFFFF;
+}
+.typeahead:focus {
+    border: 2px solid #0097CF;
+}
+.tt-query {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.tt-hint {
+    color: #999999;
+}
+.tt-dropdown-menu {
+    background-color: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    margin-top: -15px;
+    padding: 8px 0;
+    width: 422px;
+}
+.tt-suggestion {
+    font-size: 24px;
+    line-height: 24px;
+    padding: 3px 20px;
+}
+.tt-suggestion.tt-is-under-cursor {
+    background-color: #0097CF;
+    color: #FFFFFF;
+}
+.tt-suggestion p {
+    margin: 0;
 }

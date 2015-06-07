@@ -16,37 +16,39 @@
             <div class="center">
                 <div class="row">
                     <div class="large-4 columns">
-                        <label>City: </label>
-                        <input type="text" name="city"
-                               {% if city %}value="{{ city }}"{% endif %}>
+                        <label>Місто: </label>
+                        <div>
+                            <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false"
+                                   name="city"{% if city %}value="{{ city }}"{% endif %}>
+                        </div>
                     </div>
                     <div class="large-4 columns">
-                        <label>Age from: </label>
+                        <label>Вік від: </label>
                         <input type="number" name="ageFrom"
                                {% if ageFrom %}value="{{ ageFrom }}"{% endif %}>
                     </div>
                     <div class="large-4 columns">
-                        <label>Age to: </label>
+                        <label>Вік до: </label>
                         <input type="number" name="ageTo"
                                {% if ageTo %}value="{{ ageTo }}"{% endif %}>
                     </div>
                 </div>
                 <div class="row">
                     <div class="large-3 columns">
-                        <label>Price from: </label>
+                        <label>З/П від:</label>
                         <input type="number" name="priceFrom"
                                {% if priceFrom %}value="{{ priceFrom }}"{% endif %}>
                     </div>
                     <div class="large-3 columns">
-                        <label>Price to: </label>
+                        <label>З/П до: </label>
                         <input type="number" name="priceTo"
                                {% if priceTo %}value="{{ priceTo }}"{% endif %}>
                     </div>
                     <div class="large-3 columns">
-                        <label>Gender: </label>
+                        <label>Стать: </label>
                         <select name="gender[]">
-                            <option disabled>gender</option>
-                            <option value="all">all</option>
+                            <option disabled>Стать</option>
+                            <option value="all">Не важливо</option>
                             {% for key,currentGender in genders %}
                                 <option value="{{ key }}"
                                         {% if (gender) and (gender[0] == key) %}selected {% endif %}>
@@ -55,10 +57,10 @@
                         </select>
                     </div>
                     <div class="large-3 columns">
-                        <label>Choose your categories </label>
+                        <label>Виберіть категорію </label>
                         <select name="categories[]">
-                            <option selected disabled>Choose the category</option>
-                            <option value="all">all</option>
+                            <option selected disabled>Виберіть категорію</option>
+                            <option value="all">Всі категорії</option>
                             {% for key,category in categories  %}
                                 <option value="{{ key }}"{% if (curCategory) and (curCategory == key) %} selected{% endif %}>{{ category }}</option>
                             {% endfor %}
@@ -75,20 +77,20 @@
     <div class="row">
         <div class="large-12 columns">
             <div class="count">
-                Total <b>{{ pagination.getTotalItemCount }}</b> items found:
+                Всього <b>{{ pagination.getTotalItemCount }}</b> Знайдено:
             </div>
             <table class="table table-condensed">
                 <thead>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>City</th>
-                <th>Age from</th>
-                <th>Age to</th>
-                <th class="show-for-large-up">Price from</th>
-                <th>Price to</th>
-                <th>Categories</th>
-                <th class="show-for-large-up">About Me</th>
-                <th class="show-for-large-up">Post date</th>
+                <th>Ім’я</th>
+                <th>Телефон</th>
+                <th>Місто</th>
+                <th>Вік від</th>
+                <th>Вік до</th>
+                <th class="show-for-large-up">З/П від</th>
+                <th>З/П до</th>
+                <th>Категорії</th>
+                <th class="show-for-large-up">Про мене</th>
+                <th class="show-for-large-up">Дата внесення</th>
                 </thead>
                 {% for employer in pagination %}
                     <tbody>
@@ -130,5 +132,28 @@
     <script src="{{ asset('bundles/js/bootstrap.js') }}"></script>
     <script>
         $('.carousel').carousel();
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/js/typeahead.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('input.typeahead').typeahead({
+                name: 'accounts',
+                local: [
+                    'Алушта','Алчевськ','Бердичів','Бердянськ','Біла Церква','Білгород-Дністровський',
+                    'Бориспіль','Бровари','Вишневе','Вінниця','Вознесенськ','Володимир-Волинський',
+                    'Горлівка','Дніпродзержинськ','Дніпропетровськ','Донецьк','Дрогобич','Дунаївці',
+                    'Євпаторія','Житомир','Жовті Води','Запоріжжя','Івано-Франківськ','Ізмаїл',
+                    'Іллічівськ','Кам"янець-Подільський','Керч','Кіровоград','Ковель','Коломия',
+                    'Комсомольськ','Коростень','Котовськ','Краматорськ','Кременчук','Кривий Ріг',
+                    'Лубни','Луганськ','Луцьк','Львів','Макіївка','Маріуполь','Мелітополь','Миколаїв',
+                    'Миргород','Мукачеве','Ніжин','Нікополь','Нова Каховка','Новоград-Волинський',
+                    'Обухів','Одеса','Олександрія','Павлоград','Первомайськ(Миколаїв)','Полтава',
+                    'Рівне','Севастополь','Сєверодонецьк','Сімферополь','Славута','Сміла','Сторожинець',
+                    'Стрий','Суми','Тернопіль','Ужгород','Умань','Феодосія','Харків','Херсон','Хмельницький',
+                    'Черкаси','Чернівці','Чернігів','Шостка','Южноукраїнськ','Ялта']
+            });
+            $( 'span.twitter-typeahead' )
+                    .css( 'width', '100%' );
+        });
     </script>
 {% endblock %}

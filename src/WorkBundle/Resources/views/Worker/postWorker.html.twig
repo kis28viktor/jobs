@@ -1,6 +1,6 @@
 {% extends '@Work/layout.html.twig' %}
 {% block content %}
-    <div class="large-8 columns well">
+    <div class="large-8 columns">
         <div id="myCarousel" class="carousel slide">
             <!-- Carousel items -->
             <div class="carousel-inner">
@@ -12,7 +12,11 @@
             <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
             <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
-        <form action="{{ path('add_worker') }}" method="post">
+        <div class="large-12 columns center">
+            <h2>Заповніть анкету і роботодавець сам зв’яжеться з вами</h2>
+            <h3>Або знайдіть відповідну вакансію <a href="{{ path('find_work') }}" class="button">ТУТ</a></h3>
+        </div>
+        <form class="panel" action="{{ path('add_worker') }}" method="post">
             <div class="center">
             <div class="row">
                 <div class="large-6 columns">
@@ -33,13 +37,14 @@
                         {% endfor %}
                     </select>
                     <label>Місто: </label>
-                    <input type="text" name="city">
+                    <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false"
+                           name="city">
                 </div>
                 </div>
                 <label>Про мене: </label>
                 <textarea name="aboutMe" style="width: 100%"></textarea>
                 <div class="well well-small">
-                    <h6><label>Оберіть категорії:</label></h6>
+                    <label><h4>Оберіть категорії в яких бажаєте працювати:</h4></label>
                     <div class="row" style="text-align: left">
                         {% for key,category in categories  %}
                             <div class="large-6 columns">
@@ -48,8 +53,8 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div class="well well-small">
-                    <div class="">Освіта</div>
+                <div class="panel">
+                    <div class=""><h4>Освіта</h4></div>
                     <div class="row center">
                         <div class="large-4 columns">
                             <label>Назва закладу: </label>
@@ -66,7 +71,8 @@
                         </div>
                         <div class="large-4 columns">
                             <label>Місто: </label>
-                            <input type="text" name="educationCity">
+                            <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false"
+                                   name="educationCity">
                         </div>
                     </div>
                 </div>
@@ -77,8 +83,30 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('bundles/js/bootstrap.js') }}"></script>
     <script>
         $('.carousel').carousel();
+    </script>
+    <script type="text/javascript" src="{{ asset('bundles/js/typeahead.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('input.typeahead').typeahead({
+                name: 'accounts',
+                local: [
+                    'Алушта','Алчевськ','Бердичів','Бердянськ','Біла Церква','Білгород-Дністровський',
+                    'Бориспіль','Бровари','Вишневе','Вінниця','Вознесенськ','Володимир-Волинський',
+                    'Горлівка','Дніпродзержинськ','Дніпропетровськ','Донецьк','Дрогобич','Дунаївці',
+                    'Євпаторія','Житомир','Жовті Води','Запоріжжя','Івано-Франківськ','Ізмаїл',
+                    'Іллічівськ','Кам"янець-Подільський','Керч','Кіровоград','Ковель','Коломия',
+                    'Комсомольськ','Коростень','Котовськ','Краматорськ','Кременчук','Кривий Ріг',
+                    'Лубни','Луганськ','Луцьк','Львів','Макіївка','Маріуполь','Мелітополь','Миколаїв',
+                    'Миргород','Мукачеве','Ніжин','Нікополь','Нова Каховка','Новоград-Волинський',
+                    'Обухів','Одеса','Олександрія','Павлоград','Первомайськ(Миколаїв)','Полтава',
+                    'Рівне','Севастополь','Сєверодонецьк','Сімферополь','Славута','Сміла','Сторожинець',
+                    'Стрий','Суми','Тернопіль','Ужгород','Умань','Феодосія','Харків','Херсон','Хмельницький',
+                    'Черкаси','Чернівці','Чернігів','Шостка','Южноукраїнськ','Ялта']
+            });
+            $( 'span.twitter-typeahead' )
+                    .css( 'width', '100%' );
+        });
     </script>
 {% endblock %}
