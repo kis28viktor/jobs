@@ -1,8 +1,19 @@
 {% extends '@Work/layout.html.twig' %}
 {% block content %}
     <div class="large-8 columns">
+        <div id="myCarousel" class="carousel slide">
+            <!-- Carousel items -->
+            <div class="carousel-inner">
+                <div class="active item"><img src="{{ asset('img/andromeda-orbit.jpg') }}"></div>
+                <div class="item"><img src="{{ asset('img/launch-orbit.jpg') }}"></div>
+                <div class="item"><img src="{{ asset('img/satelite-orbit.jpg') }}"></div>
+            </div>
+            <!-- Carousel nav -->
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        </div>
         <form action="{{ path('add_work') }}" method="post">
-            <div class="row">
+            <div class="row center">
                 <div class="large-4 columns">
                     First name: <input type="text" name="firstName" required>
                 </div>
@@ -50,7 +61,14 @@
                     {% endfor %}
                 </div>
             </div>
-            <input type="submit">
+            <input type="submit" class="button" value="Зберегти" style="margin-left: 40%;">
         </form>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/js/bootstrap.js') }}"></script>
+    <script>
+        $('.carousel').carousel();
+    </script>
 {% endblock %}

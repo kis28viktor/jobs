@@ -17,13 +17,54 @@
 {% block body %}
     <div class="header">
         <div class="row">
-            <div class="large-6 columns ">
-                <h2 style="color: #c3daf9">Вітаємо вас на нашому сайті</h2>
-                <h3 style="text-align: center; color: #ffffff">
-                    Тут ви можете знайти роботу або робітника абсолютно безкоштовно
-                </h3>
+            <a href="{{ path('main') }}">
+                <div class="large-6 columns ">
+                    <h2 style="text-align: center">Вітаємо вас на нашому сайті</h2>
+                    <h3 style="text-align: center">
+                        Тут ви можете знайти роботу або робітника абсолютно безкоштовно
+                    </h3>
+                </div>
+            </a>
+            <div class="large-6 columns show-for-large-up">
+                <ul class="orbit-container" data-orbit data-options="animation_speed:500;">
+                    <a href="{{ path('post_worker') }}">
+                        <li data-orbit-slide="headline-1">
+                            <div style="margin-left: 30px">
+                                <h2>Хочеш знайти роботу?</h2>
+                                <h3>Залиш свою анкету у нас на сайті і роботодавець позвонить тобі</h3>
+                                <h5>На нашому сайті знаходиться 20569 вакансій</h5>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="{{ path('find_work') }}">
+                        <li data-orbit-slide="headline-2">
+                            <div style="margin-left: 30px">
+                                <h2>Хочеш знайти роботу?</h2>
+                                <h3>Знайди вакансію серед наявних</h3>
+                                <h5>На нашому сайті знаходиться 20569 вакансій</h5>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="{{ path('post_work') }}">
+                        <li data-orbit-slide="headline-3">
+                            <div style="margin-left: 30px">
+                                <h2>Хочеш знайти робітника?</h2>
+                                <h3>Залиши вакансію на нашому сайті</h3>
+                                <h5>На нашому сайті знаходиться 36255 вакансій</h5>
+                            </div>
+                        </li>
+                    </a>
+                    <a href="{{ path('find_worker') }}">
+                        <li data-orbit-slide="headline-4">
+                            <div style="margin-left: 30px">
+                                <h2>Хочеш знайти робітника?</h2>
+                                <h3>Знайди робітника у нашому списку</h3>
+                                <h5>На нашому сайті знаходиться 36255 вакансій</h5>
+                            </div>
+                        </li>
+                    </a>
+                </ul>
             </div>
-            <div class="large-6 columns show-for-large-up"></div>
         </div>
     </div>
     {% block mainbaner %}
@@ -52,5 +93,15 @@
         </div>
     </div>
 {% endblock %}
-
+{% block javascripts %}
+    <script src="{{ asset('bundles/js/vendor/jquery.js') }}"></script>
+    <script src="{{ asset('bundles/js/foundation/foundation.js') }}"></script>
+    <script src="{{ asset('bundles/js/foundation/foundation.orbit.js') }}"></script>
+    <script>
+        $(document).foundation();
+        $(document).foundation('orbit', 'reflow');
+        $( 'div.orbit-slide-number' )
+                .css( 'display', 'none' )
+    </script>
+{% endblock %}
 </html>

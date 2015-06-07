@@ -4,6 +4,17 @@
 {% endblock %}
 {% block content %}
     <div class="large-8 columns">
+        <div id="myCarousel" class="carousel slide">
+            <!-- Carousel items -->
+            <div class="carousel-inner">
+                <div class="active item"><img src="{{ asset('img/andromeda-orbit.jpg') }}"></div>
+                <div class="item"><img src="{{ asset('img/launch-orbit.jpg') }}"></div>
+                <div class="item"><img src="{{ asset('img/satelite-orbit.jpg') }}"></div>
+            </div>
+            <!-- Carousel nav -->
+            <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+            <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+        </div>
         <div style="margin: 30px;">
             <form action="{{ path('find_worker') }}" method="post">
                 <div class="center">
@@ -48,7 +59,7 @@
                             </select>
                         </div>
                     </div>
-                    <input type="submit" value="find">
+                    <input type="submit" value="Знайти" class="button">
                 </div>
             </form>
         </div>
@@ -109,4 +120,11 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('bundles/js/bootstrap.js') }}"></script>
+    <script>
+        $('.carousel').carousel();
+    </script>
 {% endblock %}
