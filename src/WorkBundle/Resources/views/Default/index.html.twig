@@ -1,4 +1,6 @@
 {% extends "@Work/layout.html.twig" %}
+{% block  baner1 %}
+{% endblock %}
 {% block content %}
     <div class="large-8 columns main">
         <div class="show-for-medium-up">
@@ -59,15 +61,18 @@
         </div>
 
         <div class="row">
-            <div class="large-6 columns" style="text-align: center;">
+            <div class="large-5 columns" style="text-align: center;">
                 <a href="{{ path('post_worker') }}"  class="button postfix btn radius">
-                    <span >Шукаєш роботу?</span>
+                    <span style="margin-top: 20px;display: block;">Шукаєш роботу?</span>
                     <h6>Натисни сюди</h6>
                 </a>
             </div>
-            <div class="large-6 columns" style="text-align: center;">
+            <div class="large-2 columns" style="text-align: center;">
+                <h1 style="margin-top: 20px;display: block;">АБО</h1>
+            </div>
+            <div class="large-5 columns" style="text-align: center;">
                 <a href=" {{ path('post_work') }}"  class="button postfix btn radius">
-                    <span >Шукаєш робітника?</span>
+                    <span style="margin-top: 20px;display: block;">Шукаєш робітника?</span>
                     <h6>Натисни сюди</h6>
                 </a>
             </div>
@@ -75,13 +80,13 @@
 
         <div class="row">
             <ul class="button-group radius" style="text-align: center;margin-top: 100px;">
-                <li style="width: 49%;">
+                <li style="width: 48%;">
                     <a href="{{ path('find_work') }}" class="button postfix btn"
                        style="height: 50px!important;font-size: large!important;">
                         <span >Список вакансій</span>
                     </a>
                 </li>
-                <li style="width: 49%;">
+                <li style="width: 48%;">
                     <a href="{{ path('find_worker') }}" class="button postfix btn"
                        style="height: 50px!important;font-size: large!important;">
                         <span >Список анкет</span>
@@ -91,4 +96,7 @@
         </div>
 
     </div>
+{% endblock %}
+{% block  baner2 %}
+
 {% endblock %}
