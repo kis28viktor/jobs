@@ -65,13 +65,6 @@
 {% block javascripts %}
     <script type="text/javascript" src="{{ asset('bundles/js/vendor/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/js/foundation/foundation.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/js/foundation/foundation.orbit.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bundles/js/bootstrap.js') }}"></script>
-    <script>
-        $(document).foundation();
-        $(document).foundation('orbit', 'reflow');
-        $( 'div.orbit-slide-number' )
-                .css( 'display', 'none' )
-    </script>
 {% endblock %}
 </html>

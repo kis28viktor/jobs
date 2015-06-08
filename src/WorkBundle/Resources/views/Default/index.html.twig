@@ -50,8 +50,8 @@
             </div>
             <form action="{{ path('all_issues') }}" method="get">
             <div class="row collapse" style="margin: 0 -0.9375em!important;">
-                <div class="small-4 columns large-offset-3">
-                    <input type="text" placeholder="Введіть місто" id="city" name="city">
+                <div id="the-basics" class="small-4 columns large-offset-3">
+                    <input class="typeahead" type="text" placeholder="Введіть місто" id="city" name="city">
                 </div>
                 <div class="small-2 columns end">
                     <input type="submit" value="Пошук" class="button postfix">
@@ -61,16 +61,13 @@
         </div>
 
         <div class="row">
-            <div class="large-5 columns" style="text-align: center;">
+            <div class="large-6 columns" style="text-align: center;">
                 <a href="{{ path('post_worker') }}"  class="button postfix btn radius">
                     <span style="margin-top: 20px;display: block;">Шукаєш роботу?</span>
                     <h6>Натисни сюди</h6>
                 </a>
             </div>
-            <div class="large-2 columns" style="text-align: center;">
-                <h1 style="margin-top: 20px;display: block;">АБО</h1>
-            </div>
-            <div class="large-5 columns" style="text-align: center;">
+            <div class="large-6 columns" style="text-align: center;">
                 <a href=" {{ path('post_work') }}"  class="button postfix btn radius">
                     <span style="margin-top: 20px;display: block;">Шукаєш робітника?</span>
                     <h6>Натисни сюди</h6>
@@ -99,4 +96,29 @@
 {% endblock %}
 {% block  baner2 %}
 
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/js/typeahead.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('input.typeahead').typeahead({
+                name: 'accounts',
+                local: [
+                    'Алушта','Алчевськ','Бердичів','Бердянськ','Біла Церква','Білгород-Дністровський','Бориспіль','Бровари'
+                    ,'Вишневе','Вінниця','Вознесенськ','Володимир-Волинський','Горлівка','Дніпродзержинськ','Дніпропетровськ'
+                    ,'Донецьк','Дрогобич','Дунаївці','Євпаторія','Житомир','Жовті Води','Запоріжжя','Івано-Франківськ'
+                    ,'Ізмаїл','Іллічівськ','Кам"янець-Подільський','Керч','Кіровоград','Ковель','Коломия','Комсомольськ'
+                    ,'Коростень','Котовськ','Краматорськ','Кременчук','Кривий Ріг','Лубни','Луганськ','Луцьк','Львів'
+                    ,'Макіївка','Маріуполь','Мелітополь','Миколаїв','Миргород','Мукачеве','Ніжин','Нікополь','Нова Каховка'
+                    ,'Новоград-Волинський','Обухів','Одеса','Олександрія','Павлоград','Первомайськ(Миколаїв)','Полтава'
+                    ,'Рівне','Севастополь','Сєверодонецьк','Сімферополь','Славута','Сміла','Сторожинець','Стрий','Суми'
+                    ,'Тернопіль','Ужгород','Умань','Феодосія','Харків','Херсон','Хмельницький','Черкаси','Чернівці'
+                    ,'Чернігів','Шостка','Южноукраїнськ','Ялта'
+                ]
+            });
+            $('span.twitter-typeahead').css('width','100%');
+
+        });
+    </script>
 {% endblock %}
