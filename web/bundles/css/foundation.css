@@ -1,3 +1,7 @@
+@font-face {
+    font-family: Pompadur; /* Имя шрифта */
+    src: url('myriad-set-pro_thin.ttf'); /* Путь к файлу со шрифтом */
+}
 meta.foundation-version {
   font-family: "/5.5.2/"; }
 
@@ -58,16 +62,16 @@ body {
   font-size: 100%; }
 
 body {
-  color: #b2c2db;
+  color: #000000;
   cursor: auto;
-  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: Pompadur;
   font-style: normal;
   font-weight: normal;
   line-height: 1.5;
   margin: 0;
   padding: 0;
   position: relative;
-    background: url('../../img/main.jpg');
+    background: url('../../img/main1.jpg');
   /*background: #dae3f2; /* Old browsers */
   /*
   background: -moz-linear-gradient(left,  #1e5799 0%, #2989d8 50%, #207cca 100%, #7db9e8 100%, #207cca 100%); /* FF3.6+ */
@@ -1178,7 +1182,7 @@ button, .button {
   color: #FFFFFF;
   transition: background-color 300ms ease-out; }
   button:hover, button:focus, .button:hover, .button:focus {
-    background-color: #ff6c5d; }
+    background-color: #2285a2; }
   button:hover, button:focus, .button:hover, .button:focus {
     color: #FFFFFF; }
   button.secondary, .button.secondary {
@@ -1358,7 +1362,7 @@ form .row textarea.columns {
 
 /* Label Styles */
 label {
-  color: #b2c2db;
+  color: #000000;
   cursor: pointer;
   display: block;
   font-size: 0.875rem;
@@ -2730,17 +2734,17 @@ meta.foundation-mq-topbar {
 .panel {
   border-style: solid;
   border-width: 2px;
-  border-color: #2285a2;
+  border-color: #000000;
   margin-bottom: 1.25rem;
   padding: 1.25rem;
   background: transparent;
-  color: #b2c2db; }
+  color: #000000; }
   .panel > :first-child {
     margin-top: 0; }
   .panel > :last-child {
     margin-bottom: 0; }
   .panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6, .panel p, .panel li, .panel dl {
-    color: #b2c2db; }
+    color: #000000; }
   .panel h1, .panel h2, .panel h3, .panel h4, .panel h5, .panel h6 {
     line-height: 1;
     margin-bottom: 0.625rem; }
@@ -3503,7 +3507,7 @@ p {
 
 /* Default header styles */
 h1, h2, h3, h4, h5, h6 {
-  color: #b2c2db;
+  color: #000000;
   font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
   font-style: normal;
   font-weight: normal;
@@ -6219,7 +6223,7 @@ th.hide-for-touch {
 .orbit-container .orbit-prev,
 .orbit-container .orbit-next {
     background-color: transparent;
-    color: white;
+    color: #000000;
     height: 60px;
     line-height: 50px;
     margin-top: -25px;
@@ -6253,8 +6257,9 @@ th.hide-for-touch {
 .orbit-container .orbit-next > span {
     border-color: transparent;
     border-left-style: solid;
-    border-left-color: #FFFFFF;
+    border-left-color: #000000;
     left: 50%;
+    opacity: 0.5;
     margin-left: -4px; }
 .orbit-container .orbit-next:hover > span {
     border-left-color: #FFFFFF; }
@@ -6271,7 +6276,8 @@ th.hide-for-touch {
     text-align: center;
     top: 10px; }
 .orbit-bullets li {
-    background: #CCCCCC;
+    background: #000000;
+    opacity: 0.5;
     cursor: pointer;
     display: inline-block;
     float: none;
@@ -6280,7 +6286,7 @@ th.hide-for-touch {
     width: 0.5625rem;
     border-radius: 1000px; }
 .orbit-bullets li.active {
-    background: #999999; }
+    opacity: 0.9; }
 .orbit-bullets li:last-child {
     margin-right: 0; }
 
@@ -6400,7 +6406,6 @@ th.hide-for-touch {
     font-size: 60px;
     font-weight: 100;
     line-height: 30px;
-    color: #ffffff;
     text-align: center;
     background: #222222;
     border: 3px solid #ffffff;
@@ -6418,7 +6423,6 @@ th.hide-for-touch {
 
 .carousel-control:hover,
 .carousel-control:focus {
-    color: #ffffff;
     text-decoration: none;
     opacity: 0.9;
     filter: alpha(opacity=90);

@@ -27,7 +27,7 @@ add_work:
     defaults: { _controller: WorkBundle:Employer:addWork }
 
 admin_issues:
-    path: /admin/issues
+    path: /admin
     defaults: { _controller: WorkBundle:Admin:index }
 
 fos_user:
