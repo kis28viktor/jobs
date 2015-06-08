@@ -420,14 +420,14 @@ class Worker {
                 /** @var \WorkBundle\Entity\EducationLevel $educationLevel */
                 $educationLevel = $education->getLevel();
                 $educations[]   = array(
-                    'name'  => $education->getName() ? $education->getName() : 'user didn`t specified his education',
-                    'level' => $educationLevel ? $educationLevel->getName() :  'user didn`t chose the level',
-                    'city'  => $education->getCity() ? $education->getCity() : 'user didn`t specified graduation city',
+                    'name'  => $education->getName() ? $education->getName() : 'Не вказано',
+                    'level' => $educationLevel ? $educationLevel->getName() :  'Не вказано',
+                    'city'  => $education->getCity() ? $education->getCity() : 'Не вказано',
                 );
             }
             return $educations;
         } else {
-            return array('No education');
+            return array('Не вказано');
         }
     }
 
@@ -452,7 +452,7 @@ class Worker {
             }
             return $categories;
         } else {
-            return array('The user didn`t chose any category.');
+            return array('Не вибрано жодної категорії');
         }
     }
 
@@ -567,10 +567,5 @@ class Worker {
             );
         }
         return $workers;
-    }
-
-    public function getGenderName()
-    {
-        return $this->gender->getName();
     }
 }

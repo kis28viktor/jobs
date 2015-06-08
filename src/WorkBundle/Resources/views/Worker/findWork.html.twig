@@ -71,62 +71,48 @@
             </div>
 
         </form>
-    </div>
-{% endblock %}
-{% block table %}
-    <div class="row">
-        <div class="large-12 columns">
-            <div class="count">
-                Всього <b>{{ pagination.getTotalItemCount }}</b> Знайдено:
-            </div>
-            <table class="table table-condensed">
-                <thead>
-                <th>Ім’я</th>
-                <th>Телефон</th>
-                <th>Місто</th>
-                <th>Вік від</th>
-                <th>Вік до</th>
-                <th class="show-for-large-up">З/П від</th>
-                <th>З/П до</th>
-                <th>Категорії</th>
-                <th class="show-for-large-up">Про мене</th>
-                <th class="show-for-large-up">Дата внесення</th>
-                </thead>
-                {% for employer in pagination %}
-                    <tbody>
-                    <tr >
-                        <td>{{employer.name}}</td>
-                        <td>{{employer.phone}}</td>
-                        <td>{{employer.city}}</td>
-                        <td>{{employer.ageFrom}}</td>
-                        <td>{{employer.ageTo}}</td>
-                        <td class="show-for-large-up">{{employer.priceFrom}}</td>
-                        <td>{{employer.priceTo}}</td>
-                        <td>{% for category in employer.categories %}
-                                {% if category is iterable %}
-                                    <br>
-                                    {% for categoryName in category %}
-                                        {{ categoryName }}<br>
-                                    {% endfor %}
-                                {% else %}
-                                    {{ category }}
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td style="width: 30%;" class="show-for-large-up">{{employer.aboutMe}}</td>
-                        <td class="show-for-large-up">{{ employer.postDate }}</td>
-                    </tr>
-                    </tbody>
-
-                {% endfor %}
-            </table>
-            <div class="navigation">
-                {{ knp_pagination_render(pagination) }}
-            </div>
+        <div class="count">
+            Всього <b>{{ pagination.getTotalItemCount }}</b> Знайдено:
         </div>
+        {% for employer in pagination %}
+            <div class="panel row" style="margin-bottom: 5px">
+                <h3>{{employer.name}} в місті {{employer.city}}</h3>
+                <div class="large-6 columns">
+                    Шукає на роботу працівника у сферах:<br>
+                    {% for category in employer.categories %}
+                        {% if category is iterable %}
+                            <br>
+                            {% for categoryName in category %}
+                                {{ categoryName }}<br>
+                            {% endfor %}
+                        {% else %}
+                            {{ category }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="large-6 columns">
+                    {% if employer.ageFrom %}Віком від {{employer.ageFrom}} {% endif %} {% if employer.ageTo %}до {{employer.ageTo}} {% endif %}
+                    {% if employer.ageFrom is null  %} Вік не вказаний {% endif %}<br>
+                    З/П {% if employer.priceFrom %} від {{employer.priceFrom}}
+                        {% if employer.priceTo %} до {{employer.priceTo}} {% endif %}
+                    {% endif %}
+                    {% if employer.priceFrom is null and employer.priceTo is null %}
+                        не вказано
+                    {% endif %}
+                </div>
+                {% if employer.aboutMe %}
+                    <hr>
+                    <p>Про роботу:
+                    {{employer.aboutMe}}<br></p>
+                {% endif %}
+                <h5>Номер телефону: {{employer.phone}}</h5>
+                Дата створення вакансії: {{employer.postDate}}
+            </div>
+        {% endfor %}
     </div>
 
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('bundles/js/bootstrap.js') }}"></script>

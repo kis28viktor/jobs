@@ -65,59 +65,61 @@
                 </div>
             </form>
         </div>
-    </div>
-{% endblock %}
-{% block table %}
-    <div class="row">
-        <div class="large-12 columns">
-            <div class="count">
-                Всього <b>{{ pagination.getTotalItemCount }}</b> знайдено:
-            </div>
-
-            {% for worker in pagination %}
-                <div class="panel">
-                    <h3>{{worker.name}}, вік {{worker.age}}, місто {{worker.city}}.</h3>
-                    <div class="row">
-                        <div class="large-6 columns">
-                            <p>
-                                Шукаю роботу у сферах діяльності:
-                                {% for category in worker.categories %}
-                                    {% if category is iterable %}
-                                        <br>
-                                        {% for categoryName in category %}
-                                            {{ categoryName }}
-                                        {% endfor %}
-                                    {% else %}
-                                        {{ category }}
-                                    {% endif %}
-                                {% endfor %}
-                            </p>
-                        </div>
-                        <div class="large-6 columns">
-                            <p>
-                                Освіта:
-                                {% for education in worker.educations %}
-                                    {% if education is iterable %}
-                                        <br>
-                                        Рівень: {{education.level}}<br>
-                                        Назва закладу: {{ education.name }}<br>
-                                        Місто: {{ education.city }}
-                                    {% else %}
-                                        {{ education }}
-                                    {% endif %}
-                                {% endfor %}
-                            </p>
-                        </div>
-                    </div>
-                    <p style="word-wrap: break-word;">Про мене:<br>
-                        {{worker.aboutMe}}
-                    </p>
-                    <h4>Номер телефону: {{worker.phone}}</h4>
+        <div class="row">
+            <div class="large-12 columns">
+                <div class="count">
+                    Всього <b>{{ pagination.getTotalItemCount }}</b> знайдено:
                 </div>
-            {% endfor %}
 
-            <div class="navigation">
-                {{ knp_pagination_render(pagination) }}
+                {% for worker in pagination %}
+                    <div class="panel">
+                        <h3>{{worker.name}}{% if worker.age > 0 %}, вік {{worker.age}}{% endif %}, місто {{worker.city}}.</h3>
+                        <div class="row">
+                            <div class="large-6 columns">
+                                <p>
+                                    Шукаю роботу у сферах діяльності:
+                                    {% for category in worker.categories %}
+                                        {% if category is iterable %}
+                                            <br>
+                                            {% for categoryName in category %}
+                                                {{ categoryName }}
+                                            {% endfor %}
+                                        {% else %}
+                                            {{ category }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                            <div class="large-6 columns">
+                                <p>
+                                    Освіта:
+                                    {% for education in worker.educations %}
+                                        {% if education is iterable %}
+                                            <br>
+                                            Рівень: {{education.level}}<br>
+                                            Назва закладу: {{ education.name }}<br>
+                                            Місто: {{ education.city }}
+                                        {% else %}
+                                            {{ education }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                        {% if worker.aboutMe %}
+                        <hr>
+                        <p style="word-wrap: break-word;">Про мене:<br>
+                            {{worker.aboutMe}}
+                        </p>
+                        {% endif %}
+                        <h4>Номер телефону: {{worker.phone}}</h4>
+                        <p>Дата подання заявки: {{ worker.postDate }}</p>
+                    </div>
+                {% endfor %}
+
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
             </div>
         </div>
     </div>

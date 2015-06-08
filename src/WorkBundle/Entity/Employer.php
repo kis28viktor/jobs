@@ -534,7 +534,7 @@ class Employer
             }
             return $categories;
         } else {
-            return array('The user didn`t chose any category.');
+            return array('Не вказано');
         }
     }
 
