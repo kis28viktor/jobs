@@ -1,6 +1,6 @@
 @font-face {
-    font-family: Pompadur; /* Имя шрифта */
-    src: url('myriad-set-pro_thin.ttf'); /* Путь к файлу со шрифтом */
+    font-family: Pompadur;
+    src: url('fonts/myriad-set-pro_thin.ttf');
 }
 meta.foundation-version {
   font-family: "/5.5.2/"; }
@@ -3481,7 +3481,7 @@ td {
 
 /* Default Link Styles */
 a {
-  color: #2ba6cb;
+  color: #000000;
   line-height: inherit;
   text-decoration: none; }
   a:hover, a:focus {

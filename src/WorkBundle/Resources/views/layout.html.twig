@@ -2,12 +2,12 @@
 <html>
 {% block head %}
     <head>
-
         <meta charset="utf-8" />
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <link href="{{ asset('bundles/css/style.css') }}" rel="stylesheet">
         <link href="{{ asset('bundles/css/foundation.css') }}" rel="stylesheet">
+        <link href="{{ asset('bundles/css/font-awesome.css') }}" rel="stylesheet">
     </head>
 {% endblock %}
 {% block header %}
@@ -18,7 +18,7 @@
     <div class="header">
         <div class="row">
             <div class="large-2 columns" style="min-height: 20px"></div>
-            <div class="large-8 columns ">
+            <div class="large-8 columns " style="background-color: darkgray; opacity: 0.7">
                 <a href="{{ path('main') }}">
                     <h2 style="text-align: center">Вітаємо вас на нашому сайті</h2>
                     <h3 style="text-align: center">
@@ -54,10 +54,52 @@
     <div class="footer">
         <div class="row">
             <div class="large-6 columns show-for-large-up">
-
+                <div class="row">
+                    <div class="social">
+                        <ul style="list-style: none; margin-left: 30%">
+                            <li>
+                                <a href="https://vk.com/mr.maxim" target="_blank">
+                                    <i class="fa fa-vk fa-3x"></i> VK.COM
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com" target="_blank">
+                                    <i class="fa fa-twitter-square fa-3x"></i> TWITTER
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://facebook.com" target="_blank">
+                                    <i class="fa fa-facebook-square fa-3x"></i> FACEBOOK
+                                </a>
+                            </li>
+                            <li>
+                                <a href="skype:bezehamax?chat">
+                                    <i class="fa fa-skype fa-3x"></i> SKYPE
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://plus.google.com/" target="_blank">
+                                    <i class="fa fa-google-plus-square fa-3x"></i> GOOGLE PLUS
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div class="large-6 columns">
-
+                <div style="height: 200px;">
+                    <h4>Для розміщення реклами звертайтесь за телефоном: <br>
+                        +380955807558 Максим</h4>
+                </div>
+                <div style="  margin-left: 65%;">
+                    Сайт розробив: <a href="skype:alexx.kozlow?chat"><i class="fa fa-skype"> Alex Kozlov</i></a><br>
+                    Телефон +380955883794
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-2 columns large-offset-5">
+                <h5>@ rbt-ua 2015</h5>
             </div>
         </div>
     </div>
