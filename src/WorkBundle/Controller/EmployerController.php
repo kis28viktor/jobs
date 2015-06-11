@@ -4,6 +4,7 @@ namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use WorkBundle\Entity\Category;
 use WorkBundle\Entity\Employer;
 use WorkBundle\Entity\Gender;
@@ -24,6 +25,12 @@ class EmployerController extends Controller
      */
     public function findWorkerAction(Request $request)
     {
+        if($request->cookies->get('city')){
+            $request->request->set('city', $request->cookies->get('city'));
+            $response = new Response();
+            $response->headers->clearCookie('city', 'main');
+            $response->send();
+        }
         $workerModel = new Worker();
         $workers = $workerModel->generateWorkersArray($workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager()), $this->getEntityManager());
         $paginator = $this->get('knp_paginator');

@@ -5,6 +5,7 @@ namespace WorkBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use WorkBundle\Entity\Category;
+use Symfony\Component\HttpFoundation\Response;
 use WorkBundle\Entity\EducationLevel;
 use WorkBundle\Entity\Employer;
 use WorkBundle\Entity\Gender;
@@ -44,6 +45,12 @@ class WorkerController extends Controller
      */
     public function findWorkAction(Request $request)
     {
+        if($request->cookies->get('city')){
+            $request->request->set('city', $request->cookies->get('city'));
+            $response = new Response();
+            $response->headers->clearCookie('city','main');
+            $response->send();
+        }
         $employer = new Employer();
         $gender = new Gender();
         $category = new Category();
