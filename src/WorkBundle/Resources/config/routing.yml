@@ -27,12 +27,13 @@ add_work:
     defaults: { _controller: WorkBundle:Employer:addWork }
 
 admin_issues:
-    path: /admin
+    path: /admin/
     defaults: { _controller: WorkBundle:Admin:index }
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
-all_issues:
-    path: /allissues
-    defaults: { _controller: WorkBundle:Default:allIssues }
+admin_delete_issue:
+    path: /admin/deleteIssue
+    defaults: { _controller: WorkBundle:Admin:deleteIssue }
+

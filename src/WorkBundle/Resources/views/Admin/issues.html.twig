@@ -1,4 +1,98 @@
 {% extends "@Work/layout.html.twig" %}
-{% block body %}
-
+{% block content %}
+    <div style="color: red; font-size: 20px;">
+        {% for notice in app.session.flashbag.get('notice') %}
+            {{ notice }}<br>
+        {% endfor %}
+    </div>
+    <div style="margin: 30px;">
+        <form action="{{ path('admin_issues') }}" method="post">
+                <div class="row">
+                    <div class="large-4 columns">
+                        <label>City: </label>
+                        <input type="text" name="city"
+                               {% if city %}value="{{ city }}"{% endif %}>
+                    </div>
+                    <div class="row">
+                        <div class="large-4 columns">
+                            <label>Type: </label>
+                            <select name="issueType[]">
+                                <option {% if (curIssueType) and (curIssueType == 'all') %}selected {% endif %}>all</option>
+                                <option value="workers" {% if (curIssueType) and (curIssueType == 'workers') %}selected {% endif %}>workers</option>
+                                <option value="employers" {% if (curIssueType) and (curIssueType == 'employers') %}selected {% endif %}>employers</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-6 columns">
+                            <label>Gender: </label>
+                            <select name="gender[]">
+                                <option disabled>gender</option>
+                                <option value="all">all</option>
+                                {% for key,currentGender in genders %}
+                                    <option value="{{ key }}"
+                                            {% if (gender) and (gender[0] == key) %}selected {% endif %}>
+                                        {{ currentGender }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="large-6 columns">
+                            <label>Choose your categories </label>
+                            <select name="categories[]">
+                                <option selected disabled>Choose the category</option>
+                                <option value="all">all</option>
+                                {% for key,category in categories  %}
+                                    <option value="{{ key }}"{% if (curCategory) and (curCategory == key) %} selected{% endif %}>{{ category }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <input type="submit" value="Знайти" class="button">
+                </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="count">
+                Total <b>{{ issuesData.getTotalItemCount }}</b> items found:
+            </div>
+            <table class="table table-condensed" style="word-break: break-all; width: 100%">
+                <thead>
+                <th style="white-space: nowrap">ПІБ</th>
+                <th style="white-space: nowrap">Телефон</th>
+                <th style="white-space: nowrap">Місто</th>
+                <th style="white-space: nowrap" class="show-for-large-up">Про мене</th>
+                <th style="white-space: nowrap">Тип заявки</th>
+                <th style="white-space: nowrap">Сфера</th>
+                <th style="white-space: nowrap">Видалити</th>
+                </thead>
+                <tbody>
+                {% for issue in issuesData %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}">
+                        <td>{{issue.name}}</td>
+                        <td style="white-space: nowrap">{{issue.phone}}</td>
+                        <td>{{issue.city}}</td>
+                        <td style="width: 30%;" class="show-for-large-up">{{issue.aboutMe}}</td>
+                        <td>{{ issue.issueType }}</td>
+                        <td>{% for category in issue.categories %}
+                    {% if category is iterable %}
+                        <br>
+                        {% for categoryName in category %}
+                            {{ categoryName }}<br>
+                        {% endfor %}
+                    {% else %}
+                        {{ category }}
+                    {% endif %}
+                {% endfor %}
+                        </td>
+                        <td><a href="{{ path('admin_delete_issue', {'id':issue.id, 'issueType': issue.issueType}) }}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="navigation">
+                {{ knp_pagination_render(issuesData) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

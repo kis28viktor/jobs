@@ -4,7 +4,6 @@ namespace WorkBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ORM\Entity
@@ -589,6 +588,21 @@ class Employer
         $employer->setPostDate(new \DateTime());
         $em->persist($employer);
         $em->flush();
+    }
+
+    /**
+     * Deleting the employer by id
+     *
+     * @param int $employerId
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
+     */
+    public function deleteEmployer($employerId, $em)
+    {
+        $employer = $em->getRepository('WorkBundle:Employer')->find($employerId);
+        if($employer) {
+            $em->remove($employer);
+            $em->flush();
+        }
     }
 
     /**

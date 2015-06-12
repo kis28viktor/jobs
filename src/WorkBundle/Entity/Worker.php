@@ -527,6 +527,20 @@ class Worker {
     }
 
     /**
+     * Removing the worker by id
+     *
+     * @param int $workerId
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
+     */
+    public function deleteWorker($workerId, $em)
+    {
+        $worker = $em->getRepository('WorkBundle:Worker')->find($workerId);
+        if($worker){
+            $em->remove($worker);
+            $em->flush();
+        }
+    }
+    /**
      * Check if at least on of the education forms is filled in
      *
      * @param array $formData
