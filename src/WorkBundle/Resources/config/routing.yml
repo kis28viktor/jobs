@@ -40,3 +40,8 @@ admin_delete_issue:
 image_upload:
     path: /admin/imageUpload
     defaults: { _controller: WorkBundle:Image:imageUpload }
+
+image_saving:
+    path: /admin/imageSaving
+    defaults: { _controller: WorkBundle:Image:imageSaving }
+    defaults: { _controller: WorkBundle:Image:imageSaving }
