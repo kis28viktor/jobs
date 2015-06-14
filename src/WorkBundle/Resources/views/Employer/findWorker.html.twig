@@ -2,6 +2,9 @@
 {% block header %}
 
 {% endblock %}
+{% block  baner1 %}
+    {{ parent() }}
+{% endblock %}
 {% block content %}
     <div class="large-8 columns">
         <div id="myCarousel" class="carousel slide">
@@ -123,6 +126,9 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block  baner1 %}
+    {{ parent() }}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

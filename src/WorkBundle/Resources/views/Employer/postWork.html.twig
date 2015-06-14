@@ -1,4 +1,7 @@
 {% extends '@Work/layout.html.twig' %}
+{% block  baner1 %}
+    {{ parent() }}
+{% endblock %}
 {% block content %}
     <div class="large-8 columns">
         <div id="myCarousel" class="carousel slide">
@@ -12,77 +15,83 @@
             <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
             <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
-
-        <form class="panel" action="{{ path('add_work') }}" method="post">
-            <div class="large-12 columns center">
-                <h2>Заповніть анкету та робітники самі зв’яжуться з вами</h2>
-                <h1>АБО</h1>
-                <h3>Знайдіть відповідного працівника <a href="{{ path('find_work') }}" class="button"><h3>ТУТ</h3></a></h3>
-            </div>
-            <div class="row center">
-                <div class="well well-small panel">
-                    <label><h3>Шукаю робітника у сфері:</h3></label>
-                    <div class="row" style="text-align: left">
-                        {% for key,category in categories  %}
-                            <div class="large-6 columns">
-                                <input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
+        <div class="row">
+            <div class="large-8 columns">
+                <form class="panel" action="{{ path('add_work') }}" method="post">
+                    <div class="row center">
+                        <h4>Заповніть анкету та робітники самі зв’яжуться з вами</h4>
+                        <div class="well well-small panel">
+                            <label><h3>Шукаю робітника у сфері:</h3></label>
+                            <div class="row" style="text-align: left">
+                                {% for key,category in categories  %}
+                                    <div class="large-6 columns">
+                                        <input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
+                                    </div>
+                                {% endfor %}
                             </div>
-                        {% endfor %}
+                        </div>
+                        <div class="large-12 columns">
+                            <h3>Заповніть дані про себе та вимоги до працівника</h3>
+                        </div>
+                        <div class="large-4 columns">
+                            <label>Ім’я</label>
+                            <input type="text" name="firstName" required>
+                        </div>
+                        <div class="large-4 columns">
+                            <label>Прізвище</label>
+                            <input type="text" name="lastName" required>
+                        </div>
+                        <div class="large-4 columns">
+                            <label>Телефон</label>
+                            <input type="text" name="phone" required>
+                        </div>
                     </div>
-                </div>
-                <div class="large-12 columns">
-                    <h3>Заповніть дані про себе та вимоги до працівника</h3>
-                </div>
-                <div class="large-4 columns">
-                    <label>Ім’я</label>
-                    <input type="text" name="firstName" required>
-                </div>
-                <div class="large-4 columns">
-                    <label>Прізвище</label>
-                    <input type="text" name="lastName" required>
-                </div>
-                <div class="large-4 columns">
-                    <label>Телефон</label>
-                    <input type="text" name="phone" required>
-                </div>
+                    <label class="center">Напишіть декілька слів про роботу яку буде виконувати працівник: </label>
+                    <textarea name="aboutMe"></textarea>
+                    <div class="row center">
+                        <div class="large-4 columns">
+                            <label>Місто</label>
+                            <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false" name="city">
+                        </div>
+                        <div class="large-4 columns">
+                            <label>Вік від</label>
+                            <input type="number" name="ageFrom">
+                        </div>
+                        <div class="large-4 columns">
+                            <label>Вік до</label>
+                            <input type="number" name="ageTo">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="large-4 columns">
+                            <label>Стать </label>
+                            <select name="gender" required>
+                                {% for key,gender in genders %}
+                                    <option value="{{ key }}">{{ gender }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="large-4 columns">
+                            <label>З/П від</label>
+                            <input type="number" name="priceFrom">
+                        </div>
+                        <div class="large-4 columns">
+                            <label>З/П до</label>
+                            <input type="number" name="priceTo">
+                        </div>
+                    </div>
+                    <input type="submit" class="button" value="Зберегти" style="margin-left: 40%;">
+                </form>
             </div>
-            <label class="center">Напишіть декілька слів про роботу яку буде виконувати працівник: </label>
-            <textarea name="aboutMe"></textarea>
-            <div class="row center">
-                <div class="large-4 columns">
-                    <label>Місто</label>
-                    <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false" name="city">
-                </div>
-                <div class="large-4 columns">
-                    <label>Вік від</label>
-                    <input type="number" name="ageFrom">
-                </div>
-                <div class="large-4 columns">
-                    <label>Вік до</label>
-                    <input type="number" name="ageTo">
-                </div>
+            <div class="large-1 columns" style="margin-top: 26%"><h3>АБО</h3></div>
+            <div class="large-3 columns" style="margin-top: 20%">
+                <a href="{{ path('find_work') }}" class="button"><h3>Знайдіть відповідного працівника тут</h3></a>
             </div>
-            <div class="row">
-                <div class="large-4 columns">
-                    <label>Стать </label>
-                    <select name="gender" required>
-                        {% for key,gender in genders %}
-                            <option value="{{ key }}">{{ gender }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="large-4 columns">
-                    <label>З/П від</label>
-                    <input type="number" name="priceFrom">
-                </div>
-                <div class="large-4 columns">
-                    <label>З/П до</label>
-                    <input type="number" name="priceTo">
-                </div>
-            </div>
-            <input type="submit" class="button" value="Зберегти" style="margin-left: 40%;">
-        </form>
+        </div>
     </div>
+{% endblock %}
+{% block  baner2 %}
+    {{ parent() }}
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

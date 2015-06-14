@@ -1,4 +1,7 @@
 {% extends '@Work/layout.html.twig' %}
+{% block  baner1 %}
+    {{ parent() }}
+{% endblock %}
 {% block content %}
     <div class="large-8 columns">
         <div id="myCarousel" class="carousel slide">
@@ -112,7 +115,9 @@
     </div>
 
 {% endblock %}
-
+{% block  baner2 %}
+    {{ parent() }}
+{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('bundles/js/bootstrap.js') }}"></script>
