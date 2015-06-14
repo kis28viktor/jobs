@@ -1,6 +1,8 @@
 <?php
 namespace WorkBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
 
 /**
  * @ORM\Entity
@@ -8,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Image
 {
+    /**
+     * @var image max size that is allowed
+     */
+    const MAX_IMG_SIZE = 5;
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -30,57 +36,6 @@ class Image
      * @ORM\Column(type="string", length=255)
      */
     protected $path;
-    /**
-     * @var image max size that is allowed
-     */
-    const MAX_IMG_SIZE = 5;
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $image
-     * @param string $fileName
-     * @param bool $isForSlider
-     * @return string
-     */
-    public function imageUpload($image, $fileName, $isForSlider = false)
-    {
-        if($this->checkExtension($image->getClientMimeType())){
-            if($image->getSize()< $this->getMaxImageSize()){
-                $imageName = $fileName . '.' . $image->guessClientExtension();
-                if($isForSlider){
-                    $image->move('img/slider',$imageName);
-                    return null;
-                } else {
-                    $image->move('img',$imageName);
-                    return null;
-                }
-            } else {
-                return 'Розмір зображення занадто великий (макс. 5 MB).';
-            }
-        } else {
-            return 'Розширення зображення недопустиме(можливі: jpg, jpeg, gif, png).';
-        }
-    }
-
-    /**
-     * Get max image size, that is allowed
-     *
-     * @return int|double
-     */
-    public function getMaxImageSize()
-    {
-        return self::MAX_IMG_SIZE * 1024 * 1024;
-    }
-
-    /**
-     * Checks, if extension is correct
-     *
-     * @param string $extension
-     * @return bool
-     */
-    protected function checkExtension($extension)
-    {
-        return $extension=='image/jpeg'||$extension=='image/jpg'||$extension=='image/png'||$extension=='image/gif';
-    }
 
     /**
      * Get id
@@ -182,5 +137,68 @@ class Image
     public function getRole()
     {
         return $this->role;
+    }
+
+    /**
+     * Image uploading on the server
+     *
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $image
+     * @param string $fileName
+     * @param bool $isForSlider
+     * @return string
+     */
+    public function imageUpload($image, $fileName, $isForSlider = false)
+    {
+        if($this->checkExtension($image->getClientMimeType())){
+            if($image->getSize()< $this->getMaxImageSize()){
+                $imageName = $fileName . '.' . $image->guessClientExtension();
+                if($isForSlider){
+                    $image->move('img/slider',$imageName);
+                    return null;
+                } else {
+                    $image->move('img',$imageName);
+                    return null;
+                }
+            } else {
+                return 'Розмір зображення занадто великий (макс. 5 MB).';
+            }
+        } else {
+            return 'Розширення зображення недопустиме(можливі: jpg, jpeg, gif, png).';
+        }
+    }
+
+    /**
+     * @param string $imagePath
+     * @return string
+     */
+    public function deleteImage($imagePath)
+    {
+        try{
+            $fs = new Filesystem();
+            $fs->remove($imagePath);
+            return null;
+        } catch(IOExceptionInterface $e){
+            return $e->getMessage();
+        }
+    }
+    /**
+     * Get max image size, that is allowed
+     *
+     * @return int|double
+     */
+    public function getMaxImageSize()
+    {
+        return self::MAX_IMG_SIZE * 1024 * 1024;
+    }
+
+    /**
+     * Checks, if extension is correct
+     *
+     * @param string $extension
+     * @return bool
+     */
+    protected function checkExtension($extension)
+    {
+        return $extension=='image/jpeg'||$extension=='image/jpg'||$extension=='image/png'||$extension=='image/gif';
     }
 }

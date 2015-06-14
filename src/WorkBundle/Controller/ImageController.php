@@ -17,6 +17,8 @@ class ImageController extends Controller
     {
         if ($request->files->get('image')) {
             $image = new Image();
+            //delete Image: path from web folder.
+            $image->deleteImage('img/qqqa.jpeg');die;
             $image->imageUpload($request->files->get('image'),'','');
         } else {
         }
