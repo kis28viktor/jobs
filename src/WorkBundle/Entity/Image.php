@@ -370,6 +370,44 @@ class Image
     }
 
     /**
+     * Get path to the banner image for displaying it in twig template
+     *
+     * @param int $bannerTypeId
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
+     * @return string|array|null
+     */
+    public function getBanner($bannerTypeId, $em)
+    {
+        $imgType = $em->getRepository('WorkBundle:ImageRole')->find($bannerTypeId);
+        /** @var \WorkBundle\Entity\ImageRole $imgType */
+        if($imgType){
+            if($imgType->getName()=='slider'){
+                $imgPathes = array();
+                $images = $em->getRepository('WorkBundle:Image')->findBy(array('status' => 1, 'role' => $bannerTypeId));
+                if($images){
+                    /** @var \WorkBundle\Entity\Image $image */
+                    foreach ($images as $image) {
+                        $imgPathes[]=$image->getPath();
+                    }
+                    return $imgPathes;
+                } else {
+                    return null;
+                }
+            } else {
+                $img = $em->getRepository('WorkBundle:Image')->findBy(array('status' => 1, 'role' => $bannerTypeId));
+                if(count($img)==1){
+                    $img = array_shift($img);
+                    /** @var \WorkBundle\Entity\Image $img */
+                    return $img->getPath();
+                } else {
+                    return null;
+                }
+            }
+        } else {
+            return null;
+        }
+    }
+    /**
      * Get max image size, that is allowed
      *
      * @return int|double
