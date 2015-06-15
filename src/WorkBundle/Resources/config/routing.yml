@@ -48,3 +48,7 @@ image_saving:
 image_delete:
     path: /admin/imageDelete
     defaults: { _controller: WorkBundle:Image:deleteImage }
+
+change_status:
+    path: /admin/changeStatus
+    defaults: { _controller: WorkBundle:Image:changeStatus }

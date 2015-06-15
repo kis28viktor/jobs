@@ -142,6 +142,28 @@ class Image
     {
         return $this->role;
     }
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return Image
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \bool
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
 
     /**
      * Get all images
@@ -264,6 +286,50 @@ class Image
     }
 
     /**
+     * Image status changing
+     *
+     * @param int $imgId
+     * @param int $changeTo
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
+     */
+    public function changeStatus($imgId, $changeTo, $em)
+    {
+        $imageRepo = $em->getRepository('WorkBundle:Image');
+        /** @var \WorkBundle\Entity\Image $changingImage */
+        $changingImage = $imageRepo->find($imgId);
+        if ($changingImage) {
+            if($changingImage->getRole()->getName()=='slider'){
+                $changingImage->setStatus($changeTo);
+                $em->persist($changingImage);
+                $em->flush();
+            } else {
+                if ($changeTo==0) {
+                    $changingImage->setStatus($changeTo);
+                    $em->persist($changingImage);
+                    $em->flush();
+                } else {
+                    $selectedImage = $imageRepo->findBy(array('status' => $changeTo, 'role' => $changingImage->getRole()->getId()));
+                    if(count($selectedImage)==1) {
+                        /** @var \WorkBundle\Entity\Image $selectedImage */
+                        $selectedImage = array_shift($selectedImage);
+                        $selectedImage->setStatus(abs($selectedImage->getStatus()-1));
+                        $em->persist($selectedImage);
+                    } elseif(!$selectedImage) {
+                        $changingImage->setStatus($changeTo);
+                        $em->persist($changingImage);
+                        $em->flush();
+                    } else {
+                        return;
+                    }
+                    $changingImage->setStatus($changeTo);
+                    $em->persist($changingImage);
+                    $em->flush();
+                }
+            }
+        }
+    }
+
+    /**
      * Get max image size, that is allowed
      *
      * @return int|double
@@ -282,28 +348,5 @@ class Image
     protected function checkExtension($extension)
     {
         return $extension=='image/jpeg'||$extension=='image/jpg'||$extension=='image/png'||$extension=='image/gif';
-    }
-
-    /**
-     * Set status
-     *
-     * @param bool $status
-     * @return Image
-     */
-    public function setStatus(\boolean $status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return \bool
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 }

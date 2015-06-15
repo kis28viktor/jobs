@@ -26,7 +26,12 @@
                 <td>{{ image.name }}</td>
                 <td style="width: 15%;"><img src="{{ asset(image.path) }}"></td>
                 <td>{{ image.role.role }}</td>
-                <td>{{ image.status }}</td>
+                <td>
+                    <select onchange="location = this.options[this.selectedIndex].value;">
+                        <option {% if image.status==1 %}selected{% endif %} value="{{ path('change_status',{'img_id': image.id, 'change_to': 1}) }}">1</option>
+                        <option {% if image.status==0 %}selected{% endif %} value="{{ path('change_status',{'img_id': image.id, 'change_to': 0}) }}">0</option>
+                    </select>
+                </td>
                 <td><a href="{{ path('image_delete', {'img_id': image.id}) }}"> Delete</a></td>
             </tr>
         {% endfor %}

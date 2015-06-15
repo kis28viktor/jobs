@@ -45,6 +45,23 @@ class ImageController extends Controller
         }
         return $this->redirectToRoute('image_managing');
     }
+
+    /**
+     * Image status change
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function changeStatusAction(Request $request)
+    {
+        $imgId = $request->query->get('img_id');
+        $changeTo = $request->query->get('change_to');
+        if(isset($imgId) && isset($changeTo)) {
+            $image = new Image();
+            $image->changeStatus($request->query->get('img_id'),$request->query->get('change_to'), $this->getEntityManager());
+        }
+        return $this->redirectToRoute('image_managing');
+    }
     /**
      * Get Entity Manager
      *
