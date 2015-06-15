@@ -1,6 +1,11 @@
 {% extends "@Work/layout.html.twig" %}
 {% block content %}
  <form method="post" action="{{ path('image_saving') }}" enctype="multipart/form-data">
+     <div style="color: red; font-size: 20px;">
+         {% for notice in app.session.flashbag.get('notice') %}
+             {{ notice }}<br>
+         {% endfor %}
+     </div>
      <select style="width: 25%;" name="imageRole">
          {% if roles %}
             {% for role in roles %}

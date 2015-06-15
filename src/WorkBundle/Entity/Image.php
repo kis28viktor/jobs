@@ -176,9 +176,9 @@ class Image
     {
         $imageRepository = $em->getRepository('WorkBundle:Image');
         if($imageRole){
-            return $imageRepository->findBy(array('role_id' => $imageRole)) ;
+            return $imageRepository->findBy(array('role_id' => $imageRole), array('id' => 'DESC')) ;
         } else {
-            return $imageRepository->findAll();
+            return $imageRepository->findBy(array(), array('id' => 'DESC'));
         }
     }
 
@@ -233,6 +233,39 @@ class Image
     }
 
     /**
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $image
+     * @param $imageRole
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
+     * @return string|null
+     */
+    public function saveImage($image, $imageRole, $em)
+    {
+        /** @var \WorkBundle\Entity\ImageRole $imgRole */
+        $imgRole = $em->getRepository('WorkBundle:ImageRole')->find($imageRole);
+        if($imgRole){
+            try{
+                $img = new Image();
+                if($imgRole->getName()=='slider'){
+                    $path = $this->imageUpload($image,$this->cropName($image->getClientOriginalName()),true);
+                    $img->setStatus(0);
+                } else {
+                    $path = $this->imageUpload($image,$this->cropName($image->getClientOriginalName()));
+                    $img->setStatus(0);
+                }
+                $img->setName($this->cropName($image->getClientOriginalName()));
+                $img->setPath($path);
+                $img->setExtension($image->guessClientExtension());
+                $img->setRole($imgRole);
+                $em->persist($img);
+                $em->flush();
+                $this->changeStatus($img->getId(),1,$em);
+                return null;
+            } catch (\Exception $e) {
+                return $e->getMessage();
+            }
+        }
+    }
+    /**
      * Image uploading on the server
      *
      * @param \Symfony\Component\HttpFoundation\File\UploadedFile $image
@@ -245,12 +278,19 @@ class Image
         if($this->checkExtension($image->getClientMimeType())){
             if($image->getSize()< $this->getMaxImageSize()){
                 $imageName = $fileName . '.' . $image->guessClientExtension();
+                $fs        = new Filesystem();
                 if($isForSlider){
+                    if($fs->exists('img/slider/' . $imageName)){
+                        return $this->imageUpload($image, $fileName . '1', $isForSlider = false);
+                    }
                     $image->move('img/slider',$imageName);
-                    return null;
+                    return 'img/slider/' . $imageName;
                 } else {
+                    if($fs->exists('img/' . $imageName)){
+                        return $this->imageUpload($image, $fileName . '1', $isForSlider = false);
+                    }
                     $image->move('img',$imageName);
-                    return null;
+                    return 'img/' . $imageName;
                 }
             } else {
                 return 'Розмір зображення занадто великий (макс. 5 MB).';
@@ -348,5 +388,16 @@ class Image
     protected function checkExtension($extension)
     {
         return $extension=='image/jpeg'||$extension=='image/jpg'||$extension=='image/png'||$extension=='image/gif';
+    }
+
+    /**
+     * Crop the name of image before '.' (no extension)
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function cropName($name)
+    {
+        return substr($name, 0, strrpos($name, '.'));
     }
 }

@@ -22,12 +22,14 @@ class ImageController extends Controller
 
     public function imageSavingAction(Request $request)
     {
-        if ($request->files->get('image')) {
+        if ($request->files->get('image') && $request->request->get('imageRole')) {
             $image = new Image();
-            //delete Image: path from web folder.
-           // $image->deleteImage('img/qqqa.jpeg');die;
-            $image->imageUpload($request->files->get('image'),'','');
+            $image->saveImage($request->files->get('image'), $request->request->get('imageRole'), $this->getEntityManager());
+            $this->addFlash('notice', 'The picture has been successfully uploaded.');
+            return $this->redirectToRoute('image_managing');
         } else {
+            $this->addFlash('notice', 'Upload some image, please.');
+            return $this->redirectToRoute('image_managing');
         }
     }
 
@@ -42,6 +44,7 @@ class ImageController extends Controller
         if($request->query->get('img_id')){
             $image = new Image();
             $image->deleteImage($request->query->get('img_id'), $this->getEntityManager());
+            $this->addFlash('notice', 'The picture has been successfully deleted.');
         }
         return $this->redirectToRoute('image_managing');
     }
