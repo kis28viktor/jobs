@@ -1,6 +1,6 @@
 {% extends "@Work/layout.html.twig" %}
 {% block content %}
-    <a href="{{ path('image_upload') }}">Upload new banners</a>   |
+    <a href="{{ path('image_managing') }}">Upload new banners</a>   |
     <a href="{{ path('fos_user_security_logout') }}">Logout</a>
     <div style="color: red; font-size: 20px;">
         {% for notice in app.session.flashbag.get('notice') %}
