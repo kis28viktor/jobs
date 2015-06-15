@@ -44,4 +44,7 @@ image_upload:
 image_saving:
     path: /admin/imageSaving
     defaults: { _controller: WorkBundle:Image:imageSaving }
-    defaults: { _controller: WorkBundle:Image:imageSaving }
+
+image_delete:
+    path: /admin/imageDelete
+    defaults: { _controller: WorkBundle:Image:deleteImage }

@@ -36,6 +36,10 @@ class Image
      * @ORM\Column(type="string", length=255)
      */
     protected $path;
+    /**
+     * @ORM\Column(type="boolean", length=255)
+     */
+    protected $status;
 
     /**
      * Get id
@@ -140,6 +144,73 @@ class Image
     }
 
     /**
+     * Get all images
+     *
+     * @param int|null $imageRole
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
+     * @return mixed
+     */
+    public function getAllImages($em,$imageRole = null)
+    {
+        $imageRepository = $em->getRepository('WorkBundle:Image');
+        if($imageRole){
+            return $imageRepository->findBy(array('role_id' => $imageRole)) ;
+        } else {
+            return $imageRepository->findAll();
+        }
+    }
+
+    /**
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
+     * @return array|null
+     */
+    public function getAllRoles($em)
+    {
+        $rolesRepo = $em->getRepository('WorkBundle:ImageRole');
+        $allRoles = $rolesRepo->findAll();
+        if($allRoles){
+            $roles = array();
+            /** @var \WorkBundle\Entity\ImageRole $role */
+            foreach ($allRoles as $role){
+                $roles[] = array(
+                    'id' => $role->getId(),
+                    'name' => $role->getName(),
+                );
+            }
+            return $roles;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Generates an array for template from objects array
+     *
+     * @param array $imageObjectsArray
+     * @return array|null
+     */
+    public function generateImageArray($imageObjectsArray)
+    {
+        if($imageObjectsArray){
+            $images = array();
+            /** @var \WorkBundle\Entity\Image $image */
+            foreach ($imageObjectsArray as $image) {
+                $images[] = array(
+                    'id' => $image->getId(),
+                    'name' => $image->getName(),
+                    'role' => array('id' => $image->getRole()->getId(), 'role' => $image->getRole()->getName()),
+                    'extension' => $image->getExtension(),
+                    'path' => $image->getPath(),
+                    'status' => $image->getStatus(),
+                );
+            }
+            return $images;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Image uploading on the server
      *
      * @param \Symfony\Component\HttpFoundation\File\UploadedFile $image
@@ -200,5 +271,28 @@ class Image
     protected function checkExtension($extension)
     {
         return $extension=='image/jpeg'||$extension=='image/jpg'||$extension=='image/png'||$extension=='image/gif';
+    }
+
+    /**
+     * Set status
+     *
+     * @param bool $status
+     * @return Image
+     */
+    public function setStatus(\boolean $status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \bool
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

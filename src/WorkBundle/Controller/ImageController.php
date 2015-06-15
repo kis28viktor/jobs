@@ -8,9 +8,16 @@ use WorkBundle\Entity\Image;
 
 class ImageController extends Controller
 {
-    public function imageUploadAction()
+    public function imageUploadAction(Request $request)
     {
-        return $this->render('WorkBundle:Admin:imageUpload.html.twig');
+        $image = new Image();
+        $images = $image->generateImageArray($image->getAllImages($this->getEntityManager()));
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($images,$request->query->getInt('page', 1),20);
+        return $this->render('WorkBundle:Admin:imageUpload.html.twig', array(
+            'imagesData' => $pagination,
+            'roles' => $image->getAllRoles($this->getEntityManager()),
+        ));
     }
 
     public function imageSavingAction(Request $request)
@@ -22,5 +29,19 @@ class ImageController extends Controller
             $image->imageUpload($request->files->get('image'),'','');
         } else {
         }
+    }
+
+    public function deleteImageAction(Request $request)
+    {
+        echo 'Deleted';die;
+    }
+    /**
+     * Get Entity Manager
+     *
+     * @return \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object
+     */
+    protected function getEntityManager()
+    {
+        return $this->getDoctrine()->getEntityManager();
     }
 }
