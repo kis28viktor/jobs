@@ -1,7 +1,7 @@
 {% extends "@Work/layout.html.twig" %}
 {% block content %}
  <form method="post" action="{{ path('image_saving') }}" enctype="multipart/form-data">
-     <select style="width: 25%;">
+     <select style="width: 25%;" name="imageRole">
          {% if roles %}
             {% for role in roles %}
                  <option value="{{ role.id}}">{{ role.name }}</option>
@@ -10,8 +10,7 @@
      </select>
      <input type="file" name="image">
      <input type="submit" value="Завантажити">
-
-     </form>
+ </form>
     <table style="width: 100%;">
         <tr>
             <td>id</td>
@@ -28,7 +27,7 @@
                 <td style="width: 15%;"><img src="{{ asset(image.path) }}"></td>
                 <td>{{ image.role.role }}</td>
                 <td>{{ image.status }}</td>
-                <td><a href="{{ path('image_delete', {'id': image.id}) }}"> Delete</a></td>
+                <td><a href="{{ path('image_delete', {'img_id': image.id}) }}"> Delete</a></td>
             </tr>
         {% endfor %}
     </table>

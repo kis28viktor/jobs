@@ -239,19 +239,30 @@ class Image
     }
 
     /**
-     * @param string $imagePath
+     * @param string $imageId
+     * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
      * @return string
      */
-    public function deleteImage($imagePath)
+    public function deleteImage($imageId, $em)
     {
-        try{
-            $fs = new Filesystem();
-            $fs->remove($imagePath);
+        /** @var \WorkBundle\Entity\Image $image */
+        $image = $em->getRepository('WorkBundle:Image')->find($imageId);
+        if($image) {
+            try {
+                $imagePath = $image->getPath();
+                $fs        = new Filesystem();
+                $fs->remove($imagePath);
+                $em->remove($image);
+                $em->flush();
+                return null;
+            } catch (IOExceptionInterface $e) {
+                return $e->getMessage();
+            }
+        } else {
             return null;
-        } catch(IOExceptionInterface $e){
-            return $e->getMessage();
         }
     }
+
     /**
      * Get max image size, that is allowed
      *

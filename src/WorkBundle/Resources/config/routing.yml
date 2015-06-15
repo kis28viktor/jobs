@@ -37,7 +37,7 @@ admin_delete_issue:
     path: /admin/deleteIssue
     defaults: { _controller: WorkBundle:Admin:deleteIssue }
 
-image_upload:
+image_managing:
     path: /admin/imageUpload
     defaults: { _controller: WorkBundle:Image:imageUpload }
 
