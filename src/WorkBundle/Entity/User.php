@@ -20,7 +20,7 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-//        $this->addRole(self::ROLE_SUPER_ADMIN);
+        $this->addRole(self::ROLE_SUPER_ADMIN);
     }
 
     /**
