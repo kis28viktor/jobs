@@ -1,33 +1,45 @@
 {% extends "@Work/layout.html.twig" %}
 {% block content %}
-    <a href="{{ path('image_managing') }}">Upload new banners</a>   |
-    <a href="{{ path('fos_user_security_logout') }}">Logout</a>
+    <ul class="stack-for-small round secondary button-group">
+        <li>
+            <a href="{{ path('image_managing') }}" class="small button">
+                Завантаження банерів
+                <i class="fa fa-download"></i>
+            </a>
+        </li>
+        <li>
+            <a href="{{ path('fos_user_security_logout') }}" class="small button">
+                Вихід з адмінпанелі
+                <i class="fa fa-sign-out"></i>
+            </a>
+        </li>
+    </ul>
+
     <div style="color: red; font-size: 20px;">
         {% for notice in app.session.flashbag.get('notice') %}
             {{ notice }}<br>
         {% endfor %}
     </div>
-    <div style="margin: 30px;">
+    <div class="large-8 large-offset-2 panel">
         <form action="{{ path('admin_issues') }}" method="post">
-                <div class="row">
-                    <div class="large-4 columns">
-                        <label>City: </label>
-                        <input type="text" name="city"
-                               {% if city %}value="{{ city }}"{% endif %}>
-                    </div>
+            <div class="row">
+                <div class="large-10 columns">
                     <div class="row">
-                        <div class="large-4 columns">
-                            <label>Type: </label>
+                        <div class="large-6 columns">
+                            <label>Місто: </label>
+                            <input type="text" name="city"
+                                   {% if city %}value="{{ city }}"{% endif %}>
+                        </div>
+                        <div class="large-6 columns">
+                            <label>Тип: </label>
                             <select name="issueType[]">
                                 <option {% if (curIssueType) and (curIssueType == 'all') %}selected {% endif %}>all</option>
                                 <option value="workers" {% if (curIssueType) and (curIssueType == 'workers') %}selected {% endif %}>workers</option>
                                 <option value="employers" {% if (curIssueType) and (curIssueType == 'employers') %}selected {% endif %}>employers</option>
                             </select>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="large-6 columns">
-                            <label>Gender: </label>
+                            <label>Стать: </label>
                             <select name="gender[]">
                                 <option disabled>gender</option>
                                 <option value="all">all</option>
@@ -38,25 +50,29 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="large-6 columns">
-                            <label>Choose your categories </label>
+                        <div class="large-6 columns end">
+                            <label>Категорія </label>
                             <select name="categories[]">
-                                <option selected disabled>Choose the category</option>
-                                <option value="all">all</option>
+                                <option selected disabled>Виберіть категорію</option>
+                                <option value="all">Всі</option>
                                 {% for key,category in categories  %}
                                     <option value="{{ key }}"{% if (curCategory) and (curCategory == key) %} selected{% endif %}>{{ category }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                     </div>
-                    <input type="submit" value="Знайти" class="button">
                 </div>
+
+                <div class="large-2 columns" style="margin-top: 45px;">
+                    <input type="submit" class="button small">
+                </div>
+            </div>
         </form>
     </div>
     <div class="row">
-        <div class="large-12 columns">
+        <div class="large-8 large-offset-2 columns">
             <div class="count">
-                Total <b>{{ issuesData.getTotalItemCount }}</b> items found:
+                Всього знайдено <b>{{ issuesData.getTotalItemCount }}</b>
             </div>
             <table class="table table-condensed" style="word-break: break-all; width: 100%">
                 <thead>
@@ -87,7 +103,12 @@
                     {% endif %}
                 {% endfor %}
                         </td>
-                        <td><a href="{{ path('admin_delete_issue', {'id':issue.id, 'issueType': issue.issueType}) }}">Delete</a></td>
+                        <td>
+                            <a href="{{ path('admin_delete_issue', {'id':issue.id, 'issueType': issue.issueType}) }}">
+                                Delete
+                                <i class="fa fa-trash-o"></i>
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
