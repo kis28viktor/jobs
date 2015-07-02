@@ -1,44 +1,84 @@
 {% extends "@Work/layout.html.twig" %}
 {% block content %}
- <form method="post" action="{{ path('image_saving') }}" enctype="multipart/form-data">
-     <div style="color: red; font-size: 20px;">
-         {% for notice in app.session.flashbag.get('notice') %}
-             {{ notice }}<br>
-         {% endfor %}
-     </div>
-     <select style="width: 25%;" name="imageRole">
-         {% if roles %}
-            {% for role in roles %}
-                 <option value="{{ role.id}}">{{ role.name }}</option>
-            {% endfor %}
-         {% endif %}
-     </select>
-     <input type="file" name="image">
-     <input type="submit" value="Завантажити">
- </form>
-    <table style="width: 100%;">
-        <tr>
-            <td>id</td>
-            <td>name</td>
-            <td>image</td>
-            <td>banner type</td>
-            <td>status</td>
-            <td>delete</td>
-        </tr>
-        {% for image in imagesData %}
+    <div class="large-6 large-offset-3">
+        <ul class="stack-for-small round secondary button-group">
+            <li>
+                <a href="{{ path('admin_issues') }}" class="tiny button">
+                    Адмінпанель
+                    <i class="fa fa-user"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('main') }}" class="button tiny">
+                    Головна сторінка
+                    <i class="fa fa-home"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('fos_user_change_password') }}" class="button tiny">
+                    Змінити пароль
+                    <i class="fa fa-unlock-alt"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('fos_user_security_logout') }}" class="tiny button">
+                    Вихід з адмінпанелі
+                    <i class="fa fa-sign-out"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+ <div class="large-8 columns large-offset-2 panel">
+     <form method="post" action="{{ path('image_saving') }}" enctype="multipart/form-data">
+         <div style="color: red; font-size: 20px;">
+             {% for notice in app.session.flashbag.get('notice') %}
+                 {{ notice }}<br>
+             {% endfor %}
+         </div>
+         <div class="row">
+             <div class="large-4 columns">
+                 <select name="imageRole">
+                     {% if roles %}
+                         {% for role in roles %}
+                             <option value="{{ role.id}}">{{ role.name }}</option>
+                         {% endfor %}
+                     {% endif %}
+                 </select>
+             </div>
+             <div class="large-4 columns">
+                 <input type="file" name="image" class="button tiny">
+             </div>
+             <div class="large-4 columns">
+                 <input type="submit" value="Завантажити" class="button small">
+             </div>
+         </div>
+     </form>
+ </div>
+    <div class="large-8 columns large-offset-2">
+        <table style="width: 100%;">
             <tr>
-                <td>{{ image.id }}</td>
-                <td>{{ image.name }}</td>
-                <td style="width: 15%;"><img src="{{ asset(image.path) }}"></td>
-                <td>{{ image.role.role }}</td>
-                <td>
-                    <select onchange="location = this.options[this.selectedIndex].value;">
-                        <option {% if image.status==1 %}selected{% endif %} value="{{ path('change_status',{'img_id': image.id, 'change_to': 1}) }}">1</option>
-                        <option {% if image.status==0 %}selected{% endif %} value="{{ path('change_status',{'img_id': image.id, 'change_to': 0}) }}">0</option>
-                    </select>
-                </td>
-                <td><a href="{{ path('image_delete', {'img_id': image.id}) }}"> Delete</a></td>
+                <td>id</td>
+                <td>name</td>
+                <td>image</td>
+                <td>banner type</td>
+                <td>status</td>
+                <td>delete</td>
             </tr>
-        {% endfor %}
-    </table>
+            {% for image in imagesData %}
+                <tr>
+                    <td>{{ image.id }}</td>
+                    <td>{{ image.name }}</td>
+                    <td style="width: 15%;"><img src="{{ asset(image.path) }}"></td>
+                    <td>{{ image.role.role }}</td>
+                    <td>
+                        <select onchange="location = this.options[this.selectedIndex].value;">
+                            <option {% if image.status==1 %}selected{% endif %} value="{{ path('change_status',{'img_id': image.id, 'change_to': 1}) }}">1</option>
+                            <option {% if image.status==0 %}selected{% endif %} value="{{ path('change_status',{'img_id': image.id, 'change_to': 0}) }}">0</option>
+                        </select>
+                    </td>
+                    <td><a href="{{ path('image_delete', {'img_id': image.id}) }}"> Delete</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}

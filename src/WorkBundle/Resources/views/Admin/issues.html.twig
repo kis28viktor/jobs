@@ -1,19 +1,33 @@
 {% extends "@Work/layout.html.twig" %}
 {% block content %}
-    <ul class="stack-for-small round secondary button-group">
-        <li>
-            <a href="{{ path('image_managing') }}" class="small button">
-                Завантаження банерів
-                <i class="fa fa-download"></i>
-            </a>
-        </li>
-        <li>
-            <a href="{{ path('fos_user_security_logout') }}" class="small button">
-                Вихід з адмінпанелі
-                <i class="fa fa-sign-out"></i>
-            </a>
-        </li>
-    </ul>
+    <div class="large-6 large-offset-4">
+        <ul class="stack-for-small round secondary button-group">
+            <li>
+                <a href="{{ path('image_managing') }}" class="tiny button">
+                    Завантаження банерів
+                    <i class="fa fa-download"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('main') }}" class="button tiny">
+                    Головна сторінка
+                    <i class="fa fa-home"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('fos_user_change_password') }}" class="button tiny">
+                    Змінити пароль
+                    <i class="fa fa-unlock-alt"></i>
+                </a>
+            </li>
+            <li>
+                <a href="{{ path('fos_user_security_logout') }}" class="tiny button">
+                    Вихід з адмінпанелі
+                    <i class="fa fa-sign-out"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
 
     <div style="color: red; font-size: 20px;">
         {% for notice in app.session.flashbag.get('notice') %}
@@ -33,16 +47,15 @@
                         <div class="large-6 columns">
                             <label>Тип: </label>
                             <select name="issueType[]">
-                                <option {% if (curIssueType) and (curIssueType == 'all') %}selected {% endif %}>all</option>
-                                <option value="workers" {% if (curIssueType) and (curIssueType == 'workers') %}selected {% endif %}>workers</option>
-                                <option value="employers" {% if (curIssueType) and (curIssueType == 'employers') %}selected {% endif %}>employers</option>
+                                <option {% if (curIssueType) and (curIssueType == 'all') %}selected {% endif %}>Всі</option>
+                                <option value="workers" {% if (curIssueType) and (curIssueType == 'workers') %}selected {% endif %}>Робітники</option>
+                                <option value="employers" {% if (curIssueType) and (curIssueType == 'employers') %}selected {% endif %}>Роботодавці</option>
                             </select>
                         </div>
                         <div class="large-6 columns">
                             <label>Стать: </label>
-                            <select name="gender[]">
-                                <option disabled>gender</option>
-                                <option value="all">all</option>
+                            <select selected name="gender[]">
+                                <option value="all">Всі</option>
                                 {% for key,currentGender in genders %}
                                     <option value="{{ key }}"
                                             {% if (gender) and (gender[0] == key) %}selected {% endif %}>
@@ -53,8 +66,7 @@
                         <div class="large-6 columns end">
                             <label>Категорія </label>
                             <select name="categories[]">
-                                <option selected disabled>Виберіть категорію</option>
-                                <option value="all">Всі</option>
+                                <option selected value="all">Всі</option>
                                 {% for key,category in categories  %}
                                     <option value="{{ key }}"{% if (curCategory) and (curCategory == key) %} selected{% endif %}>{{ category }}</option>
                                 {% endfor %}
@@ -64,28 +76,27 @@
                 </div>
 
                 <div class="large-2 columns" style="margin-top: 45px;">
-                    <input type="submit" class="button small">
+                    <input type="submit" class="button small" value="Знайти">
                 </div>
             </div>
         </form>
     </div>
-    <div class="row">
-        <div class="large-8 large-offset-2 columns">
-            <div class="count">
-                Всього знайдено <b>{{ issuesData.getTotalItemCount }}</b>
-            </div>
-            <table class="table table-condensed" style="word-break: break-all; width: 100%">
-                <thead>
-                <th style="white-space: nowrap">ПІБ</th>
-                <th style="white-space: nowrap">Телефон</th>
-                <th style="white-space: nowrap">Місто</th>
-                <th style="white-space: nowrap" class="show-for-large-up">Про мене</th>
-                <th style="white-space: nowrap">Тип заявки</th>
-                <th style="white-space: nowrap">Сфера</th>
-                <th style="white-space: nowrap">Видалити</th>
-                </thead>
-                <tbody>
-                {% for issue in issuesData %}
+    <div class="large-8 large-offset-2 columns">
+        <div class="count">
+            Всього знайдено <b>{{ issuesData.getTotalItemCount }}</b>
+        </div>
+        <table class="table table-condensed" style="word-break: break-all; width: 100%">
+            <thead>
+            <th style="white-space: nowrap">ПІБ</th>
+            <th style="white-space: nowrap">Телефон</th>
+            <th style="white-space: nowrap">Місто</th>
+            <th style="white-space: nowrap" class="show-for-large-up">Про мене</th>
+            <th style="white-space: nowrap">Тип заявки</th>
+            <th style="white-space: nowrap">Сфера</th>
+            <th style="white-space: nowrap">Видалити</th>
+            </thead>
+            <tbody>
+            {% for issue in issuesData %}
                     <tr {% if loop.index is odd %}class="color"{% endif %}">
                         <td>{{issue.name}}</td>
                         <td style="white-space: nowrap">{{issue.phone}}</td>
@@ -93,15 +104,15 @@
                         <td style="width: 30%;" class="show-for-large-up">{{issue.aboutMe}}</td>
                         <td>{{ issue.issueType }}</td>
                         <td>{% for category in issue.categories %}
-                    {% if category is iterable %}
-                        <br>
-                        {% for categoryName in category %}
-                            {{ categoryName }}<br>
-                        {% endfor %}
-                    {% else %}
-                        {{ category }}
-                    {% endif %}
-                {% endfor %}
+                {% if category is iterable %}
+                    <br>
+                    {% for categoryName in category %}
+                        {{ categoryName }}<br>
+                    {% endfor %}
+                {% else %}
+                    {{ category }}
+                {% endif %}
+            {% endfor %}
                         </td>
                         <td>
                             <a href="{{ path('admin_delete_issue', {'id':issue.id, 'issueType': issue.issueType}) }}">
@@ -111,11 +122,10 @@
                         </td>
                     </tr>
                 {% endfor %}
-                </tbody>
-            </table>
-            <div class="navigation">
-                {{ knp_pagination_render(issuesData) }}
-            </div>
+            </tbody>
+        </table>
+        <div class="pagination-centered">
+            {{ knp_pagination_render(issuesData) }}
         </div>
     </div>
 {% endblock %}

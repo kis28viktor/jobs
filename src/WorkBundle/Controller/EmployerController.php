@@ -34,7 +34,7 @@ class EmployerController extends Controller
         $workerModel = new Worker();
         $workers = $workerModel->generateWorkersArray($workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager()), $this->getEntityManager());
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($workers,$request->query->getInt('page', 1),20);
+        $pagination = $paginator->paginate($workers,$request->query->getInt('page', 1),10);
         $gender = new Gender();
         $category = new Category();
         return $this->render(

@@ -3227,9 +3227,10 @@ ul.pagination {
     margin-left: 0.3125rem; }
     ul.pagination li a, ul.pagination li button {
       border-radius: 3px;
+      border-color: #414146;
       transition: background-color 300ms ease-out;
       background: none;
-      color: #999999;
+      color: #414146;
       display: block;
       font-size: 1em;
       font-weight: normal;
@@ -3238,19 +3239,19 @@ ul.pagination {
     ul.pagination li:hover a,
     ul.pagination li a:focus, ul.pagination li:hover button,
     ul.pagination li button:focus {
-      background: #e6e6e6; }
+      background: #2ba6cb; }
     ul.pagination li.unavailable a, ul.pagination li.unavailable button {
       cursor: default;
       color: #999999; }
     ul.pagination li.unavailable:hover a, ul.pagination li.unavailable a:focus, ul.pagination li.unavailable:hover button, ul.pagination li.unavailable button:focus {
       background: transparent; }
     ul.pagination li.current a, ul.pagination li.current button {
-      background: #2ba6cb;
+      background: #414146;
       color: #FFFFFF;
       cursor: default;
       font-weight: bold; }
       ul.pagination li.current a:hover, ul.pagination li.current a:focus, ul.pagination li.current button:hover, ul.pagination li.current button:focus {
-        background: #2ba6cb; }
+        background: #414146; }
   ul.pagination li {
     display: block;
     float: left; }

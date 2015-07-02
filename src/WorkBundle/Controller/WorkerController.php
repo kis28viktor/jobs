@@ -56,7 +56,7 @@ class WorkerController extends Controller
         $category = new Category();
         $employers = $employer->generateEmployersArray($employer->getAllEmployersByFilter($request, $this->getEntityManager()), $this->getEntityManager());
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($employers,$request->query->getInt('page', 1),20);
+        $pagination = $paginator->paginate($employers,$request->query->getInt('page', 1),10);
         return $this->render('WorkBundle:Worker:findWork.html.twig',
             array(
                 'pagination' => $pagination,

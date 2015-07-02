@@ -12,10 +12,8 @@ class ImageController extends Controller
     {
         $image = new Image();
         $images = $image->generateImageArray($image->getAllImages($this->getEntityManager()));
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($images,$request->query->getInt('page', 1),20);
         return $this->render('WorkBundle:Admin:imageUpload.html.twig', array(
-            'imagesData' => $pagination,
+            'imagesData' => $images,
             'roles' => $image->getAllRoles($this->getEntityManager()),
         ));
     }
