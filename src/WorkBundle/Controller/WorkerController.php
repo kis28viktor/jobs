@@ -21,10 +21,17 @@ class WorkerController extends Controller
     /**
      * Post worker action
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function postWorkerAction()
+    public function postWorkerAction(Request $request)
     {
+        if($request->cookies->get('city')){
+            $request->request->set('city', $request->cookies->get('city'));
+            $response = new Response();
+            $response->headers->clearCookie('city','main');
+            $response->send();
+        }
         $educationLevel = new EducationLevel();
         $category       = new Category();
         $gender         = new Gender();
@@ -33,6 +40,7 @@ class WorkerController extends Controller
             array('categories'      => $category->getAllCategories($this->getEntityManager()),
                   'educationLevels' => $educationLevel->getAllEducationLevels($this->getEntityManager()),
                   'genders'         => $gender->getAllGendersArray($this->getEntityManager()),
+                  'city'    => $request->request->get('city') ? $request->request->get('city') : null,
             )
         );
     }

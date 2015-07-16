@@ -54,17 +54,24 @@ class EmployerController extends Controller
     /**
      * Post an issue about possible work
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function postWorkAction()
+    public function postWorkAction(Request $request)
     {
+        if($request->cookies->get('city')){
+            $request->request->set('city', $request->cookies->get('city'));
+            $response = new Response();
+            $response->headers->clearCookie('city', 'main');
+            $response->send();
+        }
         $category = new Category();
         $gender = new Gender();
         return $this->render('WorkBundle:Employer:postWork.html.twig',
             array(
                 'categories' => $category->getAllCategories($this->getEntityManager()),
                 'genders' => $gender->getAllGendersArray($this->getEntityManager()),
-
+                'city' => $request->request->get('city') ? $request->request->get('city') : null,
         ));
     }
 

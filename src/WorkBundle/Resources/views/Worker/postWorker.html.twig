@@ -38,7 +38,7 @@
                                     {% endfor %}
                                 </select>
                                 <label>Місто: </label>
-                                <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false"
+                                <input type="text" {% if city %}value="{{ city }}" {% endif %} class="typeahead tt-query" autocomplete="off" spellcheck="false"
                                        name="city">
                             </div>
                         </div>
