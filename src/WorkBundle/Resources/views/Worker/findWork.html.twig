@@ -1,7 +1,7 @@
 {% extends '@Work/layout.html.twig' %}
 {% block header_ %}
-    <h1 style="text-align: center">
-        Тут ви можете знайти роботу або робітника абсолютно безкоштовно
+    <h1 style="text-align: center;margin: 20px;">
+        Пошук роботи
     </h1>
 {% endblock %}
 {% block  baner1 %}
@@ -10,13 +10,21 @@
 {% block content %}
     <div class="large-8 columns">
         <div id="myCarousel" class="carousel slide">
-            {% block mainbaner %}
+           {% block mainbaner %}
                 {{ parent() }}
-            {% endblock %}
+           {% endblock %}
         </div>
-        <form action="{{ path('find_work') }}" method="post">
+        <div class="center">
+            <h3>
+                <b>Скористуйтесь фільтром та оберіть роботу із списку вакансій</b>
+            </h3>
+        </div>
+        <form action="{{ path('find_work') }}" method="post" class="panel-light">
             <div class="center">
                 <div class="row">
+                    <div class="panel-shadow">
+                        <h4>Фільтр</h4>
+                    </div>
                     <div class="large-4 columns">
                         <label>Місто: </label>
                         <div>
@@ -69,47 +77,90 @@
                         </select>
                     </div>
                 </div>
-                <input type="submit" value="Знайти" class="button">
+                <input type="submit" value="Знайти" class="button small">
             </div>
-
         </form>
         <div class="count">
-            Всього <b>{{ pagination.getTotalItemCount }}</b> Знайдено:
+            Всього знайдено:  <b>{{ pagination.getTotalItemCount }}</b>
         </div>
         {% for employer in pagination %}
-            <div class="panel row" style="margin-bottom: 5px">
-                <h3>{{employer.name}} в місті {{employer.city}}</h3>
-                <div class="large-6 columns">
-                    Шукає на роботу працівника у сферах:<br>
+        <div style="margin-bottom: 20px">
+            <div class="row">
+                <div class="columns large-3 border">
+                    <h6><b>Категорії:</b></h6>
+                </div>
+                <div class="large-9 columns border" >
                     {% for category in employer.categories %}
                         {% if category is iterable %}
-                            <br>
                             {% for categoryName in category %}
-                                {{ categoryName }}<br>
+                                <h6 style="float: left;">{{ categoryName }}
+                                    {% if employer.categories|length > 1 and (not loop.last) %}
+                                        ,
+                                    {% endif %}
+                                    &nbsp;
+                                </h6>
                             {% endfor %}
                         {% else %}
-                            {{ category }}
+                            <h6>{{ category }}</h6>
                         {% endif %}
                     {% endfor %}
                 </div>
-                <div class="large-6 columns">
-                    {% if employer.ageFrom %}Віком від {{employer.ageFrom}} {% endif %} {% if employer.ageTo %}до {{employer.ageTo}} {% endif %}
-                    {% if employer.ageFrom is null  %} Вік не вказаний {% endif %}<br>
-                    З/П {% if employer.priceFrom %} від {{employer.priceFrom}}
-                        {% if employer.priceTo %} до {{employer.priceTo}} {% endif %}
-                    {% endif %}
-                    {% if employer.priceFrom is null and employer.priceTo is null %}
-                        не вказано
-                    {% endif %}
-                </div>
-                {% if employer.aboutMe %}
-                    <hr>
-                    <p>Про роботу:
-                    {{employer.aboutMe}}<br></p>
-                {% endif %}
-                <h5>Номер телефону: {{employer.phone}}</h5>
-                Дата створення вакансії: {{employer.postDate}}
             </div>
+            <div class="row">
+                <div class="large-3 columns border" id="aboutLable">
+                    <h6><b>Про мене:</b></h6>
+                </div>
+                <div class="large-9 columns border" id="about">
+                    <h6>{{employer.name}};{% if employer.aboutMe %}
+                            {{employer.aboutMe}}
+                        {% endif %}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-3 columns border">
+                    <h6><b>Вік:</b></h6>
+                </div>
+                <div class="large-9 columns border">
+                    <h6>{% if employer.ageFrom %}Від <b>
+                            {{employer.ageFrom}}</b>
+                        {% endif %}
+                        {% if employer.ageTo %}до <b>{{employer.ageTo}}</b>
+                        {% endif %}
+                        {% if employer.ageFrom is null  %} Не вказаний {% endif %}<br>
+                    </h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-3 columns border">
+                    <h6><b>З/П :</b></h6>
+                </div>
+                <div class="large-9 columns border">
+                    <h6>{% if employer.priceFrom %} Від <b>{{employer.priceFrom}}</b>
+                            {% if employer.priceTo %} до <b>{{employer.priceTo}}</b> {% endif %}
+                        {% endif %}
+                        {% if employer.priceFrom is null and employer.priceTo is null %}
+                            Не вказано
+                        {% endif %}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-3 columns border">
+                    <h6><b>Місто:</b></h6>
+                </div>
+                <div class="large-9 columns border">
+                    <h6>{% if employer.city %}{{employer.city}}{% else %} Не вказано </h6>{% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="large-3 columns border">
+                    <h6><b>Номер телефону:</b></h6>
+                </div>
+                <div class="large-9 columns border">
+                    <h6>{{employer.phone}}</h6>
+                </div>
+            </div>
+            <p style="font-size: small;"><b>Дата подання заявки: {{ employer.postDate }}</b></p>
+        </div>
         {% endfor %}
         <div class="pagination-centered">
             {{ knp_pagination_render(pagination) }}
@@ -177,5 +228,8 @@
             $( 'span.twitter-typeahead' )
                     .css( 'width', '100%' );
         });
+        var h = $('#about').height();
+        $('#aboutLable').height(h);
+
     </script>
 {% endblock %}

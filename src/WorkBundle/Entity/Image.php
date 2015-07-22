@@ -376,7 +376,7 @@ class Image
      * @param \Doctrine\Common\Persistence\ObjectManager|\Doctrine\ORM\EntityManager|object $em
      * @return string|array|null
      */
-    public function getBanner($bannerTypeId, $em)
+    public static function getBanner($bannerTypeId, $em)
     {
         $imgType = $em->getRepository('WorkBundle:ImageRole')->find($bannerTypeId);
         /** @var \WorkBundle\Entity\ImageRole $imgType */

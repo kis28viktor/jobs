@@ -1,6 +1,14 @@
 {% extends "@Work/layout.html.twig" %}
+{% block header_ %}
+    <h1 style="text-align: center;margin: 20px;">
+        Адмінпанель
+    </h1>
+{% endblock %}
+{% block  baner1 %}
+    <div class="large-2 columns"></div>
+{% endblock %}
 {% block content %}
-    <div class="large-6 large-offset-4">
+    <div class="large-offset-2">
         <ul class="stack-for-small round secondary button-group">
             <li>
                 <a href="{{ path('image_managing') }}" class="tiny button">
@@ -48,8 +56,8 @@
                             <label>Тип: </label>
                             <select name="issueType[]">
                                 <option {% if (curIssueType) and (curIssueType == 'all') %}selected {% endif %}>Всі</option>
-                                <option value="workers" {% if (curIssueType) and (curIssueType == 'workers') %}selected {% endif %}>Робітники</option>
-                                <option value="employers" {% if (curIssueType) and (curIssueType == 'employers') %}selected {% endif %}>Роботодавці</option>
+                                <option value="workers" {% if (curIssueType) and (curIssueType == 'workers') %}selected {% endif %}>Шукають роботу</option>
+                                <option value="employers" {% if (curIssueType) and (curIssueType == 'employers') %}selected {% endif %}>Дають роботу</option>
                             </select>
                         </div>
                         <div class="large-6 columns">
@@ -128,4 +136,7 @@
             {{ knp_pagination_render(issuesData) }}
         </div>
     </div>
+{% endblock %}
+{% block  baner2 %}
+    <div class="large-2 columns"></div>
 {% endblock %}

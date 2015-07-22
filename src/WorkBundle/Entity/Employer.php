@@ -22,10 +22,6 @@ class Employer
      */
     protected $firstName;
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $lastName;
-    /**
      * @ORM\ManyToOne(targetEntity="Gender")
      */
     protected $gender;
@@ -372,16 +368,6 @@ class Employer
     }
 
     /**
-     * Get lastName
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
-    }
-
-    /**
      * Set gender
      *
      * @param \WorkBundle\Entity\Gender $gender
@@ -549,7 +535,6 @@ class Employer
         $gender = $em->getRepository('WorkBundle:Gender')->find($formData['gender']);
         $employer = new Employer();
         $employer->setFirstName($formData['firstName'])
-            ->setLastName($formData['lastName'])
             ->setPhone($formData['phone'])
             ->setGender($gender);
         if($formData['city']){
@@ -620,7 +605,7 @@ class Employer
         foreach ($employersModels as $employer) {
             $employers[] = array(
                 'id' => $employer->getId(),
-                'name' => $employer->getFirstName() . ' ' . $employer->getLastName(),
+                'name' => $employer->getFirstName(),
                 'phone' => $employer->getPhone(),
                 'city' => $employer->getCity(),
                 'aboutMe' => $employer->getAboutMe(),
@@ -628,8 +613,8 @@ class Employer
                 'ageTo' => $employer->getAgeTo(),
                 'priceFrom' => $employer->getPriceFrom(),
                 'priceTo' => $employer->getPriceTo(),
-                'termFrom' => $employer->getTermFrom()?$employer->getTermFrom()->format('Y-m-d'): 'Employer didn`t specified term from.',
-                'termTo' => $employer->getTermTo()?$employer->getTermTo()->format('Y-m-d'): 'Employer didn`t specified term to.',
+                'termFrom' => $employer->getTermFrom()?$employer->getTermFrom()->format('Y-m-d'): 'Не вказано',
+                'termTo' => $employer->getTermTo()?$employer->getTermTo()->format('Y-m-d'): 'Не вказано',
                 'categories' => $employerModel->getCategoriesForEmployer($employer->getId(), $entityManager),
                 'postDate' => $employer->getPostDate()->format('Y-m-d'),
             );

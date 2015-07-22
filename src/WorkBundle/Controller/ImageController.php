@@ -3,6 +3,7 @@
 namespace WorkBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 use WorkBundle\Entity\Image;
 
@@ -63,6 +64,26 @@ class ImageController extends Controller
         }
         return $this->redirectToRoute('image_managing');
     }
+
+    /**
+     * @param $role
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getBanerAction($role)
+    {
+        if($role == 3)
+        {
+            $paths = Image::getBanner($role, $this->getEntityManager());
+            return $this->render('WorkBundle:Image:slider.html.twig',
+                array('sliders'=>$paths));
+        }
+        else {
+            $path = Image::getBanner($role, $this->getEntityManager());
+            return $this->render('WorkBundle:Image:baner.html.twig',
+                array('baner'=>$path));
+        }
+    }
+
     /**
      * Get Entity Manager
      *

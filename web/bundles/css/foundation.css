@@ -71,7 +71,7 @@ body {
   margin: 0;
   padding: 0;
   position: relative;
-    background: url('../../img/main1.jpg');
+    background-color:#ffffff;/* url('../../img/main1.jpg');*/
   /*background: #dae3f2; /* Old browsers */
   /*
   background: -moz-linear-gradient(left,  #1e5799 0%, #2989d8 50%, #207cca 100%, #7db9e8 100%, #207cca 100%); /* FF3.6+ */
@@ -1180,14 +1180,14 @@ button, .button {
   display: inline-block;
   padding: 1rem 2rem 1.0625rem 2rem;
   font-size: 1rem;
-  background-color: #414146;
+  background-color: #303030;
   border-color: #2285a2;
   color: #FFFFFF;
   transition: background-color 300ms ease-out; }
   button:hover, button:focus, .button:hover, .button:focus {
-    background-color: #2285a2; }
+     }
   button:hover, button:focus, .button:hover, .button:focus {
-    color: #FFFFFF; }
+     }
   button.secondary, .button.secondary {
     background-color: #e9e9e9;
     border-color: #bababa;
@@ -1306,7 +1306,7 @@ button, .button {
     button.disabled.warning, button[disabled].warning, .button.disabled.warning, .button[disabled].warning {
       background-color: #f08a24;
       border-color: #cf6e0e;
-      color: #FFFFFF;
+      /*color: #FFFFFF;*/
       box-shadow: none;
       cursor: default;
       opacity: 0.7; }
@@ -3499,7 +3499,6 @@ p {
   font-size: 1rem;
   font-weight: normal;
   line-height: 1.6;
-  margin-bottom: 1.25rem;
   text-rendering: optimizeLegibility; }
   p.lead {
     font-size: 1.21875rem;
@@ -3819,7 +3818,7 @@ blockquote p {
 .reveal-modal {
   border-radius: 3px;
   display: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   visibility: hidden;
   width: 100%;
@@ -3840,11 +3839,13 @@ blockquote p {
     margin-bottom: 0; }
   @media only screen and (min-width: 40.0625em) {
     .reveal-modal {
+        width: 40%;
+        text-align: center;
       left: 0;
       margin: 0 auto;
       max-width: 62.5em;
       right: 0;
-      width: 80%; } }
+       } }
   @media only screen and (min-width: 40.0625em) {
     .reveal-modal {
       top: 6.25rem; } }

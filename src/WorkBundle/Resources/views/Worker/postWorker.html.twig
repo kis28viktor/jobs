@@ -1,47 +1,46 @@
 {% extends '@Work/layout.html.twig' %}
 {% block header_ %}
-    <h1 style="text-align: center; min-height: 150px;">
+    <h1 style="margin: 20px;line-height: 1">
         Шукаєш роботу?
     </h1>
 {% endblock %}
 {% block  baner1 %}
-    {{ parent() }}
+    <div class="large-1 columns" style="min-height: 1px;">
+
+    </div>
 {% endblock %}
 {% block content %}
-    <div class="large-8 columns">
+<div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <h2 id="modalTitle">Ваша анкета прийнята, очікуйте дзвінка від роботодавця</h2>
+</div>
+    <div class="large-10 columns">
         <div id="myCarousel" class="carousel slide">
             {% block mainbaner %}
                 {{ parent() }}
             {% endblock %}
         </div>
         <div class="row">
-            <div class="large-8 columns">
-                <form class="panel" action="{{ path('add_worker') }}" method="post">
+            <div class="large-7 columns">
+                <form id="contact_form" name="form_" class="panel" action="{{ path('add_worker') }}" method="post" >
                     <div class="center">
-                        <h4>Заповніть анкету і роботодавець сам зв’яжеться з вами</h4>
-                        <div class="row">
-                            <div class="large-6 columns">
-                                <label>Ім’я: </label>
-                                <input type="text" name="firstName" required>
-                                <label>Прізвище: </label>
-                                <input type="text" name="lastName" required>
-                                <label>Телефон: </label>
-                                <input type="tel" name="phone" required>
-                            </div>
-                            <div class="large-6 columns">
-                                <label>Дата народження: </label>
-                                <input type="date" name="date">
-                                <label>Стать:</label>
-                                <select name="gender" required>
-                                    {% for key,gender in genders %}
-                                        <option value="{{ key }}">{{ gender }}</option>
-                                    {% endfor %}
-                                </select>
-                                <label>Місто: </label>
-                                <input type="text" {% if city %}value="{{ city }}" {% endif %} class="typeahead tt-query" autocomplete="off" spellcheck="false"
-                                       name="city">
-                            </div>
+                        <div class="panel-shadow">
+                            <h4>Заповни безкоштовно анкету та роботодавець сам зв’яжеться з тобою</h4>
                         </div>
+                        <label>Ім’я: </label>
+                        <input type="text" name="firstName" required>
+                        <label>Телефон: </label>
+                        <input type="tel" name="phone" required>
+                        <label>Вік: </label>
+                        <input type="number" name="age">
+                        <label>Стать:</label>
+                        <select name="gender" required>
+                        {% for key,gender in genders %}
+                            <option value="{{ key }}">{{ gender }}</option>
+                        {% endfor %}
+                        </select>
+                        <label>Місто: </label>
+                        <input type="text" {% if city %}value="{{ city }}" {% endif %}
+                        class="typeahead tt-query" autocomplete="off" spellcheck="false" name="city">
                         <label>Про мене: </label>
                         <textarea name="aboutMe" style="width: 100%"></textarea>
                         <div class="well well-small">
@@ -49,50 +48,40 @@
                             <div class="row" style="text-align: left">
                                 {% for key,category in categories  %}
                                     <div class="large-6 columns">
-                                        <input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
+                                        <label><input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}</label>
                                     </div>
                                 {% endfor %}
-                            </div>
                         </div>
-                        <div class="panel">
-                            <div class=""><h4>Освіта</h4></div>
-                            <div class="row center">
-                                <div class="large-4 columns">
-                                    <label>Назва закладу: </label>
-                                    <input type="text" name="education">
-                                </div>
-                                <div class="large-4 columns">
-                                    <label>Рівень: </label>
-                                    <select name="educationLevel">
-                                        <option disabled selected>Рівень освіти</option>
-                                        {% for key, education in educationLevels %}
-                                            <option value="{{ key }}">{{ education }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="large-4 columns">
-                                    <label>Місто: </label>
-                                    <input type="text" class="typeahead tt-query" autocomplete="off" spellcheck="false"
-                                           name="educationCity">
-                                </div>
-                            </div>
-                        </div>
-                        <input class="button" type="submit" value="Зберегти">
                     </div>
+                    <input class="button" type="submit" id="myModalb" value="OK">
                 </form>
             </div>
-            <div class="large-1 columns" style="margin-top: 26%">
-                <h3>АБО</h3>
-            </div>
-            <div class="large-3 columns" style="margin-top: 20%">
-                <a href="{{ path('find_work') }}" class="button"><h3>Знайдіть відповідну вакансію тут</h3></a>
-            </div>
         </div>
-
+        <div class="show-for-medium-down center">
+            <h3><b>АБО</b></h3>
+        </div>
+        <div class="show-for-medium-down center">
+            <a href="{{ path('find_work') }}" class="button">
+                <h3>Скористайся пошуком по вакансіям, та знайди роботу сам.</h3>
+                <h3><b>Пошук по вакансіям</b></h3>
+            </a>
+        </div>
+        <div class="large-1 columns show-for-large-up" style="margin-top: 26%">
+            <h3><b>АБО</b></h3>
+        </div>
+        <div class="large-4 columns show-for-large-up" style="margin-top: 20%">
+            <a href="{{ path('find_work') }}" class="button">
+                <h3>Скористайся пошуком по вакансіям, та знайди роботу сам.</h3>
+                <h3><b>Пошук по вакансіям</b></h3>
+            </a>
+        </div>
+    </div>
     </div>
 {% endblock %}
 {% block  baner2 %}
-    {{ parent() }}
+    <div class="large-1 columns" style="min-height: 1px;">
+
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
@@ -100,6 +89,7 @@
         $('.carousel').carousel();
     </script>
     <script type="text/javascript" src="{{ asset('bundles/js/typeahead.min.js') }}"></script>
+    <!-- Other JS plugins can be included here -->
     <script>
         $(document).ready(function(){
             $('input.typeahead').typeahead({
@@ -145,10 +135,21 @@
                     "Ходорів", "Хорол", "Хоростків", "Хотин", "Христинівка", "Хуст", "Цюрупинськ", "Часів", "Червоноград", "Червонозаво", "Червонопарт",
                     "Черкаси", "Чернівці", "Чернігів", "Чигирин", "Чоп", "Чортків", "Чугуїв", "Чуднів", "Шаргород","Шахтарськ", "Шепетівка", "Шостка", "Шпола",
                     "Шумськ", "Щастя", "Щолкіне", "Щорс", "Южне", "Южноукраїнськ", "Юнокомунарівськ", "Яворів", "Яготин", "Ялта", "Ямпіль", "Яремче",
-                    "Ясинувата"]
+                    "Ясинувата","Воловець","Міжгір’я"]
             });
-            $( 'span.twitter-typeahead' )
-                    .css( 'width', '100%' );
+            $( '.twitter-typeahead' )
+                    .css( 'width', '100%').css(  'display', 'block');
         });
+        $('#contact_form').submit(function (e) {
+            var form = this;
+            e.preventDefault();
+            $('.reveal-modal')
+                    .css('display','inherit')
+                    .css('visibility','visible');
+            setTimeout(function () {
+                form.submit();
+            }, 4500);
+        });
+
     </script>
 {% endblock %}

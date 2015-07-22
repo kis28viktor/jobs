@@ -1,96 +1,96 @@
 {% extends '@Work/layout.html.twig' %}
 {% block header_ %}
-    <h1 style="text-align: center">
-        Тут ви можете знайти роботу або робітника абсолютно безкоштовно
+    <h1 style="  margin-top: 20px;text-align: center;line-height: 1">
+        Даєш роботу, або шукаєш працівника?
     </h1>
 {% endblock %}
 {% block  baner1 %}
-    {{ parent() }}
+    <div class="large-1 columns" style="min-height: 10px">
+
+    </div>
 {% endblock %}
 {% block content %}
-    <div class="large-8 columns">
+    <div id="myModal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+        <h2 id="modalTitle">Ваша вакансія прийнята, очікуйте дзвінка від робітників</h2>
+    </div>
+    <div class="large-10 columns">
         <div id="myCarousel" class="carousel slide">
             {% block mainbaner %}
-                {{ parent() }}
+
             {% endblock %}
         </div>
         <div class="row">
-            <div class="large-8 columns">
-                <form class="panel" action="{{ path('add_work') }}" method="post">
-                    <div class="row center">
-                        <h4>Заповніть анкету та робітники самі зв’яжуться з вами</h4>
-                        <div class="well well-small panel">
-                            <label><h3>Шукаю робітника у сфері:</h3></label>
-                            <div class="row" style="text-align: left">
-                                {% for key,category in categories  %}
-                                    <div class="large-6 columns">
+            <div class="large-7 columns">
+                <form id="contact_form" class="panel center" action="{{ path('add_work') }}" method="post">
+                    <div class="panel-shadow">
+                        <h4>Заповни безкоштовно вакансію та робітники самі зв’яжуться з тобою</h4>
+                    </div>
+                    <div class="well well-small panel"  style="margin-top: 20px;">
+                        <label><h3>Шукаю робітника у сфері:</h3></label>
+                        <div class="row" style="text-align: left">
+                            {% for key,category in categories  %}
+                                <div class="large-6 columns">
+                                    <label>
                                         <input type="checkbox" value="{{ key }}" name="categories[]">{{ category }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="large-12 columns">
-                            <h3>Заповніть дані про себе та вимоги до працівника</h3>
-                        </div>
-                        <div class="large-4 columns">
-                            <label>Ім’я</label>
-                            <input type="text" name="firstName" required>
-                        </div>
-                        <div class="large-4 columns">
-                            <label>Прізвище</label>
-                            <input type="text" name="lastName" required>
-                        </div>
-                        <div class="large-4 columns">
-                            <label>Телефон</label>
-                            <input type="text" name="phone" required>
+                                    </label>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
-                    <label class="center">Напишіть декілька слів про роботу яку буде виконувати працівник: </label>
-                    <textarea name="aboutMe"></textarea>
-                    <div class="row center">
-                        <div class="large-4 columns">
+                    <label>З/П</label>
+                    <div class="small-6 columns">
+                        <label >від <input type="number" name="priceFrom"></label>
+                    </div>
+                    <div class="small-6 columns">
+                        <label >до <input type="number" name="priceTo"></label>
+                    </div>
+                    <label>Віком</label>
+                    <div class="small-6 columns">
+                        <label>від <input type="number" name="ageFrom"></label>
+                    </div>
+                    <div class="small-6 columns">
+                        <label>до <input type="number" name="ageTo"></label>
+                    </div>
+                    <label>Стать</label>
+                    <select name="gender" required>
+                        {% for key,gender in genders %}
+                            <option value="{{ key }}">{{ gender }}</option>
+                        {% endfor %}
+                    </select>
                             <label>Місто</label>
                             <input type="text" {% if city %}value="{{ city }}" {% endif %} class="typeahead tt-query" autocomplete="off" spellcheck="false" name="city">
-                        </div>
-                        <div class="large-4 columns">
-                            <label>Вік від</label>
-                            <input type="number" name="ageFrom">
-                        </div>
-                        <div class="large-4 columns">
-                            <label>Вік до</label>
-                            <input type="number" name="ageTo">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="large-4 columns">
-                            <label>Стать </label>
-                            <select name="gender" required>
-                                {% for key,gender in genders %}
-                                    <option value="{{ key }}">{{ gender }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="large-4 columns">
-                            <label>З/П від</label>
-                            <input type="number" name="priceFrom">
-                        </div>
-                        <div class="large-4 columns">
-                            <label>З/П до</label>
-                            <input type="number" name="priceTo">
-                        </div>
-                    </div>
-                    <input type="submit" class="button" value="Зберегти" style="margin-left: 40%;">
+
+                    
+                    <label class="center">Напишіть декілька слів про роботу яку буде виконувати працівник: </label>
+                    <textarea name="aboutMe"></textarea>
+                    <label>Ім’я <input type="text" name="firstName" required></label>
+                    <label>Телефон <input type="text" name="phone" required></label>
+                    <input type="submit" class="button" value="OK">
                 </form>
             </div>
-            <div class="large-1 columns" style="margin-top: 26%"><h3>АБО</h3></div>
-            <div class="large-3 columns" style="margin-top: 20%">
-                <a href="{{ path('find_worker') }}" class="button"><h3>Знайдіть відповідного працівника тут</h3></a>
+            <div class="show-for-medium-down center">
+                <h3>АБО</h3>
+            </div>
+            <div class="show-for-medium-down center">
+                <a href="{{ path('find_worker') }}" class="button">
+                    <h3>Скористауйтеся пошуком по анкетам робітників, які вже є на сайті, та запропонуйте їм свою прботу.</h3>
+                    <h3><b>Пошук по анкетам</b></h3>
+                </a>
+            </div>
+            <div class="large-1 columns show-for-large-up" style="margin-top: 26%"><h3>АБО</h3></div>
+            <div class="large-4 columns show-for-large-up" style="margin-top: 20%">
+                <a href="{{ path('find_worker') }}" class="button">
+                    <h3>Скористауйтеся пошуком по анкетам робітників, які вже є на сайті, та запропонуйте їм свою прботу.</h3>
+                    <h3><b>Пошук по анкетам</b></h3>
+                </a>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block  baner2 %}
-    {{ parent() }}
+    <div class="large-1 columns">
+
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
@@ -144,10 +144,21 @@
                     "Ходорів", "Хорол", "Хоростків", "Хотин", "Христинівка", "Хуст", "Цюрупинськ", "Часів", "Червоноград", "Червонозаво", "Червонопарт",
                     "Черкаси", "Чернівці", "Чернігів", "Чигирин", "Чоп", "Чортків", "Чугуїв", "Чуднів", "Шаргород","Шахтарськ", "Шепетівка", "Шостка", "Шпола",
                     "Шумськ", "Щастя", "Щолкіне", "Щорс", "Южне", "Южноукраїнськ", "Юнокомунарівськ", "Яворів", "Яготин", "Ялта", "Ямпіль", "Яремче",
-                    "Ясинувата"]
+                    "Ясинувата","Воловець","Міжгір’я"]
             });
             $( 'span.twitter-typeahead' )
                     .css( 'width', '100%' );
+        });
+        $('#contact_form').submit(function (e) {
+            var form = this;
+            e.preventDefault();
+            $('.reveal-modal')
+                    .css('display','inherit')
+                    .css('visibility','visible');
+            setTimeout(function () {
+                alert("ABCDEFG");
+                form.submit();
+            }, 4500);
         });
     </script>
 {% endblock %}

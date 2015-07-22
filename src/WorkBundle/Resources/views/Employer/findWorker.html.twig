@@ -1,7 +1,7 @@
 {% extends "@Work/layout.html.twig" %}
 {% block header_ %}
-    <h1 style="text-align: center">
-        Тут ви можете знайти роботу або робітника абсолютно безкоштовно
+    <h1 style="text-align: center;margin: 20px;">
+        Пошук працівників
     </h1>
 {% endblock %}
 {% block  baner1 %}
@@ -12,9 +12,17 @@
         {% block mainbaner %}
             {{ parent() }}
         {% endblock %}
-        <div style="margin: 30px;">
+        <div class="center">
+            <h3>
+                <b>Скористуйтесь фільтром та оберіть робітників із списку анкет</b>
+            </h3>
+        </div>
+        <div class="panel-light">
             <form action="{{ path('find_worker') }}" method="post">
                 <div class="center">
+                    <div class="panel-shadow">
+                        <h4>Фільтр</h4>
+                    </div>
                     <div class="row">
                         <div class="large-4 columns">
                             <label>Місто: </label>
@@ -58,59 +66,73 @@
                             </select>
                         </div>
                     </div>
-                    <input type="submit" value="Знайти" class="button">
+                    <input type="submit" value="Знайти" class="button small">
                 </div>
             </form>
         </div>
         <div class="row">
             <div class="large-12 columns">
                 <div class="count">
-                    Всього <b>{{ pagination.getTotalItemCount }}</b> знайдено:
+                    Всього знайдено: <b>{{ pagination.getTotalItemCount }}</b>
                 </div>
-
                 {% for worker in pagination %}
-                    <div class="panel">
-                        <h3>{{worker.name}}{% if worker.age > 0 %}, вік {{worker.age}}{% endif %}, місто {{worker.city}}.</h3>
+                    <div style="margin-bottom: 20px">
                         <div class="row">
-                            <div class="large-6 columns">
-                                <p>
-                                    Шукаю роботу у сферах діяльності:
-                                    {% for category in worker.categories %}
-                                        {% if category is iterable %}
-                                            <br>
-                                            {% for categoryName in category %}
-                                                {{ categoryName }}
-                                            {% endfor %}
-                                        {% else %}
-                                            {{ category }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </p>
+                            <div class="columns large-3 border">
+                                <h6><b>Категорії:</b></h6>
                             </div>
-                            <div class="large-6 columns">
-                                <p>
-                                    Освіта:
-                                    {% for education in worker.educations %}
-                                        {% if education is iterable %}
-                                            <br>
-                                            Рівень: {{education.level}}<br>
-                                            Назва закладу: {{ education.name }}<br>
-                                            Місто: {{ education.city }}
-                                        {% else %}
-                                            {{ education }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </p>
+                            <div class="large-9 columns border" >
+                            {% for category in worker.categories %}
+                                    {% if category is iterable %}
+                                        {% for categoryName in category %}
+                                            <h6 style="float: left;">{{ categoryName }}
+                                                {% if worker.categories|length > 1  %}
+                                                    ,&nbsp;
+                                                {% endif %}
+
+                                            </h6>
+                                        {% endfor %}
+                                    {% else %}
+                                        <h6>{{ category }}</h6>
+                                    {% endif %}
+                            {% endfor %}
                             </div>
                         </div>
-                        {% if worker.aboutMe %}
-                        <hr>
-                        <p style="word-wrap: break-word;">Про мене:<br>
-                            {{worker.aboutMe}}
-                        </p>
-                        {% endif %}
-                        <h4>Номер телефону: {{worker.phone}}</h4>
-                        <p>Дата подання заявки: {{ worker.postDate }}</p>
+                        <div class="row parent">
+                            <div class="large-3 columns border">
+                                <h6><b>Про мене:</b></h6>
+                            </div>
+                            <div class="large-9 columns border">
+                                <h6>{{worker.name}};{% if worker.aboutMe %}
+                                    {{worker.aboutMe}}
+                                {% endif %}</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-3 columns border">
+                                <h6><b>Вік:</b></h6>
+                            </div>
+                            <div class="large-9 columns border">
+                                <h6>{% if worker.age > 0 %} {{worker.age}} {% else %} Не вказано {% endif %}</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-3 columns border">
+                                <h6><b>Місто:</b></h6>
+                            </div>
+                            <div class="large-9 columns border">
+                                <h6>{{worker.city}}</h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="large-3 columns border">
+                                <h6><b>Номер телефону:</b></h6>
+                            </div>
+                            <div class="large-9 columns border">
+                                <h6>{{worker.phone}}</h6>
+                            </div>
+                        </div>
+                        <p style="font-size: small;"><b>Дата подання заявки: {{ worker.postDate }}</b></p>
                     </div>
                 {% endfor %}
 
@@ -180,6 +202,11 @@
             });
             $( 'span.twitter-typeahead' )
                     .css( 'width', '100%' );
+            $('div.parent').each(function(){
+                $(this).children('.large-3').height($(this).children('.large-9').height());
+            });
+
         });
+
     </script>
 {% endblock %}

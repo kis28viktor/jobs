@@ -34,7 +34,7 @@ class EmployerController extends Controller
         $workerModel = new Worker();
         $workers = $workerModel->generateWorkersArray($workerModel->getAllWorkersWithPostFilter($request, $this->getEntityManager()), $this->getEntityManager());
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($workers,$request->query->getInt('page', 1),10);
+        $pagination = $paginator->paginate($workers,$request->query->getInt('page', 1),25);
         $gender = new Gender();
         $category = new Category();
         return $this->render(
@@ -88,7 +88,7 @@ class EmployerController extends Controller
             if($this->checkFormData($formData)) {
                 $employer = new Employer();
                 $employer->saveEmployer($formData, $this->getEntityManager());
-                return $this->redirectToRoute('find_work');
+                return $this->redirectToRoute('find_worker');
             } else {
                 return $this->redirectToRoute('post_work');
             }
@@ -115,7 +115,7 @@ class EmployerController extends Controller
      */
     protected function checkFormData($formData)
     {
-        return $formData['firstName'] && $formData['lastName'] && $formData['phone'] && $formData['gender'];
+        return $formData['firstName'] && $formData['phone'] && $formData['gender'];
     }
 
     /**

@@ -21,10 +21,6 @@ class Worker {
      */
     protected $firstName;
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    protected $lastName;
-    /**
      * @ORM\ManyToOne(targetEntity="Gender")
      */
     protected $gender;
@@ -33,9 +29,9 @@ class Worker {
      */
     protected $phone;
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
-    protected $date;
+    protected $dateBirht;
     /**
      * @ORM\Column(type="string", length=100, nullable=true)
      */
@@ -114,7 +110,7 @@ class Worker {
      */
     public function setDate($date)
     {
-        $this->date = $date;
+        $this->dateBirht = $date;
 
         return $this;
     }
@@ -126,7 +122,7 @@ class Worker {
      */
     public function getDate()
     {
-        return $this->date;
+        return $this->dateBirht;
     }
 
     /**
@@ -275,16 +271,6 @@ class Worker {
         $this->lastName = $lastName;
 
         return $this;
-    }
-
-    /**
-     * Get lastName
-     *
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->lastName;
     }
 
     /**
@@ -485,12 +471,10 @@ class Worker {
         $gender = $em->getRepository('WorkBundle:Gender')->find($formData['gender']);
         $worker = new Worker();
         $worker->setFirstName($formData['firstName'])
-            ->setLastName($formData['lastName'])
             ->setPhone($formData['phone'])
             ->setGender($gender);
-        if($formData['date']){
-            $date = new \DateTime($formData['date']);
-            $worker->setDate($date);
+        if($formData['age']){
+            $worker->setDate($formData['age']);
         }
         if($formData['city']){
             $worker->setCity($formData['city']);
@@ -506,22 +490,6 @@ class Worker {
             }
         }
         $worker->setPostDate(new \DateTime());
-        if($this->checkEducationFilling($formData)){
-            $education = new Education();
-            if($formData['education']){
-                $education->setName($formData['education']);
-            }
-            if($formData['educationCity']){
-                $education->setName($formData['educationCity']);
-            }
-            if(isset($formData['educationLevel'])){
-                /** @var \WorkBundle\Entity\EducationLevel $educationLevel */
-                $educationLevel = $em->getRepository('WorkBundle:EducationLevel')->find($formData['educationLevel']);
-                $education->setLevel($educationLevel);
-            }
-            $em->persist($education);
-            $worker->addEducation($education);
-        }
         $em->persist($worker);
         $em->flush();
     }
@@ -568,13 +536,11 @@ class Worker {
         foreach ($workersModelsArray as $worker) {
             $tz  = new \DateTimeZone('Europe/Kiev');
             $workers[] = array('id'         => $worker->getId(),
-                               'name'       => $worker->getFirstName() . ' ' . $worker->getLastName(),
+                               'name'       => $worker->getFirstName(),
                                'phone'      => $worker->getPhone(),
-                               'age'        => $worker->getDate()?\DateTime::createFromFormat('d/m/Y', $worker->getDate()->format('d/m/Y'), $tz)
-                                   ->diff(new \DateTime('now', $tz))
-                                   ->y:'user didn`t specified his age.',
-                               'city'       => $worker->getCity() ? $worker->getCity(): 'User didn`t specified the city.',
-                               'aboutMe'    => $worker->getAboutMe() ? $worker->getAboutMe() : 'User didn`t filled any bio.',
+                               'age'        => $worker->getDate(),
+                               'city'       => $worker->getCity() ? $worker->getCity(): 'Не вказано',
+                               'aboutMe'    => $worker->getAboutMe() ? $worker->getAboutMe() : 'Не вказано',
                                'categories' => $workerModel->getCategoriesForWorker($worker->getId(), $entityManager),
                                'educations' => $workerModel->getEducationForWorker($worker->getId(), $entityManager),
                                'postDate' => $worker->getPostDate()->format('Y-m-d'),
